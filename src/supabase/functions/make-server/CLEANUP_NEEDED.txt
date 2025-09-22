@@ -1,0 +1,1 @@
+Extra files in this directory should be removed. Only index.ts and deno.json are needed for the Edge Function.
