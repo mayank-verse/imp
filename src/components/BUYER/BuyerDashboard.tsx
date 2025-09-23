@@ -725,7 +725,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
         </TabsContent>
 
         <TabsContent value="advanced">
-          <EnhancedMarketplace />
+          <EnhancedMarketplace user={user} />
         </TabsContent>
       </Tabs>
 

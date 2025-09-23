@@ -464,7 +464,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     <Label htmlFor="state">State</Label>
                     <Select 
                       value={profileData.state} 
-                      onValueChange={(value) => setProfileData(prev => ({ ...prev, state: value }))}
+                      onValueChange={(value : string) => setProfileData(prev => ({ ...prev, state: value }))}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select state" />
@@ -521,7 +521,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   <Label htmlFor="orgType">Organization Type</Label>
                   <Select 
                     value={profileData.organizationType} 
-                    onValueChange={(value) => setProfileData(prev => ({ ...prev, organizationType: value }))}
+                    onValueChange={(value : string) => setProfileData(prev => ({ ...prev, organizationType: value }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -725,7 +725,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.emailNotifications}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, emailNotifications: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, emailNotifications: checked }))}
                   />
                 </div>
                 
@@ -736,7 +736,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.smsNotifications}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, smsNotifications: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, smsNotifications: checked }))}
                   />
                 </div>
                 
@@ -747,7 +747,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.publicProfile}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, publicProfile: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, publicProfile: checked }))}
                   />
                 </div>
               </CardContent>
