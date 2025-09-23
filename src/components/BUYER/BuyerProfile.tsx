@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Switch } from './ui/switch';
-import { Badge } from './ui/badge';
-import { Separator } from './ui/separator';
-import { Avatar, Avatar as AvatarFallback, Avatar as AvatarImage } from './ui/avatar';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Progress } from './ui/progress';
-import { supabase } from '../utils/supabase/client';
-import { mockPaymentService } from '../utils/payments/mock-payment-service';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Switch } from '../ui/switch';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
+import { Avatar, Avatar as AvatarFallback, Avatar as AvatarImage } from '../ui/avatar';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Progress } from '../ui/progress';
+import { supabase } from '../../utils/supabase/client';
+import { mockPaymentService } from '../../utils/payments/mock-payment-service';
 import { 
   User, 
   Building2, 

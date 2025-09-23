@@ -6,13 +6,13 @@ import { Label } from './components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
 import { Badge } from './components/ui/badge';
 import { Separator } from './components/ui/separator';
-import { LandingPage } from './components/LandingPage';
-import { PublicDashboard } from './components/PublicDashboard';
-import { ProjectManagerDashboard } from './components/ProjectManagerDashboard';
-import { ProjectManagerProfile } from './components/ProjectManagerProfile';
-import { NCCRVerifierDashboard } from './components/NCCRVerifierDashboard';
-import { BuyerDashboard } from './components/BuyerDashboard';
-import { BuyerProfile } from './components/BuyerProfile';
+import { LandingPage } from './components/PUBLIC/LandingPage';
+import { PublicDashboard } from './components/PUBLIC/PublicDashboard';
+import { ProjectManagerDashboard } from './components/MANAGER/ProjectManagerDashboard';
+import { ProjectManagerProfile } from './components/MANAGER/ProjectManagerProfile';
+import { NCCRVerifierDashboard } from './components/NCCR/NCCRVerifierDashboard';
+import { BuyerDashboard } from './components/BUYER/BuyerDashboard';
+import { BuyerProfile } from './components/BUYER/BuyerProfile';
 import { AuthForm } from './components/AuthForm';
 import { PasswordReset } from './components/PasswordReset';
 import { supabase } from './utils/supabase/client';
@@ -57,7 +57,7 @@ function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          setUser(session.user as User);
+          setUser(session.user as unknown as User);
           // Set active tab based on user role
           if (session.user.user_metadata?.role) {
             setActiveTab(session.user.user_metadata.role);
@@ -76,7 +76,7 @@ function App() {
     try {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        setUser(session.user as User);
+        setUser(session.user as unknown as User);
         if (session.user.user_metadata?.role) {
           setActiveTab(session.user.user_metadata.role);
         }

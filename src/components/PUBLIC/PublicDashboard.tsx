@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Separator } from './ui/separator';
-import { ScrollArea } from './ui/scroll-area';
-import { ApiService, showApiError } from '../utils/frontend/api-service';
-import { projectId } from '../utils/supabase/info';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Separator } from '../ui/separator';
+import { ScrollArea } from '../ui/scroll-area';
+import { ApiService, showApiError } from '../../utils/frontend/api-service';
+import { projectId } from '../../utils/supabase/info';
 import { Waves, TreePine, Award, ExternalLink, MapPin, Calendar, Leaf } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -84,8 +84,9 @@ export function PublicDashboard() {
       console.log('Public stats data:', data);
       setStats(data);
     } catch (error) {
+      const err=error as Error;
       console.error('Error fetching public stats:', error);
-      toast.error(`Failed to load public statistics: ${error.message}`);
+      toast.error(`Failed to load public statistics: ${err.message}`);
     } finally {
       setLoading(false);
     }

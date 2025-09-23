@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
-import { Badge } from './ui/badge';
-import { Separator } from './ui/separator';
-import { ScrollArea } from './ui/scroll-area';
-import { supabase } from '../utils/supabase/client';
-import { ApiService, showApiError, showApiSuccess } from '../utils/frontend/api-service';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
+import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
+import { ScrollArea } from '../ui/scroll-area';
+import { supabase } from '../../utils/supabase/client';
+import { ApiService, showApiError, showApiSuccess } from '../../utils/frontend/api-service';
 import { Plus, TreePine, Upload, FileText, MapPin, Calendar, Activity, Camera, Database, FileImage, Trash2, DollarSign, TrendingUp, Receipt, CreditCard } from 'lucide-react';
 import { toast } from 'sonner';
-import { mockPaymentService, ProjectManagerEarnings, PaymentTransaction } from '../utils/payments/mock-payment-service';
+import { mockPaymentService, ProjectManagerEarnings, PaymentTransaction } from '../../utils/payments/mock-payment-service';
 
 interface User {
   id: string;
@@ -708,7 +708,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
 
       {/* MRV Submission Dialog */}
       <Dialog open={showMRVDialog} onOpenChange={setShowMRVDialog}>
-        <DialogContent className="max-w-4xl max-h-[90vh] flex flex-col">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader className="flex-shrink-0">
             <DialogTitle>Submit MRV Data</DialogTitle>
             <DialogDescription>

@@ -1,1 +1,0 @@
-This directory should be deleted - it contains incorrect .tsx files that conflict with proper Edge Function structure.

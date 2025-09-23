@@ -20,7 +20,7 @@ import {
   BarChart3, Activity, Zap, Target, Brain, Shield, AlertCircle,
   CheckCircle, Clock, TreePine, Waves, Users, Database
 } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface User {
   id: string;
@@ -32,6 +32,11 @@ interface User {
 }
 
 interface Project {
+  communityPartners: string | undefined;
+  managerEmail: string;
+  managerName: string;
+  managerId: string;
+  description: string;
   id: string;
   name: string;
   location: string;
@@ -323,7 +328,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
         <div className="flex items-center space-x-4">
           <Select 
             value={currentProject?.id || ''} 
-            onValueChange={(value) => {
+            onValueChange={(value: string) => {
               const project = projects.find(p => p.id === value);
               if (project) {
                 setCurrentProject(project);

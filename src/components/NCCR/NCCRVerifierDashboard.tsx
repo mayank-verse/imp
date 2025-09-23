@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { Textarea } from './ui/textarea';
-import { Label } from './ui/label';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
-import { ScrollArea } from './ui/scroll-area';
-import { Separator } from './ui/separator';
-import { Progress } from './ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { projectId } from '../utils/supabase/info';
-import { supabase } from '../utils/supabase/client';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { Textarea } from '../ui/textarea';
+import { Label } from '../ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
+import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
+import { Progress } from '../ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { projectId } from '../../utils/supabase/info';
+import { supabase } from '../../utils/supabase/client';
 import { Shield, CheckCircle, XCircle, Clock, FileText, Camera, Satellite, TrendingUp, AlertTriangle, TreePine, MapPin, Calendar, User, Mail, Brain, BarChart3, Award, DollarSign, Leaf } from 'lucide-react';
 import { toast } from 'sonner';
-import { MLVerificationPanel } from './MLVerificationPanel';
-import { MRVDataVisualization } from './MRVDataVisualization';
+import { MLVerificationPanel } from '../MLVerificationPanel';
+import { MRVDataVisualization } from '../MRVDataVisualization';
 
 interface User {
   id: string;
@@ -25,7 +25,7 @@ interface User {
   };
 }
 
-interface Project {
+export interface Project {
   id: string;
   name: string;
   description: string;
@@ -38,7 +38,7 @@ interface Project {
   managerName: string;
   managerEmail: string;
   coordinates?: string;
-  communityPartners?: string;
+  communityPartners: string;
   expectedCarbonCapture?: number;
 }
 
@@ -554,7 +554,22 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
           <MRVDataVisualization 
             user={user} 
             selectedProject={selectedProject}
-            onProjectSelect={setSelectedProject}
+            onProjectSelect={(project) => setSelectedProject({
+              id: project.id,
+              name: project.name,
+              description: project.description ?? '',
+              location: project.location ?? '',
+              ecosystemType: project.ecosystemType ?? '',
+              area: project.area ?? 0,
+              status: project.status ?? '',
+              createdAt: project.createdAt ?? '',
+              managerId: project.managerId ?? '',
+              managerName: project.managerName ?? '',
+              managerEmail: project.managerEmail ?? '',
+              coordinates: project.coordinates,
+              communityPartners: project.communityPartners ?? '',
+              expectedCarbonCapture: project.expectedCarbonCapture
+            })}
           />
         </TabsContent>
       </Tabs>

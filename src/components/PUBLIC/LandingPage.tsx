@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
 import { ArrowRight, Waves, TreePine, Shield, Users, Globe, TrendingUp, CheckCircle, Leaf, Star, Award } from 'lucide-react';
 
 interface LandingPageProps {

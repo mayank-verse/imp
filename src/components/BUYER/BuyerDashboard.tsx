@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Badge } from './ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
-import { ScrollArea } from './ui/scroll-area';
-import { Separator } from './ui/separator';
-import { Progress } from './ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
-import { supabase } from '../utils/supabase/client';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
+import { Badge } from '../ui/badge';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog';
+import { ScrollArea } from '../ui/scroll-area';
+import { Separator } from '../ui/separator';
+import { Progress } from '../ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { projectId, publicAnonKey } from '../../utils/supabase/info';
+import { supabase } from '../../utils/supabase/client';
 import { ShoppingCart, Award, TrendingUp, Leaf, ExternalLink, Calendar, MapPin, CreditCard, FileText, DollarSign, BarChart3, Receipt } from 'lucide-react';
 import { toast } from 'sonner';
 // Wallet functionality removed - using fiat-anchored registry
-import { EnhancedMarketplace } from './EnhancedMarketplace';
-import { mockPaymentService, PaymentTransaction } from '../utils/payments/mock-payment-service';
-import { RetirementCertificate } from './RetirementCertificate';
+import { EnhancedMarketplace } from '../EnhancedMarketplace';
+import { mockPaymentService, PaymentTransaction } from '../../utils/payments/mock-payment-service';
+import { RetirementCertificate } from '../RetirementCertificate';
 
 interface User {
   id: string;
