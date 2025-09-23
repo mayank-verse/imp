@@ -487,7 +487,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   <Label htmlFor="orgType">Organization Type</Label>
                   <Select 
                     value={profileData.organizationType} 
-                    onValueChange={(value) => setProfileData(prev => ({ ...prev, organizationType: value }))}
+                    onValueChange={(value : string) => setProfileData(prev => ({ ...prev, organizationType: value }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -577,7 +577,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     <Label htmlFor="state">State</Label>
                     <Select 
                       value={profileData.state} 
-                      onValueChange={(value) => setProfileData(prev => ({ ...prev, state: value }))}
+                      onValueChange={(value : string) => setProfileData(prev => ({ ...prev, state: value }))}
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select state" />
@@ -651,7 +651,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   <Label htmlFor="reportingReq">Reporting Requirements</Label>
                   <Select 
                     value={profileData.reportingRequirements} 
-                    onValueChange={(value) => setProfileData(prev => ({ ...prev, reportingRequirements: value }))}
+                    onValueChange={(value : string) => setProfileData(prev => ({ ...prev, reportingRequirements: value }))}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select reporting standard" />
@@ -738,7 +738,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   <Label htmlFor="paymentMethod">Preferred Payment Method</Label>
                   <Select 
                     value={profileData.preferredPaymentMethod} 
-                    onValueChange={(value) => setProfileData(prev => ({ ...prev, preferredPaymentMethod: value }))}
+                    onValueChange={(value : string) => setProfileData(prev => ({ ...prev, preferredPaymentMethod: value }))}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -822,7 +822,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.emailNotifications}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, emailNotifications: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, emailNotifications: checked }))}
                   />
                 </div>
                 
@@ -833,7 +833,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.smsNotifications}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, smsNotifications: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, smsNotifications: checked }))}
                   />
                 </div>
                 
@@ -844,7 +844,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.priceAlerts}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, priceAlerts: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, priceAlerts: checked }))}
                   />
                 </div>
                 
@@ -855,7 +855,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.newProjectAlerts}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, newProjectAlerts: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, newProjectAlerts: checked }))}
                   />
                 </div>
                 
@@ -866,7 +866,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.monthlyReports}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, monthlyReports: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, monthlyReports: checked }))}
                   />
                 </div>
                 
@@ -877,7 +877,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   </div>
                   <Switch
                     checked={profileData.marketingEmails}
-                    onCheckedChange={(checked) => setProfileData(prev => ({ ...prev, marketingEmails: checked }))}
+                    onCheckedChange={(checked : boolean) => setProfileData(prev => ({ ...prev, marketingEmails: checked }))}
                   />
                 </div>
               </CardContent>

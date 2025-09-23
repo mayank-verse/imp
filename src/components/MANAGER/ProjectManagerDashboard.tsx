@@ -637,7 +637,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="ecosystem">Ecosystem Type</Label>
-                <Select value={newProject.ecosystemType} onValueChange={(value) => setNewProject(prev => ({ ...prev, ecosystemType: value }))}>
+                <Select value={newProject.ecosystemType} onValueChange={(value: string) => setNewProject(prev => ({ ...prev, ecosystemType: value }))}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

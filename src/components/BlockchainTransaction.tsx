@@ -5,7 +5,7 @@ import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { ExternalLink, Clock, CheckCircle, XCircle, Loader } from 'lucide-react';
 import { AvalancheService, BlockchainTransaction as Transaction } from '../utils/blockchain/avalanche-service';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface BlockchainTransactionProps {
   transaction: Transaction | null;

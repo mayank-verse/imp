@@ -130,15 +130,14 @@ function App() {
   };
 
   const getGridCols = () => {
-    if (!user) return 'grid-cols-1';
-    
-    // Project managers and buyers have 3 tabs (public, role-specific, profile)
-    // NCCR verifiers have 2 tabs (public, verification)
-    if (user.user_metadata.role === 'project_manager' || user.user_metadata.role === 'buyer') {
-      return 'grid-cols-3';
-    }
+  if (!user) return 'grid-cols-1';
+
+  // All logged-in roles now have 2 tabs
+  if (user.user_metadata.role === 'project_manager' || user.user_metadata.role === 'buyer' || user.user_metadata.role === 'nccr_verifier') {
     return 'grid-cols-2';
-  };
+  }
+  return 'grid-cols-1'; // Fallback for any other case
+};
 
   if (loading) {
     return (
@@ -204,10 +203,7 @@ function App() {
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className={`grid w-full ${getGridCols()}`}>
-              <TabsTrigger value="public" className="flex items-center space-x-2">
-                <Waves className="h-4 w-4" />
-                <span>Public</span>
-              </TabsTrigger>
+
               {user.user_metadata.role === 'project_manager' && (
                 <TabsTrigger value="project_manager" className="flex items-center space-x-2">
                   <Leaf className="h-4 w-4" />
