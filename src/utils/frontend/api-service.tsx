@@ -207,7 +207,7 @@ export class ApiService {
   }
 
   static async createPaymentIntent(creditId: string, quantity: number): Promise<{ orderId: string; amount: number; currency: string }> {
-    const response = await fetch(`${this.baseUrl}/payment/create-order`, {
+    const response = await fetch(`${this.getBaseUrl()}/payment/create-order`, {
       method: 'POST',
       headers: await this.getAuthHeaders(),
       body: JSON.stringify({ creditId, quantity })

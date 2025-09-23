@@ -322,23 +322,6 @@ app.get("/credits/owned", async (c) => {
   }
 });
 
-app.post("/credits/purchase", async (c) => {
-  try {
-    const auth = await authService.authenticateUser(c.req.raw);
-    authService.requireRole(auth, 'buyer');
-    const { creditId } = await c.req.json();
-    if (!creditId) {
-      return c.json({ error: 'Credit ID is required' }, 400);
-    }
-    await DatabaseRepository.purchaseCredit(creditId, auth.user.id);
-    return c.json({ success: true, message: 'Credit purchase pending confirmation', creditId });
-  } catch (error) {
-    const err = error as Error;
-    console.log(`Credit purchase error: ${error}`);
-    return c.json({ error: err.message }, 500);
-  }
-});
-
 app.post("/credits/retire", async (c) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
