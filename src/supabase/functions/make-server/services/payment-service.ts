@@ -1,4 +1,3 @@
-// src/supabase/functions/make-server-a82c4acb/services/payment-service.ts
 import Razorpay from "razorpay";
 import crypto from "node:crypto";
 import { DatabaseRepository } from "../repository.ts";
@@ -45,7 +44,7 @@ export class PaymentService {
    */
   static verifyWebhook(body: string, signature: string) {
     const secret = Deno.env.get("RAZORPAY_WEBHOOK_SECRET")!;
-    const hmac = crypto.createHHmac("sha256", secret);
+    const hmac = crypto.createHmac("sha256", secret);
     hmac.update(body);
     const generatedSignature = hmac.digest("hex");
 
