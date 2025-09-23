@@ -206,6 +206,15 @@ export class ApiService {
     return this.handleResponse(response);
   }
 
+  static async createPaymentIntent(creditId: string, quantity: number): Promise<{ orderId: string; amount: number; currency: string }> {
+    const response = await fetch(`${this.getBaseUrl()}/payment/create-order`, {
+      method: 'POST',
+      headers: await this.getAuthHeaders(),
+      body: JSON.stringify({ creditId, quantity })
+    });
+    return this.handleResponse(response);
+  }
+
   // Health check
   static async healthCheck(): Promise<{ status: string }> {
     const response = await fetch(`${this.getBaseUrl()}/health`);
