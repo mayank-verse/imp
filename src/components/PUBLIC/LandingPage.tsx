@@ -3,6 +3,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { ArrowRight, Waves, TreePine, Shield, Users, Globe, TrendingUp, CheckCircle, Leaf, Star, Award } from 'lucide-react';
+import Navbar from "../Navbar"
 
 interface LandingPageProps {
   onGetStarted: () => void;
@@ -12,60 +13,50 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
-          <div className="text-center">
-            <div className="flex justify-center mb-8">
-              <div className="bg-gradient-to-r from-blue-600 to-green-600 rounded-2xl p-4">
-                <Waves className="h-12 w-12 text-white" />
-              </div>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              <span className="text-blue-600">Samudra</span> Ledger
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              India's First Transparent Blue Carbon Registry
-            </p>
-            
-            <p className="text-lg text-gray-600 mb-12 max-w-2xl mx-auto">
-              Protecting coastal ecosystems while generating verified carbon credits through 
-              blockchain-powered transparency and AI-driven monitoring
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={onGetStarted} className="text-lg px-8 py-6 cursor-pointer">
+      {/* Video Background Section */}
+      <Navbar />
+      <section className="relative w-full h-screen overflow-hidden">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover rounded-b-[25%]"
+          src="./src/components/PUBLIC/ocean.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+        {/* Dark overlay for better text visibility */}
+        <div className="absolute top-0 left-0 w-full h-full bg-black/40 rounded-b-[25%]" />
+
+        {/* Text on top of video */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4">
+            Samudra Ledger
+          </h1>
+          <p className="text-lg md:text-xl max-w-2xl">
+            India's First Transparent Blue Carbon Registry.
+            Protecting coastal ecosystems while generating verified carbon credits through
+            blockchain-powered transparency and AI-driven monitoring
+            <div className="flex flex-col sm:flex-row gap-4 justify-center py-6">
+              {/* Button 1: Get Started */}
+              <Button
+                size="lg"
+                onClick={onGetStarted}
+                className="text-lg px-8 py-6 cursor-pointer transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg"
+              >
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6 cursor-pointer !hover:bg-gray-700 bg-yellow-50">
-                           View Public Dashboard
+
+              {/* Button 2: View Public Dashboard */}
+              <Button
+                variant="outline"
+                size="lg"
+                className="text-lg px-8 py-6 cursor-pointer bg-yellow-50 transition-all duration-300 ease-in-out hover:bg-yellow-100 hover:shadow-md hover:border-yellow-200"
+              >
+                View Public Dashboard
               </Button>
             </div>
-            
-            <div className="mt-12 flex flex-wrap justify-center gap-4">
-              <Badge variant="secondary" className="px-4 py-2">
-                <Globe className="h-4 w-4 mr-2" />
-                Avalanche Blockchain
-              </Badge>
-              <Badge variant="secondary" className="px-4 py-2">
-                <Shield className="h-4 w-4 mr-2" />
-                NCCR Verified
-              </Badge>
-              <Badge variant="secondary" className="px-4 py-2">
-                <TrendingUp className="h-4 w-4 mr-2" />
-                AI-Powered MRV
-              </Badge>
-            </div>
-          </div>
-        </div>
-        
-        {/* Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-blue-100 rounded-full opacity-50 animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-24 h-24 bg-green-100 rounded-full opacity-50 animate-pulse"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-teal-50 rounded-full opacity-30"></div>
+          </p>
         </div>
       </section>
 
@@ -76,7 +67,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Blue Carbon Impact</h2>
             <p className="text-lg text-gray-600">Making a measurable difference for India's coastal ecosystems</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
@@ -85,7 +76,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-blue-600 mb-2">10,000+</div>
               <div className="text-gray-600">Carbon Credits Issued</div>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <TreePine className="h-8 w-8 text-green-600" />
@@ -93,7 +84,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-green-600 mb-2">25</div>
               <div className="text-gray-600">Active Projects</div>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Waves className="h-8 w-8 text-teal-600" />
@@ -101,7 +92,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-teal-600 mb-2">50,000</div>
               <div className="text-gray-600">Hectares Protected</div>
             </div>
-            
+
             <div className="text-center">
               <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8 text-purple-600" />
@@ -113,6 +104,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         </div>
       </section>
 
+
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -120,7 +112,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
             <p className="text-lg text-gray-600">A transparent and verifiable blue carbon ecosystem</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -216,7 +208,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Ecosystem</h2>
             <p className="text-lg text-gray-600">Multiple pathways to participate in the blue carbon economy</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="border-2 border-green-200 hover:border-green-300 transition-colors">
               <CardHeader>
@@ -301,7 +293,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               Ready to Build India's Blue Carbon Future?
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Join thousands of coastal communities, project developers, and corporate buyers 
+              Join thousands of coastal communities, project developers, and corporate buyers
               creating a transparent and sustainable blue carbon economy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -330,7 +322,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 India's transparent blue carbon registry powered by blockchain technology and AI-driven verification.
               </p>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -340,7 +332,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <li>Retire Credits</li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Technology</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -350,7 +342,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <li>Smart Contracts</li>
               </ul>
             </div>
-            
+
             <div>
               <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -361,7 +353,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </ul>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
             <p>© 2025 Samudra Ledger. All rights reserved. Powered by Avalanche & Supabase.</p>
           </div>
