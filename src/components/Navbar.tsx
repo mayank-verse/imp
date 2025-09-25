@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Waves, X } from "lucide-react";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ export default function Navbar() {
             <nav className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
                 {/* Logo */}
                 <div className="text-2xl font-bold text-white hover:opacity-80 cursor-pointer">
-                    <a href="/">SamudraLedger</a>
+                    <a href="/"><Waves className="inline-block mr-2" /></a>
                 </div>
 
                 {/* Desktop Menu */}

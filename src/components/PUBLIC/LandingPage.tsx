@@ -11,13 +11,13 @@ interface LandingPageProps {
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       {/* Video Background Section */}
       <Navbar />
-      <section className="relative w-full h-screen overflow-hidden">
+      <section className="relative w-full h-[90vh] overflow-hidden">
         <video
-          className="absolute top-0 left-0 w-full h-full object-cover rounded-b-[25%]"
+          className="absolute top-0 left-0 w-full h-[90vh] object-cover rounded-b-[25%]"
           src="./src/components/PUBLIC/ocean.mp4"
           autoPlay
           loop
@@ -59,13 +59,26 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </p>
         </div>
       </section>
-
+      {/* Overlapping Box */}
+      <div className="relative z-20 -mt-[7rem] mb-16">
+        <div className="max-w-3xl mx-auto">
+          <div className="bg-white/10 flex bg-white rounded-[50px] shadow-2xl py-10 px-6">
+            <div className="px-[40px] py-[20px] border-r border-gray-300 mr-6">
+              <Waves className="h-12 w-12 text-black mx-auto " />
+            </div>
+            <div>
+              <h2 className="text-[1.3rem] font-semibold text-gray-900 pb-2 font-serif">A transparent platform for tracking, certifying, and conserving resources for a sustainable future. </h2>
+              <p className='font-sans'>Our goal is to make resource use transparent, support conservation projects, and create opportunities where protecting nature also benefits the economy.</p>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Blue Carbon Impact</h2>
-            <p className="text-lg text-gray-600">Making a measurable difference for India's coastal ecosystems</p>
+            <h2 className="text-3xl font-bold text-white mb-4">Blue Carbon Impact</h2>
+            <p className="text-lg text-gray-400">Making a measurable difference for India's coastal ecosystems</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -73,32 +86,32 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Award className="h-8 w-8 text-blue-600" />
               </div>
-              <div className="text-3xl font-bold text-blue-600 mb-2">10,000+</div>
-              <div className="text-gray-600">Carbon Credits Issued</div>
+              <div className="text-3xl font-bold text-blue-400 mb-2">10,000+</div>
+              <div className="text-gray-400">Carbon Credits Issued</div>
             </div>
 
             <div className="text-center">
               <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <TreePine className="h-8 w-8 text-green-600" />
               </div>
-              <div className="text-3xl font-bold text-green-600 mb-2">25</div>
-              <div className="text-gray-600">Active Projects</div>
+              <div className="text-3xl font-bold text-green-400 mb-2">25</div>
+              <div className="text-gray-400">Active Projects</div>
             </div>
 
             <div className="text-center">
               <div className="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Waves className="h-8 w-8 text-teal-600" />
               </div>
-              <div className="text-3xl font-bold text-teal-600 mb-2">50,000</div>
-              <div className="text-gray-600">Hectares Protected</div>
+              <div className="text-3xl font-bold text-teal-400 mb-2">50,000</div>
+              <div className="text-gray-400">Hectares Protected</div>
             </div>
 
             <div className="text-center">
               <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8 text-purple-600" />
               </div>
-              <div className="text-3xl font-bold text-purple-600 mb-2">500+</div>
-              <div className="text-gray-600">Community Members</div>
+              <div className="text-3xl font-bold text-purple-400 mb-2">500+</div>
+              <div className="text-gray-400">Community Members</div>
             </div>
           </div>
         </div>
@@ -106,26 +119,26 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
 
 
       {/* Features Section */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-lg text-gray-600">A transparent and verifiable blue carbon ecosystem</p>
+            <h2 className="text-3xl font-bold text-white mb-4">How It Works</h2>
+            <p className="text-lg text-gray-400">A transparent and verifiable blue carbon ecosystem</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="bg-blue-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                   <TreePine className="h-6 w-6 text-blue-600" />
                 </div>
-                <CardTitle>Project Registration</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-white">Project Registration</CardTitle>
+                <CardDescription className="text-gray-400">
                   Coastal communities and project developers register blue carbon restoration projects
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <ul className="space-y-2 text-sm text-gray-400">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     Mangrove restoration
@@ -142,18 +155,18 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="bg-green-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-green-600" />
                 </div>
-                <CardTitle>AI-Powered Verification</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-white">AI-Powered Verification</CardTitle>
+                <CardDescription className="text-gray-400">
                   Machine learning models analyze satellite data and community reports for accurate MRV
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <ul className="space-y-2 text-sm text-gray-400">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     Satellite imagery analysis
@@ -170,18 +183,18 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-shadow">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="bg-purple-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
                   <TrendingUp className="h-6 w-6 text-purple-600" />
                 </div>
-                <CardTitle>Secure Fiat Marketplace</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-white">Secure Fiat Marketplace</CardTitle>
+                <CardDescription className="text-gray-400">
                   Purchase credits with traditional payment methods while maintaining blockchain transparency
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <ul className="space-y-2 text-sm text-gray-400">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     Fiat payment processing
@@ -202,27 +215,27 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* User Roles Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Ecosystem</h2>
-            <p className="text-lg text-gray-600">Multiple pathways to participate in the blue carbon economy</p>
+            <h2 className="text-3xl font-bold text-white mb-4">Join Our Ecosystem</h2>
+            <p className="text-lg text-gray-400">Multiple pathways to participate in the blue carbon economy</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="border-2 border-green-200 hover:border-green-300 transition-colors">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-green-200 hover:border-green-300 transition-colors bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <Leaf className="h-8 w-8 text-green-600" />
+                  <Leaf className="h-8 w-8 text-green-400" />
                   <Badge className="bg-green-100 text-green-800">Open</Badge>
                 </div>
-                <CardTitle className="text-green-700">Project Manager</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-green-400">Project Manager</CardTitle>
+                <CardDescription className="text-gray-400">
                   Register and manage blue carbon restoration projects
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <ul className="space-y-2 text-sm text-gray-400 mb-6">
                   <li>• Register coastal restoration projects</li>
                   <li>• Submit MRV data and reports</li>
                   <li>• Earn carbon credits for verified impact</li>
@@ -234,19 +247,19 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-blue-200 hover:border-blue-300 transition-colors">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transition-colors bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <TrendingUp className="h-8 w-8 text-blue-600" />
+                  <TrendingUp className="h-8 w-8 text-blue-400" />
                   <Badge className="bg-blue-100 text-blue-800">Open</Badge>
                 </div>
-                <CardTitle className="text-blue-700">Buyer</CardTitle>
-                <CardDescription>
-                  Purchase and retire verified carbon credits
+                <CardTitle className="text-blue-400">Buyer</CardTitle>
+                <CardDescription className="text-gray-400">
+                  Purchase and retire verified carbon credits easily
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <ul className="space-y-2 text-sm text-gray-400 mb-6">
                   <li>• Browse verified carbon credits</li>
                   <li>• Pay securely with fiat currency</li>
                   <li>• Retire credits for offset goals</li>
@@ -258,19 +271,19 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="border-2 border-orange-200 hover:border-orange-300 transition-colors opacity-75">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-orange-200 hover:border-orange-300 transition-colors opacity-75 bg-white/10 backdrop-blur-lg border border-white/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <Shield className="h-8 w-8 text-orange-600" />
+                  <Shield className="h-8 w-8 text-orange-400" />
                   <Badge className="bg-orange-100 text-orange-800">Restricted</Badge>
                 </div>
-                <CardTitle className="text-orange-700">NCCR Verifier</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-orange-400">NCCR Verifier</CardTitle>
+                <CardDescription className="text-gray-400">
                   Verify MRV reports and approve credit issuance
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-sm text-gray-600 mb-6">
+                <ul className="space-y-2 text-sm text-gray-400 mb-6">
                   <li>• Review ML-processed MRV data</li>
                   <li>• Validate carbon sequestration claims</li>
                   <li>• Approve credit minting</li>
@@ -286,7 +299,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-blue-600 to-green-600">
+      <section className="py-16 bg-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="text-white">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -297,11 +310,11 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               creating a transparent and sustainable blue carbon economy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary" onClick={onGetStarted} className="text-lg px-8 py-6">
+              <Button size="lg" variant="secondary" onClick={onGetStarted} className="text-lg px-8 py-6  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                 Get Started Today
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-white border-white hover:bg-white hover:text-blue-600">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-black border-white hover:bg-white hover:text-blue-600  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                 View Public Registry
               </Button>
             </div>
