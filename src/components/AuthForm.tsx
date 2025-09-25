@@ -249,7 +249,7 @@ export function AuthForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-black/20 backdrop-blur-lg border border-white/20 text-white">
+    <Card className="w-full max-w-md mx-auto bg-black/20 backdrop-blur-lg border-2 border-white/30 text-white">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-blue-500 rounded-lg p-3">

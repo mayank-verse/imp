@@ -13,7 +13,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      {/* Video Background Section */}
       <Navbar />
       <section className="relative w-full h-[90vh] overflow-hidden">
         <video
@@ -24,10 +23,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           muted
           playsInline
         />
-        {/* Dark overlay for better text visibility */}
         <div className="absolute top-0 left-0 w-full h-full bg-black/40 rounded-b-[25%]" />
-
-        {/* Text on top of video */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
           <h1 className="text-5xl md:text-6xl font-bold mb-4">
             Samudra Ledger
@@ -37,7 +33,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             Protecting coastal ecosystems while generating verified carbon credits through
             blockchain-powered transparency and AI-driven monitoring
             <div className="flex flex-col sm:flex-row gap-4 justify-center py-6">
-              {/* Button 1: Get Started */}
               <Button
                 size="lg"
                 onClick={onGetStarted}
@@ -46,8 +41,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-
-              {/* Button 2: View Public Dashboard */}
               <Button
                 variant="outline"
                 size="lg"
@@ -59,6 +52,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </p>
         </div>
       </section>
+
       {/* Overlapping Box */}
       <div className="relative z-20 -mt-[7rem] mb-16">
         <div className="max-w-3xl mx-auto">
@@ -73,6 +67,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
         </div>
       </div>
+
       {/* Stats Section */}
       <section className="py-16 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +75,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-white mb-4">Blue Carbon Impact</h2>
             <p className="text-lg text-gray-400">Making a measurable difference for India's coastal ecosystems</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
@@ -89,7 +83,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-blue-400 mb-2">10,000+</div>
               <div className="text-gray-400">Carbon Credits Issued</div>
             </div>
-
             <div className="text-center">
               <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <TreePine className="h-8 w-8 text-green-600" />
@@ -97,7 +90,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-green-400 mb-2">25</div>
               <div className="text-gray-400">Active Projects</div>
             </div>
-
             <div className="text-center">
               <div className="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Waves className="h-8 w-8 text-teal-600" />
@@ -105,7 +97,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="text-3xl font-bold text-teal-400 mb-2">50,000</div>
               <div className="text-gray-400">Hectares Protected</div>
             </div>
-
             <div className="text-center">
               <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <Users className="h-8 w-8 text-purple-600" />
@@ -117,7 +108,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
         </div>
       </section>
 
-
       {/* Features Section */}
       <section className="py-16 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -125,13 +115,10 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-white mb-4">How It Works</h2>
             <p className="text-lg text-gray-400">A transparent and verifiable blue carbon ecosystem</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl bg-white/10 backdrop-blur-3xl border-2 border-white/30 overflow-hidden">
+              <img src="https://images.pexels.com/photos/2847714/pexels-photo-2847714.jpeg" alt="Mangrove forest for project registration" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="bg-blue-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-                  <TreePine className="h-6 w-6 text-blue-600" />
-                </div>
                 <CardTitle className="text-white">Project Registration</CardTitle>
                 <CardDescription className="text-gray-400">
                   Coastal communities and project developers register blue carbon restoration projects
@@ -139,27 +126,15 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Mangrove restoration
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Seagrass conservation
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Salt marsh protection
-                  </li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Mangrove restoration</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Seagrass conservation</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Salt marsh protection</li>
                 </ul>
               </CardContent>
             </Card>
-
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border-2 border-white/30 overflow-hidden">
+              <img src="https://images.pexels.com/photos/106344/pexels-photo-106344.jpeg" alt="Satellite view of a coastline for AI verification" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="bg-green-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-                  <Shield className="h-6 w-6 text-green-600" />
-                </div>
                 <CardTitle className="text-white">AI-Powered Verification</CardTitle>
                 <CardDescription className="text-gray-400">
                   Machine learning models analyze satellite data and community reports for accurate MRV
@@ -167,27 +142,15 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Satellite imagery analysis
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Community field reports
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    NCCR validation
-                  </li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Satellite imagery analysis</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Community field reports</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />NCCR validation</li>
                 </ul>
               </CardContent>
             </Card>
-
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border border-white/20">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl bg-white/10 backdrop-blur-lg border-2 border-white/30 overflow-hidden">
+              <img src="https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg" alt="Abstract technology background for marketplace" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="bg-purple-100 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
-                  <TrendingUp className="h-6 w-6 text-purple-600" />
-                </div>
                 <CardTitle className="text-white">Secure Fiat Marketplace</CardTitle>
                 <CardDescription className="text-gray-400">
                   Purchase credits with traditional payment methods while maintaining blockchain transparency
@@ -195,18 +158,9 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-gray-400">
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Fiat payment processing
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Immutable blockchain records
-                  </li>
-                  <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    Government compliant
-                  </li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Fiat payment processing</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Immutable blockchain records</li>
+                  <li className="flex items-center"><CheckCircle className="h-4 w-4 text-green-500 mr-2" />Government compliant</li>
                 </ul>
               </CardContent>
             </Card>
@@ -221,15 +175,15 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             <h2 className="text-3xl font-bold text-white mb-4">Join Our Ecosystem</h2>
             <p className="text-lg text-gray-400">Multiple pathways to participate in the blue carbon economy</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-green-200 hover:border-green-300 transition-colors bg-white/10 backdrop-blur-lg border border-white/20">
+            {/* CARD 1: Added image and overflow-hidden */}
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-green-200 hover:border-green-300 transition-colors bg-white/10 backdrop-blur-xl border-white/25 overflow-hidden">
+              <img src="https://images.pexels.com/photos/27176057/pexels-photo-27176057.jpeg" alt="People planting mangroves" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Leaf className="h-8 w-8 text-green-400" />
+                <div className="flex justify-between items-center mb-2">
+                  <CardTitle className="text-green-400">Project Manager</CardTitle>
                   <Badge className="bg-green-100 text-green-800">Open</Badge>
                 </div>
-                <CardTitle className="text-green-400">Project Manager</CardTitle>
                 <CardDescription className="text-gray-400">
                   Register and manage blue carbon restoration projects
                 </CardDescription>
@@ -247,13 +201,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transition-colors bg-white/10 backdrop-blur-lg border border-white/20">
+            {/* CARD 2: Added image and overflow-hidden */}
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transition-colors bg-white/10 backdrop-blur-xl border-white/25 overflow-hidden">
+              <img src="https://images.pexels.com/photos/6694575/pexels-photo-6694575.jpeg" alt="Buying Carbon Credits" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <TrendingUp className="h-8 w-8 text-blue-400" />
+                <div className="flex items-center justify-between items-center mb-2">
+                  <CardTitle className="text-blue-400">Buyer</CardTitle>
                   <Badge className="bg-blue-100 text-blue-800">Open</Badge>
                 </div>
-                <CardTitle className="text-blue-400">Buyer</CardTitle>
                 <CardDescription className="text-gray-400">
                   Purchase and retire verified carbon credits easily
                 </CardDescription>
@@ -271,13 +226,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-orange-200 hover:border-orange-300 transition-colors opacity-75 bg-white/10 backdrop-blur-lg border border-white/20">
+            {/* CARD 3: Added image and overflow-hidden */}
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-orange-200 hover:border-orange-300 transition-colors bg-white/10 backdrop-blur-xl border-white/25 overflow-hidden">
+              <img src="https://images.pexels.com/photos/7333508/pexels-photo-7333508.jpeg" alt="Verifier Lookin the scores generated by ML Model" className="w-full h-60 object-cover" />
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <Shield className="h-8 w-8 text-orange-400" />
+                <div className="flex items-center justify-between items-center mb-2">
+                  <CardTitle className="text-orange-400">NCCR Verifier</CardTitle>
                   <Badge className="bg-orange-100 text-orange-800">Restricted</Badge>
                 </div>
-                <CardTitle className="text-orange-400">NCCR Verifier</CardTitle>
                 <CardDescription className="text-gray-400">
                   Verify MRV reports and approve credit issuance
                 </CardDescription>
@@ -335,7 +291,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 India's transparent blue carbon registry powered by blockchain technology and AI-driven verification.
               </p>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -345,7 +300,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <li>Retire Credits</li>
               </ul>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">Technology</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -355,7 +309,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <li>Smart Contracts</li>
               </ul>
             </div>
-
             <div>
               <h3 className="font-semibold mb-4">Resources</h3>
               <ul className="space-y-2 text-sm text-gray-400">
@@ -366,7 +319,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </ul>
             </div>
           </div>
-
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
             <p>© 2025 Samudra Ledger. All rights reserved. Powered by Avalanche & Supabase.</p>
           </div>
