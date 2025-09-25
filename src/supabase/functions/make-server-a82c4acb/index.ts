@@ -41,17 +41,37 @@ app.get("/health", (c) => {
   return c.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-app.post("/payment/create-order", async (c) => {
+app.post("/payments/create-order", async (c) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
-    if (!auth.success) return c.json({ error: auth.error }, 401);
-
+    authService.requireAnyRole(auth, ['buyer']); // Only authenticated buyers can create orders
+    
+    // Extract parameters (creditId and quantity)
     const { creditId, quantity } = await c.req.json();
-    const result = await PaymentService.createPaymentIntent(creditId, quantity, auth.user.id);
-    return c.json(result);
+    
+    if (!creditId || typeof quantity !== 'number' || quantity <= 0) {
+      // Log this failure for debugging
+      console.log('400 Error: Missing creditId or invalid quantity in request body.');
+      return c.json({ error: 'Missing credit ID or invalid quantity' }, 400);
+    }
+
+    // Call the PaymentService to create the order on Razorpay's side
+    const paymentIntent = await PaymentService.createPaymentIntent(
+      creditId, 
+      quantity, 
+      auth.user.id
+    );
+
+    // This response data is what the frontend needs for PaymentForm
+    return c.json({ 
+        success: true, 
+        ...paymentIntent // Contains orderId and amount (in paise)
+    }, 200);
+
   } catch (error) {
-    const err = error as Error;
-    console.error(`Create payment order error: ${err.message}`);
+    const err = error;
+    // CRITICAL: This log will now appear in your Supabase logs if the route is successfully hit!
+    console.error(`❌ Payment Order Creation Error: ${err.message}`);
     return c.json({ error: err.message }, 500);
   }
 });
@@ -350,6 +370,11 @@ app.post("/credits/retire", async (c) => {
     console.log(`Credit retirement error: ${error}`);
     return c.json({ error: err.message }, 500);
   }
+});
+
+app.get("/test-path-123", (c) => {
+    console.log("TEST ROUTE HIT SUCCESSFULLY!");
+    return c.json({ message: "Test success" });
 });
 
 

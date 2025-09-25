@@ -24,12 +24,19 @@ export class PaymentService {
     // Amount is in paise for Razorpay, hence multiply by 100
     const amountInPaise = quantity * CREDIT_PRICE_INR * 100;
 
+    // CRITICAL DEBUG: Log the amount being sent to Razorpay API
+    console.log(`Creating order for Credit ID: ${creditId}, Quantity: ${quantity}`);
+    console.log(`Calculated Amount in Paise: ${amountInPaise}`);
+
     const order = await razorpay.orders.create({
       amount: amountInPaise,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
       notes: { creditId, quantity: String(quantity), userId },
     });
+
+    // CRITICAL DEBUG: Log the actual Order ID from the server
+    console.log("✅ Razorpay Order Created Successfully. ID:", order.id);
 
     return {
       orderId: order.id,

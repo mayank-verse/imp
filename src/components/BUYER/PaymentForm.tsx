@@ -33,6 +33,11 @@ export default function PaymentForm({ amount, orderId, onSuccess, onCancel }: Pa
       return;
     }
 
+    console.log("Razorpay Key ID used:", import.meta.env.VITE_RAZORPAY_KEY_ID);
+    console.log("Order ID received by frontend:", orderId);
+    console.log("Amount in paise sent to Razorpay:", amount);
+
+
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: amount,
@@ -51,6 +56,8 @@ export default function PaymentForm({ amount, orderId, onSuccess, onCancel }: Pa
         }
       }
     };
+
+    console.log("Full Razorpay options:", options); 
 
     const rzp = new window.Razorpay(options);
     rzp.open();

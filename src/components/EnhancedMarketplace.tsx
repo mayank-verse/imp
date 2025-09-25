@@ -1,25 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Badge } from './ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Slider } from './ui/slider';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
-import { ScrollArea } from './ui/scroll-area';
-import { Separator } from './ui/separator';
-import { Progress } from './ui/progress';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { projectId, publicAnonKey } from '../utils/supabase/info';
-import { supabase } from '../utils/supabase/client';
-import { 
-  ShoppingCart, Award, TrendingUp, Leaf, ExternalLink, Calendar, MapPin, 
-  CreditCard, DollarSign, Filter, Search, Star, StarOff, Heart, 
-  ChevronDown, BarChart3, PieChart, Target, TrendingDown 
-} from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Badge } from "./ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+import { Slider } from "./ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "./ui/dialog";
+import { ScrollArea } from "./ui/scroll-area";
+import { Separator } from "./ui/separator";
+import { Progress } from "./ui/progress";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+} from "recharts";
+import { projectId, publicAnonKey } from "../utils/supabase/info";
+import { supabase } from "../utils/supabase/client";
+import {
+  ShoppingCart,
+  Award,
+  TrendingUp,
+  Leaf,
+  ExternalLink,
+  Calendar,
+  MapPin,
+  CreditCard,
+  DollarSign,
+  Filter,
+  Search,
+  Star,
+  StarOff,
+  Heart,
+  ChevronDown,
+  BarChart3,
+  PieChart,
+  Target,
+  TrendingDown,
+} from "lucide-react";
+import { toast } from "sonner";
 
 interface User {
   id: string;
@@ -79,24 +123,34 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
     averagePrice: 0,
     totalCredits: 0,
     premiumCredits: 0,
-    priceChange: 0
+    priceChange: 0,
   });
-  
+
   // Filter states
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedEcosystem, setSelectedEcosystem] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedEcosystem, setSelectedEcosystem] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 100]);
   const [qualityFilter, setQualityFilter] = useState([0, 100]);
-  const [sortBy, setSortBy] = useState('price-asc');
+  const [sortBy, setSortBy] = useState("price-asc");
   const [showFilters, setShowFilters] = useState(false);
-  
+
   // Dialog states
-  const [selectedCredit, setSelectedCredit] = useState<CarbonCredit | null>(null);
+  const [selectedCredit, setSelectedCredit] = useState<CarbonCredit | null>(
+    null
+  );
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showBulkPurchaseDialog, setShowBulkPurchaseDialog] = useState(false);
   const [bulkSelection, setBulkSelection] = useState<string[]>([]);
-  
+
   const [loading, setLoading] = useState(true);
+
+  const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState<{
+    orderId: string;
+    amount: number;
+    creditId: string;
+  } | null>(null);
+  const [purchaseQuantity, setPurchaseQuantity] = useState(1); // Default to 1 for individual purchase
 
   useEffect(() => {
     fetchMarketData();
@@ -106,26 +160,36 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
 
   useEffect(() => {
     applyFilters();
-  }, [availableCredits, searchQuery, selectedEcosystem, priceRange, qualityFilter, sortBy]);
+  }, [
+    availableCredits,
+    searchQuery,
+    selectedEcosystem,
+    priceRange,
+    qualityFilter,
+    sortBy,
+  ]);
 
   const fetchMarketData = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/marketplace`, {
-        headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/marketplace`,
+        {
+          headers: {
+            Authorization: `Bearer ${publicAnonKey}`,
+          },
         }
-      });
+      );
 
       if (!response.ok) {
-        throw new Error('Failed to fetch marketplace data');
+        throw new Error("Failed to fetch marketplace data");
       }
 
       const data = await response.json();
       setAvailableCredits(data.credits || []);
       setMarketStats(data.stats || marketStats);
     } catch (error) {
-      console.error('Error fetching marketplace data:', error);
-      toast.error('Failed to load marketplace data');
+      console.error("Error fetching marketplace data:", error);
+      toast.error("Failed to load marketplace data");
     } finally {
       setLoading(false);
     }
@@ -133,38 +197,100 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
 
   const fetchWatchlist = async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) return;
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/watchlist`, {
-        headers: {
-          'Authorization': `Bearer ${session.access_token}`
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/watchlist`,
+        {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
         }
-      });
+      );
 
       if (response.ok) {
         const data = await response.json();
         setWatchlist(data.watchlist || []);
       }
     } catch (error) {
-      console.error('Error fetching watchlist:', error);
+      console.error("Error fetching watchlist:", error);
     }
   };
 
   const fetchPriceHistory = async () => {
     try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/price-history`, {
-        headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/price-history`,
+        {
+          headers: {
+            Authorization: `Bearer ${publicAnonKey}`,
+          },
         }
-      });
+      );
 
       if (response.ok) {
         const data = await response.json();
         setPriceHistory(data.priceHistory || []);
       }
     } catch (error) {
-      console.error('Error fetching price history:', error);
+      console.error("Error fetching price history:", error);
+    }
+  };
+
+  const handleInitiatePayment = async (
+    credit: CarbonCredit,
+    quantity: number
+  ) => {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      toast.error("Please sign in to make a purchase");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/payments/create-order`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`, // CRITICAL: Auth header
+          },
+          body: JSON.stringify({
+            creditId: credit.id,
+            quantity: quantity,
+            // The backend logic (payment-service.ts) requires the quantity.
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Order creation API failed:", errorData);
+        toast.error(
+          `Order creation failed: ${errorData.error || "Server error"}`
+        );
+        return;
+      }
+
+      const data = await response.json();
+
+      // The data returned from your backend should include orderId and amount (in paise)
+      setPaymentDetails({
+        orderId: data.orderId,
+        amount: data.amount, // This is the total amount in paise
+        creditId: credit.id,
+      });
+
+      setShowPaymentDialog(true); // Open the PaymentForm dialog
+    } catch (error) {
+      console.error("Network or unknown error during order creation:", error);
+      toast.error("Failed to connect to payment server.");
     }
   };
 
@@ -173,26 +299,35 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
 
     // Search filter
     if (searchQuery) {
-      filtered = filtered.filter(credit =>
-        credit.projectName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        credit.projectLocation?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        credit.ecosystemType?.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (credit) =>
+          credit.projectName
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          credit.projectLocation
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase()) ||
+          credit.ecosystemType
+            ?.toLowerCase()
+            .includes(searchQuery.toLowerCase())
       );
     }
 
     // Ecosystem filter
-    if (selectedEcosystem !== 'all') {
-      filtered = filtered.filter(credit => credit.ecosystemType === selectedEcosystem);
+    if (selectedEcosystem !== "all") {
+      filtered = filtered.filter(
+        (credit) => credit.ecosystemType === selectedEcosystem
+      );
     }
 
     // Price range filter
-    filtered = filtered.filter(credit => {
+    filtered = filtered.filter((credit) => {
       const price = credit.pricePerCredit || 15;
       return price >= priceRange[0] && price <= priceRange[1];
     });
 
     // Quality filter
-    filtered = filtered.filter(credit => {
+    filtered = filtered.filter((credit) => {
       const quality = credit.healthScore * 100;
       return quality >= qualityFilter[0] && quality <= qualityFilter[1];
     });
@@ -200,16 +335,19 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
     // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
-        case 'price-asc':
+        case "price-asc":
           return (a.pricePerCredit || 15) - (b.pricePerCredit || 15);
-        case 'price-desc':
+        case "price-desc":
           return (b.pricePerCredit || 15) - (a.pricePerCredit || 15);
-        case 'quality-desc':
+        case "quality-desc":
           return b.healthScore - a.healthScore;
-        case 'credits-desc':
+        case "credits-desc":
           return b.carbonCredits - a.carbonCredits;
-        case 'vintage-desc':
-          return new Date(b.vintage || b.verifiedAt).getTime() - new Date(a.vintage || a.verifiedAt).getTime();
+        case "vintage-desc":
+          return (
+            new Date(b.vintage || b.verifiedAt).getTime() -
+            new Date(a.vintage || a.verifiedAt).getTime()
+          );
         default:
           return 0;
       }
@@ -220,46 +358,66 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
 
   const toggleWatchlist = async (creditId: string) => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) {
-        toast.error('Please sign in to manage watchlist');
+        toast.error("Please sign in to manage watchlist");
         return;
       }
 
-      const isWatched = watchlist.some(item => item.creditId === creditId);
-      const method = isWatched ? 'DELETE' : 'POST';
+      const isWatched = watchlist.some((item) => item.creditId === creditId);
+      const method = isWatched ? "DELETE" : "POST";
 
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/watchlist`, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`
-        },
-        body: JSON.stringify({ creditId })
-      });
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb/credits/watchlist`,
+        {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session.access_token}`,
+          },
+          body: JSON.stringify({ creditId }),
+        }
+      );
 
       if (response.ok) {
         fetchWatchlist();
-        toast.success(isWatched ? 'Removed from watchlist' : 'Added to watchlist');
+        toast.success(
+          isWatched ? "Removed from watchlist" : "Added to watchlist"
+        );
       }
     } catch (error) {
-      console.error('Error updating watchlist:', error);
-      toast.error('Failed to update watchlist');
+      console.error("Error updating watchlist:", error);
+      toast.error("Failed to update watchlist");
     }
   };
 
   const isInWatchlist = (creditId: string) => {
-    return watchlist.some(item => item.creditId === creditId);
+    return watchlist.some((item) => item.creditId === creditId);
   };
 
   const getQualityBadge = (score: number) => {
-    if (score >= 0.8) return { label: 'Premium', color: 'bg-green-100 text-green-800 border-green-200' };
-    if (score >= 0.6) return { label: 'Standard', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' };
-    return { label: 'Basic', color: 'bg-gray-100 text-gray-800 border-gray-200' };
+    if (score >= 0.8)
+      return {
+        label: "Premium",
+        color: "bg-green-100 text-green-800 border-green-200",
+      };
+    if (score >= 0.6)
+      return {
+        label: "Standard",
+        color: "bg-yellow-100 text-yellow-800 border-yellow-200",
+      };
+    return {
+      label: "Basic",
+      color: "bg-gray-100 text-gray-800 border-gray-200",
+    };
   };
 
   const getEcosystems = () => {
-    const ecosystems = new Set(availableCredits.map(credit => credit.ecosystemType).filter(Boolean));
+    const ecosystems = new Set(
+      availableCredits.map((credit) => credit.ecosystemType).filter(Boolean)
+    );
     return Array.from(ecosystems);
   };
 
@@ -314,7 +472,9 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Premium Credits</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Premium Credits
+            </CardTitle>
             <Star className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
@@ -348,8 +508,13 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
             )}
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${marketStats.priceChange >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {marketStats.priceChange >= 0 ? '+' : ''}{marketStats.priceChange.toFixed(1)}%
+            <div
+              className={`text-2xl font-bold ${
+                marketStats.priceChange >= 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {marketStats.priceChange >= 0 ? "+" : ""}
+              {marketStats.priceChange.toFixed(1)}%
             </div>
             <p className="text-xs text-gray-600">24h change</p>
           </CardContent>
@@ -360,7 +525,9 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
       <Card>
         <CardHeader>
           <CardTitle>Price History</CardTitle>
-          <CardDescription>Carbon credit price trends over time</CardDescription>
+          <CardDescription>
+            Carbon credit price trends over time
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="h-64">
@@ -370,7 +537,12 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
-                <Line type="monotone" dataKey="price" stroke="#2563eb" strokeWidth={2} />
+                <Line
+                  type="monotone"
+                  dataKey="price"
+                  stroke="#2563eb"
+                  strokeWidth={2}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -384,7 +556,8 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
             <div>
               <CardTitle>Carbon Credit Marketplace</CardTitle>
               <CardDescription>
-                {filteredCredits.length} of {availableCredits.length} credits available
+                {filteredCredits.length} of {availableCredits.length} credits
+                available
               </CardDescription>
             </div>
             <Button
@@ -394,7 +567,11 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
             >
               <Filter className="h-4 w-4" />
               <span>Filters</span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${
+                  showFilters ? "rotate-180" : ""
+                }`}
+              />
             </Button>
           </div>
         </CardHeader>
@@ -416,21 +593,28 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
                 <div>
                   <Label>Ecosystem Type</Label>
-                  <Select value={selectedEcosystem} onValueChange={setSelectedEcosystem}>
+                  <Select
+                    value={selectedEcosystem}
+                    onValueChange={setSelectedEcosystem}
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Types</SelectItem>
-                      {getEcosystems().map(ecosystem => (
-                        <SelectItem key={ecosystem} value={ecosystem}>{ecosystem}</SelectItem>
+                      {getEcosystems().map((ecosystem) => (
+                        <SelectItem key={ecosystem} value={ecosystem}>
+                          {ecosystem}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label>Price Range (${priceRange[0]} - ${priceRange[1]})</Label>
+                  <Label>
+                    Price Range (${priceRange[0]} - ${priceRange[1]})
+                  </Label>
                   <Slider
                     value={priceRange}
                     onValueChange={setPriceRange}
@@ -442,7 +626,9 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                 </div>
 
                 <div>
-                  <Label>Quality Score ({qualityFilter[0]}% - {qualityFilter[1]}%)</Label>
+                  <Label>
+                    Quality Score ({qualityFilter[0]}% - {qualityFilter[1]}%)
+                  </Label>
                   <Slider
                     value={qualityFilter}
                     onValueChange={setQualityFilter}
@@ -460,11 +646,21 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                      <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                      <SelectItem value="quality-desc">Quality: High to Low</SelectItem>
-                      <SelectItem value="credits-desc">Credits: Most Available</SelectItem>
-                      <SelectItem value="vintage-desc">Vintage: Newest</SelectItem>
+                      <SelectItem value="price-asc">
+                        Price: Low to High
+                      </SelectItem>
+                      <SelectItem value="price-desc">
+                        Price: High to Low
+                      </SelectItem>
+                      <SelectItem value="quality-desc">
+                        Quality: High to Low
+                      </SelectItem>
+                      <SelectItem value="credits-desc">
+                        Credits: Most Available
+                      </SelectItem>
+                      <SelectItem value="vintage-desc">
+                        Vintage: Newest
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -479,16 +675,22 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
         {filteredCredits.map((credit) => {
           const quality = getQualityBadge(credit.healthScore);
           const isWatched = isInWatchlist(credit.id);
-          
+
           return (
-            <Card key={credit.id} className="hover:shadow-lg transition-all duration-200 relative">
+            <Card
+              key={credit.id}
+              className="hover:shadow-lg transition-all duration-200 relative"
+            >
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <CardTitle className="text-lg">{credit.projectName || `Project ${credit.projectId.slice(-8)}`}</CardTitle>
+                    <CardTitle className="text-lg">
+                      {credit.projectName ||
+                        `Project ${credit.projectId.slice(-8)}`}
+                    </CardTitle>
                     <p className="text-sm text-gray-600 flex items-center mt-1">
                       <MapPin className="h-3 w-3 mr-1" />
-                      {credit.projectLocation || 'Location TBD'}
+                      {credit.projectLocation || "Location TBD"}
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -537,12 +739,17 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                   <div className="flex justify-between">
                     <span>Total Value</span>
                     <span className="font-medium">
-                      ${((credit.pricePerCredit || 15) * credit.carbonCredits).toLocaleString()}
+                      $
+                      {(
+                        (credit.pricePerCredit || 15) * credit.carbonCredits
+                      ).toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Ecosystem</span>
-                    <span className="text-gray-600">{credit.ecosystemType || 'Coastal'}</span>
+                    <span className="text-gray-600">
+                      {credit.ecosystemType || "Coastal"}
+                    </span>
                   </div>
                 </div>
 
@@ -564,6 +771,7 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                   <Button
                     size="sm"
                     className="flex-1 bg-green-600 hover:bg-green-700"
+                    onClick={() => handleInitiatePayment(credit, 1)} // Assuming a quantity of 1 for simplicity here
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Purchase
@@ -579,8 +787,12 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
         <Card>
           <CardContent className="text-center py-12">
             <Search className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <p className="text-gray-500">No credits match your current filters</p>
-            <p className="text-sm text-gray-400 mt-2">Try adjusting your search criteria</p>
+            <p className="text-gray-500">
+              No credits match your current filters
+            </p>
+            <p className="text-sm text-gray-400 mt-2">
+              Try adjusting your search criteria
+            </p>
           </CardContent>
         </Card>
       )}
@@ -594,7 +806,7 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
               Comprehensive information about this carbon credit
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedCredit && (
             <ScrollArea className="max-h-[60vh]">
               <div className="space-y-4">
@@ -602,30 +814,68 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                   <div>
                     <h4 className="font-medium">Project Information</h4>
                     <div className="mt-2 space-y-1 text-sm">
-                      <p><strong>ID:</strong> {selectedCredit.projectId}</p>
-                      <p><strong>Name:</strong> {selectedCredit.projectName || 'TBD'}</p>
-                      <p><strong>Location:</strong> {selectedCredit.projectLocation || 'TBD'}</p>
-                      <p><strong>Ecosystem:</strong> {selectedCredit.ecosystemType || 'Coastal'}</p>
-                      <p><strong>Vintage:</strong> {new Date(selectedCredit.vintage || selectedCredit.verifiedAt).getFullYear()}</p>
+                      <p>
+                        <strong>ID:</strong> {selectedCredit.projectId}
+                      </p>
+                      <p>
+                        <strong>Name:</strong>{" "}
+                        {selectedCredit.projectName || "TBD"}
+                      </p>
+                      <p>
+                        <strong>Location:</strong>{" "}
+                        {selectedCredit.projectLocation || "TBD"}
+                      </p>
+                      <p>
+                        <strong>Ecosystem:</strong>{" "}
+                        {selectedCredit.ecosystemType || "Coastal"}
+                      </p>
+                      <p>
+                        <strong>Vintage:</strong>{" "}
+                        {new Date(
+                          selectedCredit.vintage || selectedCredit.verifiedAt
+                        ).getFullYear()}
+                      </p>
                     </div>
                   </div>
                   <div>
                     <h4 className="font-medium">Credit Details</h4>
                     <div className="mt-2 space-y-1 text-sm">
-                      <p><strong>Available:</strong> {selectedCredit.carbonCredits.toLocaleString()} tCO₂e</p>
-                      <p><strong>Price:</strong> ${selectedCredit.pricePerCredit || 15} per tCO₂e</p>
-                      <p><strong>Total Value:</strong> ${((selectedCredit.pricePerCredit || 15) * selectedCredit.carbonCredits).toLocaleString()}</p>
-                      <p><strong>Quality Score:</strong> {(selectedCredit.healthScore * 100).toFixed(1)}%</p>
-                      <p><strong>Verified:</strong> {new Date(selectedCredit.verifiedAt).toLocaleDateString()}</p>
+                      <p>
+                        <strong>Available:</strong>{" "}
+                        {selectedCredit.carbonCredits.toLocaleString()} tCO₂e
+                      </p>
+                      <p>
+                        <strong>Price:</strong> $
+                        {selectedCredit.pricePerCredit || 15} per tCO₂e
+                      </p>
+                      <p>
+                        <strong>Total Value:</strong> $
+                        {(
+                          (selectedCredit.pricePerCredit || 15) *
+                          selectedCredit.carbonCredits
+                        ).toLocaleString()}
+                      </p>
+                      <p>
+                        <strong>Quality Score:</strong>{" "}
+                        {(selectedCredit.healthScore * 100).toFixed(1)}%
+                      </p>
+                      <p>
+                        <strong>Verified:</strong>{" "}
+                        {new Date(
+                          selectedCredit.verifiedAt
+                        ).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                 </div>
-                
+
                 <Separator />
-                
+
                 <div>
                   <h4 className="font-medium">Evidence & Verification</h4>
-                  <p className="text-sm text-gray-600 mt-1">IPFS Hash: {selectedCredit.evidenceCid}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    IPFS Hash: {selectedCredit.evidenceCid}
+                  </p>
                   <Button variant="link" size="sm" className="p-0 h-auto mt-2">
                     <ExternalLink className="h-3 w-3 mr-1" />
                     View on IPFS
@@ -633,6 +883,34 @@ export function EnhancedMarketplace({ user }: EnhancedMarketplaceProps) {
                 </div>
               </div>
             </ScrollArea>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Purchase Dialog with Payment Form */}
+      <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Complete Purchase</DialogTitle>
+            <DialogDescription>
+              Pay for your selected carbon credit.
+            </DialogDescription>
+          </DialogHeader>
+
+          {paymentDetails && (
+            // You must import the PaymentForm component here.
+            // Assuming PaymentForm is imported as: import PaymentForm from '../BUYER/PaymentForm';
+            <PaymentForm
+              amount={paymentDetails.amount} // Amount in paise
+              orderId={paymentDetails.orderId}
+              onSuccess={(paymentId) => {
+                toast.success(`Payment successful! ID: ${paymentId}`);
+                // Implement logic to update the database (e.g., mark credit as purchased)
+                setShowPaymentDialog(false);
+                fetchMarketData(); // Refresh the market
+              }}
+              onCancel={() => setShowPaymentDialog(false)}
+            />
           )}
         </DialogContent>
       </Dialog>
