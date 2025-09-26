@@ -1,4 +1,4 @@
-import { Hono } from "https://deno.land/x/hono@v4.3.7/mod.ts";
+import { Hono, Context } from "https://deno.land/x/hono@v4.3.7/mod.ts"; // Import Context
 import { cors } from "https://deno.land/x/hono@v4.3.7/middleware.ts";
 
 
@@ -21,7 +21,7 @@ app.use('*', logger(console.log));
 app.use(
   "/*",
   cors({
-    origin: "*",
+    origin: "http://localhost:3000", // Explicitly allow frontend origin
     allowHeaders: ["Content-Type", "Authorization"],
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     exposeHeaders: ["Content-Length"],
@@ -37,11 +37,16 @@ const mrvService = new MRVService();
 const mlService = new MLService();
 
 // Health check endpoint
-app.get("/health", (c) => {
+app.get("/health", (c: Context) => {
   return c.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-app.post("/payment/create-order", async (c) => {
+// Global OPTIONS handler for CORS preflight requests
+app.options("/*", (c: Context) => {
+  return c.json({}, 200); // Respond to all preflight requests
+});
+
+app.post("/payment/create-order", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     if (!auth.success) return c.json({ error: auth.error }, 401);
@@ -57,7 +62,7 @@ app.post("/payment/create-order", async (c) => {
 });
 
 // Razorpay Webhook Endpoint
-app.post("/payment/webhook", async (c) => {
+app.post("/payment/webhook", async (c: Context) => {
   try {
     const rawBody = await c.req.text();
     const signature = c.req.header("X-Razorpay-Signature")!;
@@ -83,7 +88,7 @@ app.post("/payment/webhook", async (c) => {
 });
 
 // Authentication routes
-app.post("/signup", async (c) => {
+app.post("/signup", async (c: Context) => {
   try {
     const { email, password, name, role = 'buyer' } = await c.req.json();
     
@@ -96,7 +101,7 @@ app.post("/signup", async (c) => {
   }
 });
 
-app.post("/check-nccr-eligibility", async (c) => {
+app.post("/check-nccr-eligibility", async (c: Context) => {
   try {
     const { email } = await c.req.json();
     const result = AuthService.checkNCCREligibility(email);
@@ -108,7 +113,7 @@ app.post("/check-nccr-eligibility", async (c) => {
 });
 
 // Public routes
-app.get("/public/stats", async (c) => {
+app.get("/public/stats", async (c: Context) => {
   try {
     const stats = await DatabaseRepository.getPublicStats();
     return c.json(stats);
@@ -119,7 +124,7 @@ app.get("/public/stats", async (c) => {
 });
 
 // Project management routes
-app.post("/projects", async (c) => {
+app.post("/projects", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'project_manager');
@@ -136,7 +141,7 @@ app.post("/projects", async (c) => {
   }
 });
 
-app.get("/projects/manager", async (c) => {
+app.get("/projects/manager", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'project_manager');
@@ -150,7 +155,7 @@ app.get("/projects/manager", async (c) => {
   }
 });
 
-app.get("/projects/all", async (c) => {
+app.get("/projects/all", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'nccr_verifier');
@@ -164,7 +169,7 @@ app.get("/projects/all", async (c) => {
   }
 });
 
-app.delete("/projects/:projectId", async (c) => {
+app.delete("/projects/:projectId", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'project_manager');
@@ -181,7 +186,7 @@ app.delete("/projects/:projectId", async (c) => {
 });
 
 // MRV data routes
-app.post("/mrv/upload", async (c) => {
+app.post("/mrv/upload", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'project_manager');
@@ -208,7 +213,7 @@ app.post("/mrv/upload", async (c) => {
   }
 });
 
-app.post("/mrv", async (c) => {
+app.post("/mrv", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'project_manager');
@@ -225,7 +230,7 @@ app.post("/mrv", async (c) => {
   }
 });
 
-app.get("/mrv/pending", async (c) => {
+app.get("/mrv/pending", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'nccr_verifier');
@@ -239,7 +244,7 @@ app.get("/mrv/pending", async (c) => {
   }
 });
 
-app.post("/mrv/:mrvId/approve", async (c) => {
+app.post("/mrv/:mrvId/approve", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'nccr_verifier');
@@ -257,7 +262,7 @@ app.post("/mrv/:mrvId/approve", async (c) => {
 });
 
 // ML verification routes
-app.post("/ml/verify-project", async (c) => {
+app.post("/ml/verify-project", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'nccr_verifier');
@@ -273,7 +278,7 @@ app.post("/ml/verify-project", async (c) => {
   }
 });
 
-app.get("/ml/verification/:projectId", async (c) => {
+app.get("/ml/verification/:projectId", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'nccr_verifier');
@@ -294,7 +299,7 @@ app.get("/ml/verification/:projectId", async (c) => {
 });
 
 // Carbon credits routes
-app.get("/credits/available", async (c) => {
+app.get("/credits/available", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'buyer');
@@ -308,7 +313,7 @@ app.get("/credits/available", async (c) => {
   }
 });
 
-app.get("/credits/owned", async (c) => {
+app.get("/credits/owned", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'buyer');
@@ -322,7 +327,7 @@ app.get("/credits/owned", async (c) => {
   }
 });
 
-app.post("/credits/retire", async (c) => {
+app.post("/credits/retire", async (c: Context) => {
   try {
     const auth = await authService.authenticateUser(c.req.raw);
     authService.requireRole(auth, 'buyer');

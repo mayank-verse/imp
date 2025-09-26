@@ -22,7 +22,7 @@ export class PaymentService {
     }
 
     // Amount is in paise for Razorpay, hence multiply by 100
-    const amount = credit.amount * CREDIT_PRICE_INR * 100;
+    const amount = quantity * CREDIT_PRICE_INR * 100;
 
     const order = await razorpay.orders.create({
       amount: amount,

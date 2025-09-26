@@ -26,7 +26,7 @@ import {
 export class ApiService {
   // Helper method to get base URL (lazy construction)
   private static getBaseUrl(): string {
-    return `https://${projectId}.supabase.co/functions/v1/make-server-a82c4acb`;
+    return `https://${projectId}.supabase.co/functions/v1/make-server`; // Corrected function URL
   }
 
   // Helper method to get auth headers

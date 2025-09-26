@@ -14,6 +14,7 @@ import { projectId, publicAnonKey } from '../../utils/supabase/info';
 import { supabase } from '../../utils/supabase/client';
 import { ShoppingCart, Award, TrendingUp, Leaf, ExternalLink, Calendar, MapPin, CreditCard, FileText, DollarSign, BarChart3, Receipt } from 'lucide-react';
 import { toast } from 'sonner';
+import { ApiService } from '../../utils/frontend/api-service'; // Import ApiService
 // Wallet functionality removed - using fiat-anchored registry
 import { EnhancedMarketplace } from '../EnhancedMarketplace';
 import { RetirementCertificate } from '../RetirementCertificate';
@@ -66,6 +67,8 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
     const [retiring, setRetiring] = useState(false);
     const [selectedRetirement, setSelectedRetirement] = useState<Retirement | null>(null);
     const [showCertificate, setShowCertificate] = useState(false);
+    const [orderData, setOrderData] = useState<{ amount: number; orderId: string } | null>(null); // New state for server-generated order details
+    const [isOrderCreating, setIsOrderCreating] = useState(false); // New state for loading during order creation
 
     // Unused states removed: purchasing, paymentTransactions
 
@@ -188,7 +191,38 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
     const openPurchaseDialog = (credit: CarbonCredit) => {
         setSelectedCredit(credit);
         setPurchaseAmount(Math.min(credit.carbonCredits, 50));
+        setOrderData(null); // Reset order data when opening dialog
         setShowPurchaseDialog(true);
+    };
+
+    const handleInitiatePurchase = async () => {
+        if (!selectedCredit || purchaseAmount <= 0) {
+            toast.error('Please select a credit and enter a valid purchase amount.');
+            return;
+        }
+
+        setIsOrderCreating(true);
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                toast.error('Please sign in to make a purchase.');
+                setIsOrderCreating(false);
+                return;
+            }
+
+            const response = await ApiService.createPaymentIntent(selectedCredit.id, purchaseAmount);
+            
+            if (response && response.orderId && response.amount) {
+                setOrderData({ amount: response.amount, orderId: response.orderId });
+            } else {
+                throw new Error('Failed to create payment intent: Invalid response from server.');
+            }
+        } catch (error: any) { // Cast error to any
+            console.error('Error initiating purchase:', error);
+            toast.error(`Failed to initiate purchase: ${error.message || 'Unknown error'}`);
+        } finally {
+            setIsOrderCreating(false);
+        }
     };
 
     const openRetirementDialog = (credit: CarbonCredit) => {
@@ -522,7 +556,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                 </TabsContent>
 
                 <TabsContent value="advanced">
-                    <EnhancedMarketplace />
+                    <EnhancedMarketplace user={user} />
                 </TabsContent>
             </Tabs>
 
@@ -537,22 +571,54 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                     </DialogHeader>
 
                     {selectedCredit && (
-                        <PaymentForm
-                            amount={purchaseAmount}
-                            projectId={selectedCredit.projectId}
-                            onSuccess={() => {
-                                // handle success logic, e.g., show a toast and refresh data
-                                toast.success('Payment successful!');
-                                fetchUserBalance();
-                                fetchAvailableCredits();
-                                setShowPurchaseDialog(false);
-                            }}
-                            onFailure={() => {
-                                // handle failure logic, e.g., show a toast
-                                toast.error('Payment failed. Please try again.');
-                                setShowPurchaseDialog(false);
-                            }}
-                        />
+                        <>
+                            {!orderData ? (
+                                <div className="space-y-4 py-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="purchase-amount">Amount to Purchase (tCO₂e)</Label>
+                                        <Input
+                                            id="purchase-amount"
+                                            type="number"
+                                            min="1"
+                                            max={selectedCredit.carbonCredits}
+                                            value={purchaseAmount}
+                                            onChange={(e) => setPurchaseAmount(parseInt(e.target.value) || 0)}
+                                            disabled={isOrderCreating}
+                                        />
+                                        <p className="text-sm text-gray-500">
+                                            Maximum: {selectedCredit.carbonCredits.toLocaleString()} tCO₂e
+                                        </p>
+                                    </div>
+                                    <div className="flex justify-end space-x-2">
+                                        <Button variant="outline" onClick={() => setShowPurchaseDialog(false)} disabled={isOrderCreating}>
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            onClick={handleInitiatePurchase}
+                                            disabled={purchaseAmount <= 0 || purchaseAmount > selectedCredit.carbonCredits || isOrderCreating}
+                                        >
+                                            {isOrderCreating ? 'Processing...' : 'Proceed to Pay'}
+                                        </Button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <PaymentForm
+                                    amount={orderData.amount}
+                                    orderId={orderData.orderId}
+                                    onSuccess={() => {
+                                        toast.success('Payment successful!');
+                                        fetchUserBalance();
+                                        fetchAvailableCredits();
+                                        setShowPurchaseDialog(false);
+                                        setOrderData(null); // Reset order data
+                                    }}
+                                    onCancel={() => {
+                                        toast.info('Payment cancelled.');
+                                        setOrderData(null); // Reset order data to show initial purchase form
+                                    }}
+                                />
+                            )}
+                        </>
                     )}
                 </DialogContent>
             </Dialog>
