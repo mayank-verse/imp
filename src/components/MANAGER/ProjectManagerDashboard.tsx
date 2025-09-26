@@ -52,7 +52,16 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
   const [paymentTransactions, setPaymentTransactions] = useState<PaymentTransaction[]>([]);
   const [showEarningsDetails, setShowEarningsDetails] = useState(false);
 
-  const [newProject, setNewProject] = useState({
+  const [newProject, setNewProject] = useState<{
+    name: string;
+    description: string;
+    location: string;
+    ecosystemType: "mangrove" | "saltmarsh" | "seagrass" | "coastal_wetland";
+    area: number;
+    coordinates: string;
+    communityPartners: string;
+    expectedCarbonCapture: number;
+  }>({
     name: '',
     description: '',
     location: '',
@@ -154,7 +163,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
     e.preventDefault();
 
     try {
-      let uploadedFiles = [];
+      let uploadedFiles: { name: string; url: string; category: string }[] = [];
 
       // Upload files first if any are selected
       const allFiles = [...mrvData.photos, ...mrvData.iotFiles, ...mrvData.documents];
@@ -162,7 +171,11 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         toast.info(`Uploading ${allFiles.length} files...`);
 
         const uploadResult = await ApiService.uploadMRVFiles(mrvData.projectId, allFiles);
-        uploadedFiles = uploadResult.files;
+        uploadedFiles = uploadResult.files.map(f => ({
+          name: f.name,
+          url: f.url ?? '',
+          category: f.category
+        }));
 
         // Show breakdown of uploaded files
         const photoCount = uploadedFiles.filter(f => f.category === 'photo').length;
@@ -190,7 +203,16 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           iotData: mrvData.iotData,
           notes: mrvData.notes
         },
-        files: uploadedFiles
+        files: uploadedFiles.map(f => ({
+          name: f.name,
+          url: f.url,
+          category: f.category as "photo" | "iot_data" | "document",
+          originalName: f.name,
+          size: 0, // If you have the size, set it here
+          type: '', // If you have the type, set it here
+          path: f.url, // Or set the correct path if available
+          uploadedAt: new Date().toISOString()
+        }))
       };
 
       await ApiService.submitMRVData(mrvPayload);
@@ -621,7 +643,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="ecosystem">Ecosystem Type</Label>
-                <Select value={newProject.ecosystemType} onValueChange={(value: string) => setNewProject(prev => ({ ...prev, ecosystemType: value }))}>
+                <Select value={newProject.ecosystemType} onValueChange={(value: string) => setNewProject(prev => ({ ...prev, ecosystemType: value as "mangrove" | "saltmarsh" | "seagrass" | "coastal_wetland" }))}>
                   <SelectTrigger className="bg-white/10 border-white/20 text-white">
                     <SelectValue />
                   </SelectTrigger>

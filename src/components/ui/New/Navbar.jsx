@@ -1,4 +1,5 @@
 import { Waves } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   return (
@@ -8,6 +9,7 @@ export default function Navbar() {
         <div className="bg-[#1A1A1A] p-2 rounded-md">
           {/* Replace with your logo image */}
           <Waves className="text-black" />
+          <ThemeToggle />
         </div>
       </div>
 

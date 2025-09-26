@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { Toaster } from './components/ui/sonner';
 import { BlockchainStatus } from './components/BlockchainStatus';
 import { SampleDataButton } from './components/SampleDataButton';
+import { ThemeToggleButton } from './components/ThemeToggleButton';
 
 interface User {
   id: string;
@@ -141,8 +142,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -156,7 +157,7 @@ function App() {
   }
 
   return (
-    <div className={`min-h-screen ${!user ? 'bg-[#0F172A] relative overflow-hidden' : 'bg-[#0F172A] text-white'}`}>
+    <div className={`min-h-screen ${!user ? 'bg-background relative overflow-hidden' : 'bg-background text-foreground'}`}>
 
       {!user && (
         <>
@@ -174,27 +175,31 @@ function App() {
                 <Waves className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className={`text-xl font-bold text-white`}>Samudra Ledger</h1>
-                <p className={`text-sm text-gray-400`}>Blue Carbon Registry</p>
+                <h1 className={`text-xl font-bold text-foreground`}>Samudra Ledger</h1>
+                <p className={`text-sm text-muted-foreground`}>Blue Carbon Registry</p>
               </div>
             </div>
 
             {user ? (
               <div className="flex items-center space-x-4">
-                <Badge variant="secondary" className="flex items-center space-x-1 bg-white/10 text-white">
+                <ThemeToggleButton />
+                <Badge variant="secondary" className="flex items-center space-x-1">
                   {getRoleIcon(user.user_metadata.role)}
                   <span>{getRoleLabel(user.user_metadata.role)}</span>
                 </Badge>
-                <span className="text-sm text-gray-300">{user.user_metadata.name}</span>
-                <Button variant="outline" size="sm" onClick={handleSignOut} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+                <span className="text-sm text-muted-foreground">{user.user_metadata.name}</span>
+                <Button variant="outline" size="sm" onClick={handleSignOut}>
                   <LogOut className="h-4 w-4 mr-2" />
                   Sign Out
                 </Button>
               </div>
             ) : (
-              <Button variant="outline" className="bg-transparent  text-white border-slate-600 hover:bg-slate-800 hover:text-white transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg" onClick={() => setShowAuth(false)}>
-                Back to Home
-              </Button>
+              <div className="flex items-center space-x-4">
+                  <ThemeToggleButton />
+                  <Button variant="outline" onClick={() => setShowAuth(false)}>
+                      Back to Home
+                  </Button>
+              </div>
             )}
           </div>
         </div>
@@ -220,9 +225,9 @@ function App() {
       {user && <SampleDataButton />}
 
       {user && (
-        <footer className="bg-transparent border-t border-slate-800 mt-16">
+        <footer className="bg-transparent border-t border-border mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="text-center text-gray-400">
+            <div className="text-center text-muted-foreground">
               <p>© 2025 Samudra Ledger - Transparent Blue Carbon Registry for India</p>
               <div className="mt-3 flex justify-center">
                 <BlockchainStatus variant="footer" showDetails />
@@ -232,7 +237,7 @@ function App() {
         </footer>
       )}
 
-      <Toaster theme="dark" />
+      <Toaster />
     </div>
   );
 }
