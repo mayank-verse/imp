@@ -1,3 +1,4 @@
+// src/components/MANAGER/ProjectManagerDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -50,7 +51,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
   const [earnings, setEarnings] = useState<ProjectManagerEarnings | null>(null);
   const [paymentTransactions, setPaymentTransactions] = useState<PaymentTransaction[]>([]);
   const [showEarningsDetails, setShowEarningsDetails] = useState(false);
-  
+
   const [newProject, setNewProject] = useState({
     name: '',
     description: '',
@@ -127,7 +128,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       await ApiService.createProject(newProject);
       toast.success(showApiSuccess('Project registered successfully!'));
@@ -151,7 +152,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
 
   const handleSubmitMRV = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       let uploadedFiles = [];
 
@@ -159,21 +160,21 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       const allFiles = [...mrvData.photos, ...mrvData.iotFiles, ...mrvData.documents];
       if (allFiles.length > 0) {
         toast.info(`Uploading ${allFiles.length} files...`);
-        
+
         const uploadResult = await ApiService.uploadMRVFiles(mrvData.projectId, allFiles);
         uploadedFiles = uploadResult.files;
-        
+
         // Show breakdown of uploaded files
         const photoCount = uploadedFiles.filter(f => f.category === 'photo').length;
         const iotCount = uploadedFiles.filter(f => f.category === 'iot_data').length;
         const docCount = uploadedFiles.filter(f => f.category === 'document').length;
-        
+
         let message = `Successfully uploaded ${uploadedFiles.length} files`;
         if (photoCount > 0) message += ` (${photoCount} photos`;
         if (iotCount > 0) message += `${photoCount > 0 ? ', ' : ' ('}${iotCount} IoT files`;
         if (docCount > 0) message += `${(photoCount > 0 || iotCount > 0) ? ', ' : ' ('}${docCount} documents`;
         if (photoCount > 0 || iotCount > 0 || docCount > 0) message += ')';
-        
+
         toast.success(message);
       }
 
@@ -194,7 +195,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
 
       await ApiService.submitMRVData(mrvPayload);
       toast.success(showApiSuccess('MRV data submitted successfully! Processing with ML model and blockchain verification...'));
-      
+
       setShowMRVDialog(false);
       setMrvData({
         projectId: '',
@@ -217,15 +218,15 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'registered':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-900/50 text-blue-300';
       case 'mrv_submitted':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-900/50 text-yellow-300';
       case 'approved':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-900/50 text-green-300';
       case 'rejected':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-900/50 text-red-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gray-700 text-gray-300';
     }
   };
 
@@ -245,21 +246,21 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       case 'png':
       case 'gif':
       case 'heic':
-        return <FileImage className="h-3 w-3 text-blue-500" />;
+        return <FileImage className="h-3 w-3 text-blue-400" />;
       case 'csv':
       case 'json':
       case 'xml':
       case 'txt':
       case 'log':
-        return <Database className="h-3 w-3 text-green-500" />;
+        return <Database className="h-3 w-3 text-green-400" />;
       case 'pdf':
       case 'doc':
       case 'docx':
       case 'xlsx':
       case 'xls':
-        return <FileText className="h-3 w-3 text-purple-500" />;
+        return <FileText className="h-3 w-3 text-purple-400" />;
       default:
-        return <FileText className="h-3 w-3 text-gray-500" />;
+        return <FileText className="h-3 w-3 text-gray-400" />;
     }
   };
 
@@ -268,12 +269,12 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-6 bg-gray-700 rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-16 bg-gray-200 rounded animate-pulse"></div>
+                <div key={i} className="h-16 bg-gray-700 rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -288,14 +289,14 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold">Project Management</h2>
-          <p className="text-gray-600">Register and manage your blue carbon projects with fiat-anchored registry</p>
+          <p className="text-gray-300">Register and manage your blue carbon projects with fiat-anchored registry</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" onClick={() => setShowEarningsDetails(!showEarningsDetails)}>
+          <Button variant="outline" onClick={() => setShowEarningsDetails(!showEarningsDetails)} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
             <Receipt className="h-4 w-4 mr-2" />
             Earnings
           </Button>
-          <Button onClick={() => setShowNewProjectDialog(true)}>
+          <Button onClick={() => setShowNewProjectDialog(true)} className="bg-blue-600 hover:bg-blue-700">
             <Plus className="h-4 w-4 mr-2" />
             New Project
           </Button>
@@ -304,10 +305,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
 
       {/* Earnings Dashboard */}
       {showEarningsDetails && earnings && (
-        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <DollarSign className="h-5 w-5 text-green-600" />
+              <DollarSign className="h-5 w-5 text-green-400" />
               <span>Payment Dashboard</span>
             </CardTitle>
             <CardDescription>
@@ -317,28 +318,28 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-700">
+                <div className="text-2xl font-bold text-green-400">
                   ${earnings.totalEarnings.toFixed(2)}
                 </div>
-                <p className="text-sm text-green-600">Total Earnings</p>
+                <p className="text-sm text-green-500">Total Earnings</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-700">
+                <div className="text-2xl font-bold text-blue-400">
                   {earnings.totalCredits.toLocaleString()}
                 </div>
-                <p className="text-sm text-blue-600">Credits Sold</p>
+                <p className="text-sm text-blue-500">Credits Sold</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-700">
+                <div className="text-2xl font-bold text-purple-400">
                   {earnings.transactionCount}
                 </div>
-                <p className="text-sm text-purple-600">Transactions</p>
+                <p className="text-sm text-purple-500">Transactions</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-700">
+                <div className="text-2xl font-bold text-orange-400">
                   ${earnings.pendingPayments.toFixed(2)}
                 </div>
-                <p className="text-sm text-orange-600">Pending</p>
+                <p className="text-sm text-orange-500">Pending</p>
               </div>
             </div>
 
@@ -348,14 +349,14 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 <h4 className="font-semibold mb-3">Earnings by Project</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {Object.entries(earnings.projects).map(([projectId, projectEarnings]) => (
-                    <div key={projectId} className="border rounded-lg p-3 bg-white">
+                    <div key={projectId} className="border-2 border-slate-700 rounded-lg p-3 bg-slate-800/50">
                       <div className="flex justify-between items-start">
                         <div>
                           <h5 className="font-medium">Project {projectId.slice(-8)}</h5>
-                          <p className="text-sm text-gray-600">{projectEarnings.credits} tCO₂e sold</p>
+                          <p className="text-sm text-gray-400">{projectEarnings.credits} tCO₂e sold</p>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-green-700">${projectEarnings.earnings.toFixed(2)}</div>
+                          <div className="font-semibold text-green-400">${projectEarnings.earnings.toFixed(2)}</div>
                           <p className="text-xs text-gray-500">{projectEarnings.transactions} transactions</p>
                         </div>
                       </div>
@@ -371,23 +372,23 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 <h4 className="font-semibold mb-3">Recent Payments</h4>
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {paymentTransactions.slice(0, 5).map((transaction) => (
-                    <div key={transaction.id} className="border rounded-lg p-3 bg-white">
+                    <div key={transaction.id} className="border-2 border-slate-700 rounded-lg p-3 bg-slate-800/50">
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center space-x-2">
                             <h5 className="font-medium">${transaction.netAmount.toFixed(2)}</h5>
-                            <Badge className={transaction.status === 'completed' ? 'bg-green-100 text-green-800' : 
-                                           transaction.status === 'failed' ? 'bg-red-100 text-red-800' : 
-                                           'bg-yellow-100 text-yellow-800'}>
+                            <Badge className={transaction.status === 'completed' ? 'bg-green-900/50 text-green-300' :
+                              transaction.status === 'failed' ? 'bg-red-900/50 text-red-300' :
+                                'bg-yellow-900/50 text-yellow-300'}>
                               {transaction.status}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-600">{transaction.amount} tCO₂e • {transaction.buyerName}</p>
+                          <p className="text-sm text-gray-400">{transaction.amount} tCO₂e • {transaction.buyerName}</p>
                           <p className="text-xs text-gray-500">{formatDate(transaction.processedAt)}</p>
                         </div>
                         <div className="text-right text-sm">
-                          <div className="text-gray-500">Gross: ${transaction.totalAmount.toFixed(2)}</div>
-                          <div className="text-gray-500">Fees: ${transaction.fees.toFixed(2)}</div>
+                          <div className="text-gray-400">Gross: ${transaction.totalAmount.toFixed(2)}</div>
+                          <div className="text-gray-400">Fees: ${transaction.fees.toFixed(2)}</div>
                         </div>
                       </div>
                     </div>
@@ -395,7 +396,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 </div>
                 {paymentTransactions.length > 5 && (
                   <div className="text-center mt-3">
-                    <Button variant="link" size="sm">
+                    <Button variant="link" size="sm" className="text-blue-400 hover:text-blue-300">
                       View all {paymentTransactions.length} transactions
                     </Button>
                   </div>
@@ -405,32 +406,12 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           </CardContent>
         </Card>
       )}
-
-      {/* Registry Mode Info */}
-      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="bg-blue-100 rounded-full p-2">
-              <Activity className="h-5 w-5 text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-blue-900 mb-1">Fiat-Anchored Registry</h3>
-              <p className="text-sm text-blue-800">
-                Projects are registered and MRV data is verified through our secure registry system. 
-                When credits are sold, payments are instantly transferred to your account through 
-                traditional financial gateways after platform fees.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-            <TreePine className="h-4 w-4 text-muted-foreground" />
+            <TreePine className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
@@ -440,7 +421,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Approved Projects</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -452,13 +433,13 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
-            <DollarSign className="h-4 w-4 text-green-600" />
+            <DollarSign className="h-4 w-4 text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-700">
+            <div className="text-2xl font-bold text-green-400">
               ${earnings?.totalEarnings.toFixed(0) || '0'}
             </div>
-            <p className="text-xs text-green-600 mt-1">
+            <p className="text-xs text-green-500 mt-1">
               From {earnings?.totalCredits || 0} credits sold
             </p>
           </CardContent>
@@ -467,7 +448,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Area</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <MapPin className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -479,7 +460,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">On Blockchain</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-gray-400" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -499,7 +480,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         </CardHeader>
         <CardContent>
           {projects.length === 0 ? (
-            <div className="text-center py-12 text-gray-500">
+            <div className="text-center py-12 text-gray-400">
               <TreePine className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>No projects registered yet</p>
               <p className="text-sm mt-2">Create your first blue carbon project to get started</p>
@@ -507,7 +488,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           ) : (
             <div className="space-y-4">
               {projects.map((project) => (
-                <div key={project.id} className="border rounded-lg p-4">
+                <div key={project.id} className="border-2 border-slate-700 rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
@@ -516,9 +497,9 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                           {project.status.replace('_', ' ').toUpperCase()}
                         </Badge>
                       </div>
-                      
-                      <p className="text-gray-600 mb-3">{project.description}</p>
-                      
+
+                      <p className="text-gray-300 mb-3">{project.description}</p>
+
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-center space-x-2">
                           <MapPin className="h-4 w-4 text-gray-400" />
@@ -533,12 +514,12 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                           <span>{formatDate(project.createdAt)}</span>
                         </div>
                       </div>
-                      
-                      <div className="mt-3 text-sm text-gray-600">
+
+                      <div className="mt-3 text-sm text-gray-300">
                         <strong>Area:</strong> {project.area.toLocaleString()} hectares
                         {project.onChainTxHash && (
                           <div className="mt-2 flex items-center space-x-2">
-                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-blue-100 text-blue-800">
+                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-blue-900/50 text-blue-300">
                               <span className="w-2 h-2 bg-blue-400 rounded-full mr-1"></span>
                               On Avalanche Blockchain
                             </span>
@@ -549,12 +530,12 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex space-x-2 ml-4">
                       {project.status === 'registered' && (
                         <>
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            variant="outline"
                             size="sm"
                             onClick={() => {
                               setSelectedProject(project);
@@ -565,8 +546,8 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                             <Upload className="h-4 w-4 mr-2" />
                             Submit MRV
                           </Button>
-                          <Button 
-                            variant="outline" 
+                          <Button
+                            variant="outline"
                             size="sm"
                             onClick={() => handleDeleteProject(project.id, project.name)}
                             className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
@@ -598,7 +579,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
               Provide details about your coastal ecosystem restoration project
             </DialogDescription>
           </DialogHeader>
-          
+
           <form onSubmit={handleCreateProject} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -608,9 +589,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.name}
                   onChange={(e) => setNewProject(prev => ({ ...prev, name: e.target.value }))}
                   required
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="location">Location</Label>
                 <Input
@@ -619,10 +601,11 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.location}
                   onChange={(e) => setNewProject(prev => ({ ...prev, location: e.target.value }))}
                   required
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea
@@ -631,17 +614,18 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 value={newProject.description}
                 onChange={(e) => setNewProject(prev => ({ ...prev, description: e.target.value }))}
                 required
+                className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
               />
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="ecosystem">Ecosystem Type</Label>
                 <Select value={newProject.ecosystemType} onValueChange={(value: string) => setNewProject(prev => ({ ...prev, ecosystemType: value }))}>
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-gray-800 border-gray-700 text-white">
                     <SelectItem value="mangrove">Mangrove Forest</SelectItem>
                     <SelectItem value="saltmarsh">Salt Marsh</SelectItem>
                     <SelectItem value="seagrass">Seagrass Bed</SelectItem>
@@ -649,7 +633,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="area">Area (hectares)</Label>
                 <Input
@@ -658,10 +642,11 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.area}
                   onChange={(e) => setNewProject(prev => ({ ...prev, area: parseFloat(e.target.value) || 0 }))}
                   required
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="coordinates">GPS Coordinates</Label>
@@ -670,9 +655,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   placeholder="e.g., 22.3511, 88.2650"
                   value={newProject.coordinates}
                   onChange={(e) => setNewProject(prev => ({ ...prev, coordinates: e.target.value }))}
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="expectedCarbon">Expected Carbon Capture (tCO₂e/year)</Label>
                 <Input
@@ -680,10 +666,11 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   type="number"
                   value={newProject.expectedCarbonCapture}
                   onChange={(e) => setNewProject(prev => ({ ...prev, expectedCarbonCapture: parseFloat(e.target.value) || 0 }))}
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="partners">Community Partners</Label>
               <Input
@@ -691,14 +678,15 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 placeholder="Local communities and organizations involved"
                 value={newProject.communityPartners}
                 onChange={(e) => setNewProject(prev => ({ ...prev, communityPartners: e.target.value }))}
+                className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
               />
             </div>
-            
+
             <div className="flex justify-end space-x-2 pt-4">
-              <Button type="button" variant="outline" onClick={() => setShowNewProjectDialog(false)}>
+              <Button type="button" variant="outline" onClick={() => setShowNewProjectDialog(false)} className="bg-white text-red-600 border-slate-600 hover:bg-red-600 hover:text-white">
                 Cancel
               </Button>
-              <Button type="submit">
+              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
                 Register Project
               </Button>
             </div>
@@ -715,7 +703,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
               Upload monitoring, reporting, and verification data for {selectedProject?.name}
             </DialogDescription>
           </DialogHeader>
-          
+
           <form onSubmit={handleSubmitMRV} className="flex flex-col h-full">
             <ScrollArea className="flex-1 px-1">
               <div className="space-y-4 pr-4">
@@ -727,9 +715,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     value={mrvData.satelliteData}
                     onChange={(e) => setMrvData(prev => ({ ...prev, satelliteData: e.target.value }))}
                     required
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="community">Community Reports</Label>
                   <Textarea
@@ -738,9 +727,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     value={mrvData.communityReports}
                     onChange={(e) => setMrvData(prev => ({ ...prev, communityReports: e.target.value }))}
                     required
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="sensors">Sensor Readings</Label>
                   <Textarea
@@ -748,9 +738,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Water quality, soil carbon, temperature, salinity data..."
                     value={mrvData.sensorReadings}
                     onChange={(e) => setMrvData(prev => ({ ...prev, sensorReadings: e.target.value }))}
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
-                
+
                 <div className="space-y-2">
                   <Label htmlFor="iot">IoT Device Data & Analysis</Label>
                   <Textarea
@@ -758,23 +749,24 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Smart sensor networks, automated monitoring data, device logs, connectivity reports..."
                     value={mrvData.iotData}
                     onChange={(e) => setMrvData(prev => ({ ...prev, iotData: e.target.value }))}
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
-                
-                <Separator className="my-6" />
-                
+
+                <Separator className="my-6 bg-white/20" />
+
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-medium mb-4">File Uploads</h4>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <p className="text-sm text-gray-400 mb-4">
                       Upload supporting files organized by category for better verification
                     </p>
                   </div>
-                  
+
                   {/* Photos Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="photos" className="flex items-center space-x-2">
-                      <Camera className="h-4 w-4 text-blue-600" />
+                      <Camera className="h-4 w-4 text-blue-400" />
                       <span>Project Photos</span>
                     </Label>
                     <Input
@@ -783,19 +775,20 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept="image/*"
                       onChange={(e) => setMrvData(prev => ({ ...prev, photos: Array.from(e.target.files || []) }))}
+                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
                     <p className="text-xs text-gray-500">
                       Site photos, before/after images, ecosystem monitoring photos (JPG, PNG, HEIC)
                     </p>
                     {mrvData.photos.length > 0 && (
-                      <div className="border rounded-lg p-3 bg-blue-50/50">
-                        <div className="text-sm font-medium text-blue-800 mb-2 flex items-center space-x-1">
+                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-blue-900/30">
+                        <div className="text-sm font-medium text-blue-300 mb-2 flex items-center space-x-1">
                           <Camera className="h-4 w-4" />
                           <span>{mrvData.photos.length} photos selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.photos.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-white rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -825,7 +818,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   {/* IoT Files Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="iotFiles" className="flex items-center space-x-2">
-                      <Database className="h-4 w-4 text-green-600" />
+                      <Database className="h-4 w-4 text-green-400" />
                       <span>IoT Device Data Files</span>
                     </Label>
                     <Input
@@ -834,19 +827,20 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept=".csv,.json,.xml,.txt,.log"
                       onChange={(e) => setMrvData(prev => ({ ...prev, iotFiles: Array.from(e.target.files || []) }))}
+                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
                     <p className="text-xs text-gray-500">
                       Sensor data files, device logs, network monitoring files (CSV, JSON, XML, TXT, LOG)
                     </p>
                     {mrvData.iotFiles.length > 0 && (
-                      <div className="border rounded-lg p-3 bg-green-50/50">
-                        <div className="text-sm font-medium text-green-800 mb-2 flex items-center space-x-1">
+                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-green-900/30">
+                        <div className="text-sm font-medium text-green-300 mb-2 flex items-center space-x-1">
                           <Database className="h-4 w-4" />
                           <span>{mrvData.iotFiles.length} IoT files selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.iotFiles.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-white rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -876,7 +870,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   {/* Documents Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="documents" className="flex items-center space-x-2">
-                      <FileText className="h-4 w-4 text-purple-600" />
+                      <FileText className="h-4 w-4 text-purple-400" />
                       <span>Supporting Documents</span>
                     </Label>
                     <Input
@@ -885,19 +879,20 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept=".pdf,.doc,.docx,.xlsx,.xls"
                       onChange={(e) => setMrvData(prev => ({ ...prev, documents: Array.from(e.target.files || []) }))}
+                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
                     <p className="text-xs text-gray-500">
                       Reports, permits, research papers, compliance documents (PDF, DOC, DOCX, XLS, XLSX)
                     </p>
                     {mrvData.documents.length > 0 && (
-                      <div className="border rounded-lg p-3 bg-purple-50/50">
-                        <div className="text-sm font-medium text-purple-800 mb-2 flex items-center space-x-1">
+                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-purple-900/30">
+                        <div className="text-sm font-medium text-purple-300 mb-2 flex items-center space-x-1">
                           <FileText className="h-4 w-4" />
                           <span>{mrvData.documents.length} documents selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.documents.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-white rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -925,7 +920,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   </div>
                 </div>
 
-                <Separator className="my-6" />
+                <Separator className="my-6 bg-white/20" />
 
                 <div className="space-y-2">
                   <Label htmlFor="notes">Additional Notes</Label>
@@ -934,13 +929,14 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Any additional context, methodological notes, or observations..."
                     value={mrvData.notes}
                     onChange={(e) => setMrvData(prev => ({ ...prev, notes: e.target.value }))}
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
               </div>
             </ScrollArea>
 
-            <div className="flex justify-end space-x-2 pt-4 border-t">
-              <Button type="button" variant="outline" onClick={() => setShowMRVDialog(false)}>
+            <div className="flex justify-end space-x-2 pt-4 border-t border-slate-700">
+              <Button type="button" variant="outline" onClick={() => setShowMRVDialog(false)} className="bg-white text-red-600 border-slate-600 hover:bg-red-600 hover:text-white">
                 Cancel
               </Button>
               <Button type="submit" className="bg-green-600 hover:bg-green-700">

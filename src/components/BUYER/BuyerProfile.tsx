@@ -1,3 +1,4 @@
+// src/components/BUYER/BuyerProfile.tsx
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -272,12 +273,12 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-6 bg-gray-700 rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div key={i} className="h-4 bg-gray-700 rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -295,15 +296,15 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold">Profile & Settings</h2>
-          <p className="text-gray-600">Manage your account information, sustainability goals, and preferences</p>
+          <p className="text-gray-300">Manage your account information, sustainability goals, and preferences</p>
         </div>
-        <Button onClick={saveProfileData} disabled={saving}>
+        <Button onClick={saveProfileData} disabled={saving} className="bg-blue-600 hover:bg-blue-700">
           {saving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
 
       {/* Profile Overview Card */}
-      <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
+      <Card>
         <CardContent className="p-6">
           <div className="flex items-start space-x-6">
             {/* Avatar */}
@@ -316,7 +317,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
               </Avatar>
               <Button 
                 size="sm" 
-                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
+                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0 bg-white/10 border-white/20 text-white hover:bg-white/20"
                 variant="outline"
               >
                 <Camera className="h-4 w-4" />
@@ -327,9 +328,9 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-2">
                 <h3 className="text-xl font-semibold">{profileData.name}</h3>
-                <Badge variant="secondary">Carbon Credit Buyer</Badge>
+                <Badge variant="secondary" className="bg-white/10 text-white">Carbon Credit Buyer</Badge>
                 {profileData.organizationVerified && (
-                  <Badge className="bg-green-100 text-green-800">
+                  <Badge className="bg-green-500/20 text-green-300">
                     <CheckCircle className="h-3 w-3 mr-1" />
                     Verified
                   </Badge>
@@ -362,32 +363,32 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
               {/* Quick Stats */}
               <div className="mt-4 grid grid-cols-4 gap-4">
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-blue-700">${stats.totalSpent.toFixed(0)}</div>
-                  <div className="text-xs text-gray-600">Total Spent</div>
+                  <div className="text-lg font-semibold text-blue-400">${stats.totalSpent.toFixed(0)}</div>
+                  <div className="text-xs text-gray-400">Total Spent</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-green-700">{stats.creditsPurchased}</div>
-                  <div className="text-xs text-gray-600">Credits Bought</div>
+                  <div className="text-lg font-semibold text-green-400">{stats.creditsPurchased}</div>
+                  <div className="text-xs text-gray-400">Credits Bought</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-purple-700">{stats.creditsRetired}</div>
-                  <div className="text-xs text-gray-600">Credits Retired</div>
+                  <div className="text-lg font-semibold text-purple-400">{stats.creditsRetired}</div>
+                  <div className="text-xs text-gray-400">Credits Retired</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-orange-700">${stats.averagePrice.toFixed(1)}</div>
-                  <div className="text-xs text-gray-600">Avg Price/tCO₂e</div>
+                  <div className="text-lg font-semibold text-orange-400">${stats.averagePrice.toFixed(1)}</div>
+                  <div className="text-xs text-gray-400">Avg Price/tCO₂e</div>
                 </div>
               </div>
             </div>
 
             {/* Carbon Offset Progress */}
             <div className="text-center min-w-[120px]">
-              <div className="text-2xl font-bold text-green-700">{carbonProgress.toFixed(0)}%</div>
-              <div className="text-sm text-gray-600 mb-2">Annual Goal</div>
+              <div className="text-2xl font-bold text-green-400">{carbonProgress.toFixed(0)}%</div>
+              <div className="text-sm text-gray-300 mb-2">Annual Goal</div>
               <div className="w-16 h-16 mx-auto relative">
-                <div className="w-full h-full rounded-full border-4 border-gray-200 relative">
+                <div className="w-full h-full rounded-full border-4 border-gray-700 relative">
                   <div 
-                    className="absolute inset-0 rounded-full border-4 border-green-600 transition-all duration-300"
+                    className="absolute inset-0 rounded-full border-4 border-green-500 transition-all duration-300"
                     style={{ 
                       clipPath: `polygon(0 0, 100% 0, 100% ${100-carbonProgress}%, 0 ${100-carbonProgress}%)`,
                       transform: 'rotate(-90deg)'
@@ -395,10 +396,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   />
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Leaf className="h-6 w-6 text-green-600" />
+                  <Leaf className="h-6 w-6 text-green-400" />
                 </div>
               </div>
-              <div className="text-xs text-gray-500 mt-1">
+              <div className="text-xs text-gray-400 mt-1">
                 {stats.creditsRetired}/{profileData.annualCarbonTarget || 0} tCO₂e
               </div>
             </div>
@@ -408,20 +409,20 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
 
       {/* Profile Sections */}
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="personal" className="flex items-center space-x-2">
+        <TabsList className="grid w-full grid-cols-4 bg-white/10">
+          <TabsTrigger value="personal" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
             <User className="h-4 w-4" />
             <span>Personal</span>
           </TabsTrigger>
-          <TabsTrigger value="sustainability" className="flex items-center space-x-2">
+          <TabsTrigger value="sustainability" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
             <Target className="h-4 w-4" />
             <span>Goals</span>
           </TabsTrigger>
-          <TabsTrigger value="payment" className="flex items-center space-x-2">
+          <TabsTrigger value="payment" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
             <CreditCard className="h-4 w-4" />
             <span>Payment</span>
           </TabsTrigger>
-          <TabsTrigger value="settings" className="flex items-center space-x-2">
+          <TabsTrigger value="settings" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
             <Settings className="h-4 w-4" />
             <span>Settings</span>
           </TabsTrigger>
@@ -444,6 +445,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     id="name"
                     value={profileData.name}
                     onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -456,9 +458,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.email}
                       onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
                       disabled
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                     {profileData.emailVerified && (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-600" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-400" />
                     )}
                   </div>
                 </div>
@@ -472,11 +475,12 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.phone}
                       onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="+91 12345 67890"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                     {profileData.phoneVerified ? (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-600" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-400" />
                     ) : (
-                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full">
+                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full text-blue-400 hover:text-blue-300">
                         Verify
                       </Button>
                     )}
@@ -489,10 +493,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.organizationType} 
                     onValueChange={(value : string) => setProfileData(prev => ({ ...prev, organizationType: value }))}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-gray-800 border-gray-700 text-white">
                       <SelectItem value="individual">Individual</SelectItem>
                       <SelectItem value="corporation">Corporation</SelectItem>
                       <SelectItem value="ngo">NGO</SelectItem>
@@ -513,6 +517,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.organizationName}
                       onChange={(e) => setProfileData(prev => ({ ...prev, organizationName: e.target.value }))}
                       placeholder="Your company/organization name"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                   
@@ -523,6 +528,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.position}
                       onChange={(e) => setProfileData(prev => ({ ...prev, position: e.target.value }))}
                       placeholder="e.g., Sustainability Manager"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                   
@@ -533,6 +539,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.website}
                       onChange={(e) => setProfileData(prev => ({ ...prev, website: e.target.value }))}
                       placeholder="https://yourcompany.com"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                   
@@ -543,12 +550,13 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.companyRegistration}
                       onChange={(e) => setProfileData(prev => ({ ...prev, companyRegistration: e.target.value }))}
                       placeholder="Registration number"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                 </div>
               )}
 
-              <Separator />
+              <Separator className="bg-white/20" />
 
               <div className="space-y-4">
                 <h4 className="font-medium">Address Information</h4>
@@ -560,6 +568,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.address}
                     onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value }))}
                     placeholder="Enter your complete address"
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -570,6 +579,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       id="city"
                       value={profileData.city}
                       onChange={(e) => setProfileData(prev => ({ ...prev, city: e.target.value }))}
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                   
@@ -579,10 +589,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.state} 
                       onValueChange={(value : string) => setProfileData(prev => ({ ...prev, state: value }))}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white/10 border-white/20 text-white">
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-gray-800 border-gray-700 text-white">
                         <SelectItem value="delhi">Delhi</SelectItem>
                         <SelectItem value="mumbai">Mumbai</SelectItem>
                         <SelectItem value="bangalore">Bangalore</SelectItem>
@@ -602,6 +612,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       value={profileData.pincode}
                       onChange={(e) => setProfileData(prev => ({ ...prev, pincode: e.target.value }))}
                       placeholder="123456"
+                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                 </div>
@@ -620,12 +631,12 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="bg-green-900/30 border border-green-500/50 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <Target className="h-5 w-5 text-green-600 mt-0.5" />
+                  <Target className="h-5 w-5 text-green-400 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-green-800">Carbon Neutrality Goals</h4>
-                    <p className="text-sm text-green-700 mt-1">
+                    <h4 className="font-medium text-green-300">Carbon Neutrality Goals</h4>
+                    <p className="text-sm text-green-400 mt-1">
                       Set your annual carbon offset targets and track your progress towards net-zero emissions.
                     </p>
                   </div>
@@ -641,8 +652,9 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.annualCarbonTarget}
                     onChange={(e) => setProfileData(prev => ({ ...prev, annualCarbonTarget: parseFloat(e.target.value) || 0 }))}
                     placeholder="e.g., 1000"
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-400">
                     Current progress: {stats.creditsRetired} tCO₂e ({carbonProgress.toFixed(1)}%)
                   </p>
                 </div>
@@ -653,10 +665,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.reportingRequirements} 
                     onValueChange={(value : string) => setProfileData(prev => ({ ...prev, reportingRequirements: value }))}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue placeholder="Select reporting standard" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-gray-800 border-gray-700 text-white">
                       <SelectItem value="gri">GRI Standards</SelectItem>
                       <SelectItem value="cdp">CDP Reporting</SelectItem>
                       <SelectItem value="tcfd">TCFD Framework</SelectItem>
@@ -676,6 +688,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   onChange={(e) => setProfileData(prev => ({ ...prev, offsetGoals: e.target.value }))}
                   placeholder="Describe your carbon offset strategy, preferred project types, and timeline..."
                   rows={3}
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
@@ -687,12 +700,13 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   onChange={(e) => setProfileData(prev => ({ ...prev, sustainabilityCommitments: e.target.value }))}
                   placeholder="Describe your broader sustainability commitments, net-zero pledges, and ESG goals..."
                   rows={4}
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
               {/* Progress Visualization */}
               {profileData.annualCarbonTarget > 0 && (
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-gray-800/50 rounded-lg p-4">
                   <h4 className="font-medium mb-3">Annual Carbon Offset Progress</h4>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
@@ -700,7 +714,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                       <span className="font-medium">{carbonProgress.toFixed(1)}%</span>
                     </div>
                     <Progress value={carbonProgress} className="h-3" />
-                    <div className="flex justify-between text-xs text-gray-600">
+                    <div className="flex justify-between text-xs text-gray-400">
                       <span>{stats.creditsRetired.toLocaleString()} tCO₂e retired</span>
                       <span>{(profileData.annualCarbonTarget - stats.creditsRetired).toLocaleString()} tCO₂e remaining</span>
                     </div>
@@ -721,12 +735,12 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <CreditCard className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <CreditCard className="h-5 w-5 text-blue-300 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-blue-800">Secure Payment Processing</h4>
-                    <p className="text-sm text-blue-700 mt-1">
+                    <h4 className="font-medium text-blue-200">Secure Payment Processing</h4>
+                    <p className="text-sm text-blue-300 mt-1">
                       Your payment information is encrypted and secure. We support multiple payment methods for your convenience.
                     </p>
                   </div>
@@ -740,10 +754,10 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.preferredPaymentMethod} 
                     onValueChange={(value : string) => setProfileData(prev => ({ ...prev, preferredPaymentMethod: value }))}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-gray-800 border-gray-700 text-white">
                       <SelectItem value="credit_card">Credit Card</SelectItem>
                       <SelectItem value="debit_card">Debit Card</SelectItem>
                       <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
@@ -760,6 +774,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                     value={profileData.vatNumber}
                     onChange={(e) => setProfileData(prev => ({ ...prev, vatNumber: e.target.value }))}
                     placeholder="Enter VAT/GST number"
+                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
               </div>
@@ -772,30 +787,31 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                   onChange={(e) => setProfileData(prev => ({ ...prev, billingAddress: e.target.value }))}
                   placeholder="Enter billing address (if different from above)"
                   rows={3}
+                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
               {/* Purchase History Summary */}
-              <Separator />
+              <Separator className="bg-white/20" />
               
               <div className="space-y-3">
                 <h4 className="font-medium">Purchase Summary</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-lg font-semibold text-blue-700">{stats.transactionCount}</div>
-                    <div className="text-sm text-gray-600">Transactions</div>
+                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-semibold text-blue-400">{stats.transactionCount}</div>
+                    <div className="text-sm text-gray-400">Transactions</div>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-lg font-semibold text-green-700">${stats.totalSpent.toFixed(0)}</div>
-                    <div className="text-sm text-gray-600">Total Spent</div>
+                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-semibold text-green-400">${stats.totalSpent.toFixed(0)}</div>
+                    <div className="text-sm text-gray-400">Total Spent</div>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-lg font-semibold text-purple-700">{stats.creditsPurchased}</div>
-                    <div className="text-sm text-gray-600">Credits Bought</div>
+                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-semibold text-purple-400">{stats.creditsPurchased}</div>
+                    <div className="text-sm text-gray-400">Credits Bought</div>
                   </div>
-                  <div className="bg-gray-50 rounded-lg p-3 text-center">
-                    <div className="text-lg font-semibold text-orange-700">${stats.averagePrice.toFixed(1)}</div>
-                    <div className="text-sm text-gray-600">Avg Price</div>
+                  <div className="bg-gray-800/50 rounded-lg p-3 text-center">
+                    <div className="text-lg font-semibold text-orange-400">${stats.averagePrice.toFixed(1)}</div>
+                    <div className="text-sm text-gray-400">Avg Price</div>
                   </div>
                 </div>
               </div>
@@ -818,7 +834,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Notifications</Label>
-                    <p className="text-sm text-gray-600">Receive email updates about your purchases and account</p>
+                    <p className="text-sm text-gray-400">Receive email updates about your purchases and account</p>
                   </div>
                   <Switch
                     checked={profileData.emailNotifications}
@@ -829,7 +845,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>SMS Notifications</Label>
-                    <p className="text-sm text-gray-600">Receive SMS alerts for important updates</p>
+                    <p className="text-sm text-gray-400">Receive SMS alerts for important updates</p>
                   </div>
                   <Switch
                     checked={profileData.smsNotifications}
@@ -840,7 +856,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Price Alerts</Label>
-                    <p className="text-sm text-gray-600">Get notified about significant price changes</p>
+                    <p className="text-sm text-gray-400">Get notified about significant price changes</p>
                   </div>
                   <Switch
                     checked={profileData.priceAlerts}
@@ -851,7 +867,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>New Project Alerts</Label>
-                    <p className="text-sm text-gray-600">Be the first to know about new carbon credit projects</p>
+                    <p className="text-sm text-gray-400">Be the first to know about new carbon credit projects</p>
                   </div>
                   <Switch
                     checked={profileData.newProjectAlerts}
@@ -862,7 +878,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Monthly Reports</Label>
-                    <p className="text-sm text-gray-600">Receive monthly sustainability and offset reports</p>
+                    <p className="text-sm text-gray-400">Receive monthly sustainability and offset reports</p>
                   </div>
                   <Switch
                     checked={profileData.monthlyReports}
@@ -873,7 +889,7 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Marketing Emails</Label>
-                    <p className="text-sm text-gray-600">Receive newsletters and promotional content</p>
+                    <p className="text-sm text-gray-400">Receive newsletters and promotional content</p>
                   </div>
                   <Switch
                     checked={profileData.marketingEmails}
@@ -895,19 +911,19 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Password</Label>
-                    <p className="text-sm text-gray-600">Change your account password</p>
+                    <p className="text-sm text-gray-400">Change your account password</p>
                   </div>
-                  <Button variant="outline" onClick={changePassword}>
+                  <Button variant="outline" onClick={changePassword} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
                     Change Password
                   </Button>
                 </div>
                 
-                <Separator />
+                <Separator className="bg-white/20" />
                 
                 <div className="space-y-3">
                   <Label>Two-Factor Authentication</Label>
-                  <p className="text-sm text-gray-600">Add an extra layer of security to your account</p>
-                  <Button variant="outline" disabled>
+                  <p className="text-sm text-gray-400">Add an extra layer of security to your account</p>
+                  <Button variant="outline" disabled className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
                     Enable 2FA (Coming Soon)
                   </Button>
                 </div>
@@ -926,9 +942,9 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Download Purchase History</Label>
-                    <p className="text-sm text-gray-600">Export your carbon credit purchase and retirement data</p>
+                    <p className="text-sm text-gray-400">Export your carbon credit purchase and retirement data</p>
                   </div>
-                  <Button variant="outline">
+                  <Button variant="outline" className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
                     <Receipt className="h-4 w-4 mr-2" />
                     Download
                   </Button>
@@ -937,19 +953,19 @@ export function BuyerProfile({ user }: BuyerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Export Account Data</Label>
-                    <p className="text-sm text-gray-600">Download a copy of all your account data</p>
+                    <p className="text-sm text-gray-400">Download a copy of all your account data</p>
                   </div>
-                  <Button variant="outline">
+                  <Button variant="outline" className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
                     <FileText className="h-4 w-4 mr-2" />
                     Export Data
                   </Button>
                 </div>
                 
-                <Separator />
+                <Separator className="bg-white/20" />
                 
                 <div className="space-y-3">
-                  <Label className="text-red-600">Danger Zone</Label>
-                  <p className="text-sm text-gray-600">These actions cannot be undone</p>
+                  <Label className="text-red-400">Danger Zone</Label>
+                  <p className="text-sm text-gray-400">These actions cannot be undone</p>
                   <Button variant="destructive" disabled>
                     Delete Account
                   </Button>
