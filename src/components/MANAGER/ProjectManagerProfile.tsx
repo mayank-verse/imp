@@ -1,3 +1,4 @@
+// src/components/MANAGER/ProjectManagerProfile.tsx
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -239,12 +240,12 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-6 bg-muted rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                <div key={i} className="h-4 bg-muted rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -261,7 +262,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold">Profile & Settings</h2>
-          <p className="text-gray-600">Manage your account information and preferences</p>
+          <p className="text-muted-foreground">Manage your account information and preferences</p>
         </div>
         <Button onClick={saveProfileData} disabled={saving}>
           {saving ? 'Saving...' : 'Save Changes'}
@@ -269,14 +270,14 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
       </div>
 
       {/* Profile Overview Card */}
-      <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+      <Card>
         <CardContent className="p-6">
           <div className="flex items-start space-x-6">
             {/* Avatar */}
             <div className="relative">
               <Avatar className="h-24 w-24">
                 <AvatarImage src="" alt={profileData.name} />
-                <AvatarFallback className="text-xl bg-blue-600 text-white">
+                <AvatarFallback className="text-xl bg-primary text-primary-foreground">
                   {getInitials(profileData.name)}
                 </AvatarFallback>
               </Avatar>
@@ -295,7 +296,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <h3 className="text-xl font-semibold">{profileData.name}</h3>
                 <Badge variant="secondary">Project Manager</Badge>
                 {profileData.organizationVerified && (
-                  <Badge className="bg-green-100 text-green-800">
+                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
                     <CheckCircle className="h-3 w-3 mr-1" />
                     Verified
                   </Badge>
@@ -304,23 +305,23 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
-                  <Mail className="h-4 w-4 text-gray-400" />
+                  <Mail className="h-4 w-4 text-muted-foreground" />
                   <span>{profileData.email}</span>
                 </div>
                 {profileData.phone && (
                   <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 text-gray-400" />
+                    <Phone className="h-4 w-4 text-muted-foreground" />
                     <span>{profileData.phone}</span>
                   </div>
                 )}
                 {profileData.organizationName && (
                   <div className="flex items-center space-x-2">
-                    <Building2 className="h-4 w-4 text-gray-400" />
+                    <Building2 className="h-4 w-4 text-muted-foreground" />
                     <span>{profileData.organizationName}</span>
                   </div>
                 )}
                 <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-gray-400" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span>Joined {formatDate(stats.joinDate)}</span>
                 </div>
               </div>
@@ -328,27 +329,27 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               {/* Quick Stats */}
               <div className="mt-4 grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-green-700">${stats.totalEarnings.toFixed(0)}</div>
-                  <div className="text-xs text-gray-600">Total Earnings</div>
+                  <div className="text-lg font-semibold text-green-600 dark:text-green-400">${stats.totalEarnings.toFixed(0)}</div>
+                  <div className="text-xs text-muted-foreground">Total Earnings</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-blue-700">{stats.totalCredits}</div>
-                  <div className="text-xs text-gray-600">Credits Sold</div>
+                  <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">{stats.totalCredits}</div>
+                  <div className="text-xs text-muted-foreground">Credits Sold</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-purple-700">{stats.totalProjects}</div>
-                  <div className="text-xs text-gray-600">Projects</div>
+                  <div className="text-lg font-semibold text-purple-600 dark:text-purple-400">{stats.totalProjects}</div>
+                  <div className="text-xs text-muted-foreground">Projects</div>
                 </div>
               </div>
             </div>
 
             {/* Verification Status */}
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-700">{verificationStatus.percentage.toFixed(0)}%</div>
-              <div className="text-sm text-gray-600">Profile Complete</div>
-              <div className="mt-2 w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{verificationStatus.percentage.toFixed(0)}%</div>
+              <div className="text-sm text-muted-foreground">Profile Complete</div>
+              <div className="mt-2 w-16 h-2 bg-muted rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-blue-600 transition-all duration-300"
+                  className="h-full bg-blue-500 transition-all duration-300"
                   style={{ width: `${verificationStatus.percentage}%` }}
                 />
               </div>
@@ -409,7 +410,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       disabled
                     />
                     {profileData.emailVerified && (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-600" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-500" />
                     )}
                   </div>
                 </div>
@@ -425,9 +426,9 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       placeholder="+91 12345 67890"
                     />
                     {profileData.phoneVerified ? (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-600" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-500" />
                     ) : (
-                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full">
+                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full text-primary">
                         Verify
                       </Button>
                     )}
@@ -580,15 +581,15 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               </div>
 
               {!profileData.organizationVerified && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-500/50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                    <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-yellow-800">Organization Verification Pending</h4>
-                      <p className="text-sm text-yellow-700 mt-1">
+                      <h4 className="font-medium text-yellow-800 dark:text-yellow-300">Organization Verification Pending</h4>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
                         Complete your organization details to verify your account and start receiving payments.
                       </p>
-                      <Button size="sm" className="mt-2" variant="outline">
+                      <Button size="sm" className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white" variant="default">
                         Submit for Verification
                       </Button>
                     </div>
@@ -609,12 +610,12 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-500/50 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <DollarSign className="h-5 w-5 text-blue-600 mt-0.5" />
+                  <DollarSign className="h-5 w-5 text-blue-700 dark:text-blue-300 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-blue-800">Secure Payment Processing</h4>
-                    <p className="text-sm text-blue-700 mt-1">
+                    <h4 className="font-medium text-blue-800 dark:text-blue-200">Secure Payment Processing</h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
                       Your payment information is encrypted and secure. We'll transfer earnings from credit sales directly to your account.
                     </p>
                   </div>
@@ -655,7 +656,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -687,15 +688,15 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               </div>
 
               {!profileData.bankVerified && (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-500/50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-5 w-5 text-yellow-600 mt-0.5" />
+                    <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-yellow-800">Bank Verification Required</h4>
-                      <p className="text-sm text-yellow-700 mt-1">
+                      <h4 className="font-medium text-yellow-800 dark:text-yellow-300">Bank Verification Required</h4>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
                         Verify your bank account to receive payments from carbon credit sales.
                       </p>
-                      <Button size="sm" className="mt-2" variant="outline">
+                      <Button size="sm" className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white" variant="default">
                         Verify Account
                       </Button>
                     </div>
@@ -721,7 +722,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Notifications</Label>
-                    <p className="text-sm text-gray-600">Receive email updates about your projects and payments</p>
+                    <p className="text-sm text-muted-foreground">Receive email updates about your projects and payments</p>
                   </div>
                   <Switch
                     checked={profileData.emailNotifications}
@@ -732,7 +733,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>SMS Notifications</Label>
-                    <p className="text-sm text-gray-600">Receive SMS alerts for important updates</p>
+                    <p className="text-sm text-muted-foreground">Receive SMS alerts for important updates</p>
                   </div>
                   <Switch
                     checked={profileData.smsNotifications}
@@ -743,7 +744,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Public Profile</Label>
-                    <p className="text-sm text-gray-600">Make your profile visible to other users</p>
+                    <p className="text-sm text-muted-foreground">Make your profile visible to other users</p>
                   </div>
                   <Switch
                     checked={profileData.publicProfile}
@@ -765,7 +766,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Password</Label>
-                    <p className="text-sm text-gray-600">Change your account password</p>
+                    <p className="text-sm text-muted-foreground">Change your account password</p>
                   </div>
                   <Button variant="outline" onClick={changePassword}>
                     Change Password
@@ -776,7 +777,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 
                 <div className="space-y-3">
                   <Label>Two-Factor Authentication</Label>
-                  <p className="text-sm text-gray-600">Add an extra layer of security to your account</p>
+                  <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
                   <Button variant="outline" disabled>
                     Enable 2FA (Coming Soon)
                   </Button>
@@ -796,7 +797,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Export Data</Label>
-                    <p className="text-sm text-gray-600">Download a copy of your account data</p>
+                    <p className="text-sm text-muted-foreground">Download a copy of your account data</p>
                   </div>
                   <Button variant="outline">
                     <FileText className="h-4 w-4 mr-2" />
@@ -807,8 +808,8 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <Separator />
                 
                 <div className="space-y-3">
-                  <Label className="text-red-600">Danger Zone</Label>
-                  <p className="text-sm text-gray-600">These actions cannot be undone</p>
+                  <Label className="text-destructive">Danger Zone</Label>
+                  <p className="text-sm text-muted-foreground">These actions cannot be undone</p>
                   <Button variant="destructive" disabled>
                     Delete Account
                   </Button>

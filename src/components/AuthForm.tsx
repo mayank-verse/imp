@@ -249,30 +249,30 @@ export function AuthForm() {
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto bg-black/20 backdrop-blur-lg border-2 border-white/30 text-white">
+    <Card className="w-full max-w-md mx-auto">
       <CardHeader className="text-center">
         <div className="flex justify-center mb-4">
           <div className="bg-blue-500 rounded-lg p-3">
             <Waves className="h-8 w-8 text-white" />
           </div>
         </div>
-        <CardTitle className="text-2xl text-white">Welcome to Samudra Ledger</CardTitle>
-        <CardDescription className="text-gray-300">
+        <CardTitle className="text-2xl text-foreground">Welcome to Samudra Ledger</CardTitle>
+        <CardDescription className="text-muted-foreground">
           India's Transparent Blue Carbon Registry
         </CardDescription>
       </CardHeader>
       
       <CardContent>
         <Tabs defaultValue="signin" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 bg-white/10">
-            <TabsTrigger value="signin" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Sign In</TabsTrigger>
-            <TabsTrigger value="signup" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300">Sign Up</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="signin">Sign In</TabsTrigger>
+            <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
           
           <TabsContent value="signin" className="mt-6">
             <form onSubmit={handleSignIn} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signin-email" className="text-gray-300">Email</Label>
+                <Label htmlFor="signin-email">Email</Label>
                 <Input
                   id="signin-email"
                   type="email"
@@ -280,12 +280,11 @@ export function AuthForm() {
                   value={signInData.email}
                   onChange={(e) => setSignInData(prev => ({ ...prev, email: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signin-password"  className="text-gray-300">Password</Label>
+                <Label htmlFor="signin-password">Password</Label>
                 <Input
                   id="signin-password"
                   type="password"
@@ -293,25 +292,24 @@ export function AuthForm() {
                   value={signInData.password}
                   onChange={(e) => setSignInData(prev => ({ ...prev, password: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Signing In...' : 'Sign In'}
               </Button>
               
               <div className="text-center mt-4">
                 <Dialog open={showForgotPassword} onOpenChange={setShowForgotPassword}>
                   <DialogTrigger asChild>
-                    <Button variant="link" className="text-sm text-blue-300 hover:text-blue-200">
+                    <Button variant="link" className="text-sm text-primary">
                       Forgot your password?
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md bg-gray-800 border-gray-700 text-white">
+                  <DialogContent className="sm:max-w-md">
                     <DialogHeader>
                       <DialogTitle>Reset Password</DialogTitle>
-                      <DialogDescription className="text-gray-400">
+                      <DialogDescription>
                         Enter your email address and we'll send you a link to reset your password.
                       </DialogDescription>
                     </DialogHeader>
@@ -325,11 +323,10 @@ export function AuthForm() {
                           value={resetEmail}
                           onChange={(e) => setResetEmail(e.target.value)}
                           required
-                           className="bg-gray-700 border-gray-600 placeholder:text-gray-400"
                         />
                       </div>
                       <div className="flex space-x-2">
-                        <Button type="submit" disabled={loading} className="flex-1 bg-blue-600 hover:bg-blue-700">
+                        <Button type="submit" disabled={loading} className="flex-1">
                           {loading ? 'Sending...' : 'Send Reset Email'}
                         </Button>
                         <Button type="button" variant="outline" onClick={() => setShowForgotPassword(false)}>
@@ -346,19 +343,18 @@ export function AuthForm() {
           <TabsContent value="signup" className="mt-6">
             <form onSubmit={handleSignUp} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="signup-name"  className="text-gray-300">Full Name</Label>
+                <Label htmlFor="signup-name">Full Name</Label>
                 <Input
                   id="signup-name"
                   placeholder="Enter your full name"
                   value={signUpData.name}
                   onChange={(e) => setSignUpData(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signup-email"  className="text-gray-300">Email</Label>
+                <Label htmlFor="signup-email">Email</Label>
                 <Input
                   id="signup-email"
                   type="email"
@@ -374,7 +370,6 @@ export function AuthForm() {
                     }
                   }}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
                 {signUpData.role === 'nccr_verifier' && signUpData.email && (
                   <div className="mt-2">
@@ -389,13 +384,13 @@ export function AuthForm() {
                       {checkingEligibility ? 'Checking...' : 'Verify NCCR Eligibility'}
                     </Button>
                     {nccrEligible === true && (
-                      <div className="flex items-center mt-2 text-green-400 text-sm">
+                      <div className="flex items-center mt-2 text-green-600 dark:text-green-400 text-sm">
                         <CheckCircle className="h-4 w-4 mr-2" />
                         Email verified for NCCR Verifier role
                       </div>
                     )}
                     {nccrEligible === false && (
-                      <div className="flex items-center mt-2 text-red-400 text-sm">
+                      <div className="flex items-center mt-2 text-red-600 dark:text-red-400 text-sm">
                         <XCircle className="h-4 w-4 mr-2" />
                         Email not authorized for NCCR Verifier role
                       </div>
@@ -406,21 +401,21 @@ export function AuthForm() {
               
               {signUpData.role === 'nccr_verifier' && nccrEligible === true && (
                 <div className="space-y-2">
-                  <Label htmlFor="nccr-id-card" className="text-gray-300">NCCR ID Card Verification</Label>
-                  <Alert className="bg-blue-900/30 border-blue-500/50">
+                  <Label htmlFor="nccr-id-card">NCCR ID Card Verification</Label>
+                  <Alert>
                     <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="text-blue-200">
+                    <AlertDescription>
                       Upload your verified NCCR ID card. Each ID card can only be used for one account.
                     </AlertDescription>
                   </Alert>
                   
-                  <div className="border-2 border-dashed border-gray-500 rounded-lg p-6 text-center">
+                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
                     {!nccrIdCard ? (
                       <div>
-                        <FileImage className="mx-auto h-12 w-12 text-gray-500" />
+                        <FileImage className="mx-auto h-12 w-12 text-muted-foreground" />
                         <div className="mt-4">
                           <Label htmlFor="id-card-upload" className="cursor-pointer">
-                            <div className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                            <div className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90">
                               <Upload className="h-4 w-4 mr-2" />
                               Upload NCCR ID Card
                             </div>
@@ -438,25 +433,25 @@ export function AuthForm() {
                             />
                           </Label>
                         </div>
-                        <p className="mt-2 text-sm text-gray-500">
+                        <p className="mt-2 text-sm text-muted-foreground">
                           PNG, JPG, or JPEG up to 5MB
                         </p>
                       </div>
                     ) : (
                       <div>
-                        <FileImage className="mx-auto h-12 w-12 text-green-400" />
+                        <FileImage className="mx-auto h-12 w-12 text-green-500" />
                         <p className="mt-2 text-sm">{nccrIdCard.name}</p>
                         {uploadingIdCard && (
-                          <p className="text-sm text-blue-400">Verifying ID card...</p>
+                          <p className="text-sm text-blue-500">Verifying ID card...</p>
                         )}
                         {idCardVerified === true && (
-                          <div className="flex items-center justify-center mt-2 text-green-400 text-sm">
+                          <div className="flex items-center justify-center mt-2 text-green-600 dark:text-green-400 text-sm">
                             <CheckCircle className="h-4 w-4 mr-2" />
                             ID card verified successfully
                           </div>
                         )}
                         {idCardVerified === false && (
-                          <div className="flex items-center justify-center mt-2 text-red-400 text-sm">
+                          <div className="flex items-center justify-center mt-2 text-red-600 dark:text-red-400 text-sm">
                             <XCircle className="h-4 w-4 mr-2" />
                             ID card verification failed
                           </div>
@@ -480,7 +475,7 @@ export function AuthForm() {
               )}
               
               <div className="space-y-2">
-                <Label htmlFor="signup-password"  className="text-gray-300">Password</Label>
+                <Label htmlFor="signup-password">Password</Label>
                 <Input
                   id="signup-password"
                   type="password"
@@ -488,22 +483,21 @@ export function AuthForm() {
                   value={signUpData.password}
                   onChange={(e) => setSignUpData(prev => ({ ...prev, password: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="signup-role"  className="text-gray-300">Role</Label>
+                <Label htmlFor="signup-role">Role</Label>
                 <Select value={signUpData.role} onValueChange={(value: any) => {
                   setSignUpData(prev => ({ ...prev, role: value }));
                   setNccrEligible(null); 
                   setNccrIdCard(null); 
                   setIdCardVerified(null);
                 }}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                  <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                  <SelectContent>
                     <SelectItem value="buyer">
                       <div className="flex items-center space-x-2">
                         <TrendingUp className="h-4 w-4" />
@@ -526,18 +520,18 @@ export function AuthForm() {
                 </Select>
               </div>
               
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? 'Creating Account...' : 'Create Account'}
               </Button>
             </form>
           </TabsContent>
         </Tabs>
         
-        <div className="mt-6 p-4 bg-blue-900/30 rounded-lg">
-          <p className="text-sm text-blue-200 mb-2">
+        <div className="mt-6 p-4 bg-primary/10 rounded-lg">
+          <p className="text-sm text-primary/80 dark:text-primary-foreground/80 mb-2">
             <strong>Demo Credentials:</strong> Use any email/password combination to create an account and explore the different role-based dashboards.
           </p>
-          <div className="text-xs text-blue-300 space-y-1">
+          <div className="text-xs text-primary/70 dark:text-primary-foreground/70 space-y-1">
             <p><strong>NCCR Verifier Testing:</strong></p>
             <p>• Use emails with eligible domains like @nic.in, @gov.in, @iisc.ac.in for instant verification</p>
             <p>• Upload any image file as NCCR ID card for demonstration</p>
@@ -548,3 +542,4 @@ export function AuthForm() {
     </Card>
   );
 }
+

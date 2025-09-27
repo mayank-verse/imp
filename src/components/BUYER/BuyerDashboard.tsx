@@ -1,3 +1,4 @@
+// src/components/BUYER/BuyerDashboard.tsx
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
@@ -19,6 +20,7 @@ import { EnhancedMarketplace } from '../EnhancedMarketplace';
 import { RetirementCertificate } from '../RetirementCertificate';
 import PaymentForm from './PaymentForm'; // Note the named import change
 
+
 interface User {
     id: string;
     email: string;
@@ -37,6 +39,8 @@ interface CarbonCredit {
     verifiedAt: string;
     ownerId?: string;
     availableAmount?: number;
+    // Add imageUrl to the interface
+    imageUrl?: string;
 }
 
 interface Retirement {
@@ -52,6 +56,17 @@ interface Retirement {
 interface BuyerDashboardProps {
     user: User;
 }
+
+// Fallback function for images if a project somehow doesn't get an image assigned
+const getFallbackImage = (projectId: string) => {
+    const images = [
+        "https://images.pexels.com/photos/933054/pexels-photo-933054.jpeg",
+        "https://images.pexels.com/photos/106344/pexels-photo-106344.jpeg",
+    ];
+    const hash = projectId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return images[hash % images.length];
+};
+
 
 export function BuyerDashboard({ user }: BuyerDashboardProps) {
     const [availableCredits, setAvailableCredits] = useState<CarbonCredit[]>([]);
@@ -89,7 +104,30 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
             }
 
             const data = await response.json();
-            setAvailableCredits(data.availableCredits || []);
+            
+            // --- NEW LOGIC TO ASSIGN UNIQUE IMAGES ---
+            const uniqueImages = [
+                "https://images.pexels.com/photos/31938540/pexels-photo-31938540.jpeg",
+                "https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg",
+                "https://images.pexels.com/photos/2847714/pexels-photo-2847714.jpeg",
+                "https://images.pexels.com/photos/17570639/pexels-photo-17570639.jpeg",
+                "https://images.pexels.com/photos/417074/pexels-photo-417074.jpeg",
+                "https://images.pexels.com/photos/3225517/pexels-photo-3225517.jpeg",
+                "https://images.pexels.com/photos/1179229/pexels-photo-1179229.jpeg",
+                "https://images.pexels.com/photos/1528640/pexels-photo-1528640.jpeg",
+                "https://images.pexels.com/photos/3408744/pexels-photo-3408744.jpeg",
+                "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg",
+                "https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg",
+                "https://images.pexels.com/photos/2356045/pexels-photo-2356045.jpeg"
+            ];
+
+            const creditsWithImages = (data.availableCredits || []).map((credit: CarbonCredit, index: number) => ({
+                ...credit,
+                imageUrl: uniqueImages[index % uniqueImages.length] // Cycle through the unique images
+            }));
+            
+            setAvailableCredits(creditsWithImages);
+
         } catch (error) {
             console.error('Error fetching available credits:', error);
             toast.error('Failed to load available credits');
@@ -179,7 +217,10 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
             setSelectedCredit(null);
         } catch (error) {
             console.error('Error retiring credits:', error);
-            toast.error(`Failed to retire credits: ${error}`);
+            const errorMessage = typeof error === 'object' && error !== null && 'message' in error
+                ? (error as { message: string }).message
+                : String(error);
+            toast.error(`Failed to retire credits: ${errorMessage}`);
         } finally {
             setRetiring(false);
         }
@@ -199,9 +240,9 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
     };
 
     const getHealthScoreColor = (score: number) => {
-        if (score >= 0.8) return 'text-green-600';
-        if (score >= 0.6) return 'text-yellow-600';
-        return 'text-red-600';
+        if (score >= 0.8) return 'text-green-600 dark:text-green-400';
+        if (score >= 0.6) return 'text-yellow-600 dark:text-yellow-400';
+        return 'text-red-600 dark:text-red-400';
     };
 
     const getHealthScoreLabel = (score: number) => {
@@ -225,10 +266,10 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                     {[...Array(3)].map((_, i) => (
                         <Card key={i}>
                             <CardHeader className="space-y-0 pb-2">
-                                <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="h-4 bg-muted rounded animate-pulse"></div>
                             </CardHeader>
                             <CardContent>
-                                <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="h-8 bg-muted rounded animate-pulse"></div>
                             </CardContent>
                         </Card>
                     ))}
@@ -243,16 +284,16 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
             <div className="flex justify-between items-start">
                 <div>
                     <h2 className="text-2xl font-bold flex items-center space-x-2">
-                        <ShoppingCart className="h-6 w-6 text-green-600" />
+                        <ShoppingCart className="h-6 w-6 text-green-600 dark:text-green-400" />
                         <span>Carbon Credit Marketplace</span>
                     </h2>
-                    <p className="text-gray-600">Purchase and retire verified blue carbon credits with secure fiat payments</p>
+                    <p className="text-muted-foreground">Purchase and retire verified blue carbon credits with secure fiat payments</p>
                 </div>
             </div>
 
             {/* Enhanced Marketplace Tabs */}
             <Tabs defaultValue="marketplace" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="marketplace" className="flex items-center space-x-2">
                         <ShoppingCart className="h-4 w-4" />
                         <span>Marketplace</span>
@@ -261,44 +302,22 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                         <CreditCard className="h-4 w-4" />
                         <span>My Credits</span>
                     </TabsTrigger>
-                    <TabsTrigger value="advanced" className="flex items-center space-x-2">
-                        <BarChart3 className="h-4 w-4" />
-                        <span>Analytics</span>
-                    </TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="marketplace">
                     <div className="space-y-6">
-                        {/* Info Banner */}
-                        <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
-                            <CardContent className="p-4">
-                                <div className="flex items-start space-x-3">
-                                    <div className="bg-blue-100 rounded-full p-2">
-                                        <DollarSign className="h-5 w-5 text-blue-600" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold text-blue-900 mb-1">Fiat-Anchored Registry</h3>
-                                        <p className="text-sm text-blue-800">
-                                            Purchase credits with traditional payment methods (credit card, bank transfer) while maintaining
-                                            blockchain transparency. Payments are instantly transferred to project managers after platform fees.
-                                        </p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-
                         {/* Stats Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                            <Card className="bg-gradient-to-br from-green-50 to-green-100">
+                            <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                    <CardTitle className="text-sm font-medium">Your Balance</CardTitle>
-                                    <CreditCard className="h-4 w-4 text-green-600" />
+                                    <CardTitle className="text-lg font-medium">Your Balance</CardTitle>
+                                    <CreditCard className="h-4 w-4 text-green-600 dark:text-green-400" />
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold text-green-700">
+                                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                                         {userBalance.toLocaleString()} tCO₂e
                                     </div>
-                                    <p className="text-xs text-green-600 mt-1">
+                                    <p className="text-xs text-green-700 dark:text-green-500 mt-1">
                                         Available for retirement
                                     </p>
                                 </CardContent>
@@ -307,13 +326,13 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
-                                    <DollarSign className="h-4 w-4 text-purple-600" />
+                                    <DollarSign className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold text-purple-700">
+                                    <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                                         N/A
                                     </div>
-                                    <p className="text-xs text-purple-600 mt-1">
+                                    <p className="text-xs text-purple-700 dark:text-purple-500 mt-1">
                                         Data not available
                                     </p>
                                 </CardContent>
@@ -322,13 +341,13 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-sm font-medium">Available Credits</CardTitle>
-                                    <Award className="h-4 w-4 text-blue-600" />
+                                    <Award className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold text-blue-700">
+                                    <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                                         {availableCredits.reduce((sum, credit) => sum + credit.carbonCredits, 0).toLocaleString()}
                                     </div>
-                                    <p className="text-xs text-blue-600 mt-1">
+                                    <p className="text-xs text-blue-700 dark:text-blue-500 mt-1">
                                         tCO₂e in marketplace
                                     </p>
                                 </CardContent>
@@ -337,13 +356,13 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                             <Card>
                                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                                     <CardTitle className="text-sm font-medium">Retired Credits</CardTitle>
-                                    <Leaf className="h-4 w-4 text-teal-600" />
+                                    <Leaf className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                                 </CardHeader>
                                 <CardContent>
-                                    <div className="text-2xl font-bold text-teal-700">
+                                    <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">
                                         {retirements.reduce((sum, retirement) => sum + retirement.amount, 0).toLocaleString()}
                                     </div>
-                                    <p className="text-xs text-teal-600 mt-1">
+                                    <p className="text-xs text-teal-700 dark:text-teal-500 mt-1">
                                         Your offset impact
                                     </p>
                                 </CardContent>
@@ -360,7 +379,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                             </CardHeader>
                             <CardContent>
                                 {availableCredits.length === 0 ? (
-                                    <div className="text-center py-12 text-gray-500">
+                                    <div className="text-center py-12 text-muted-foreground">
                                         <Award className="h-12 w-12 mx-auto mb-4 opacity-50" />
                                         <p>No credits available for purchase</p>
                                         <p className="text-sm mt-2">Check back later for new verified projects</p>
@@ -368,22 +387,23 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                                 ) : (
                                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {availableCredits.map((credit) => (
-                                            <Card key={credit.id} className="hover:shadow-lg transition-shadow">
-                                                <CardHeader className="pb-3">
+                                            <Card key={credit.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                                                <img src={credit.imageUrl || getFallbackImage(credit.projectId)} alt="Coastal ecosystem" className="w-full h-48 object-cover" />
+                                                <CardHeader className="pb-3 pt-4">
                                                     <div className="flex justify-between items-start">
                                                         <CardTitle className="text-lg">Project {credit.projectId.slice(-8)}</CardTitle>
-                                                        <Badge className={`${credit.healthScore >= 0.8 ? 'bg-green-100 text-green-800' :
-                                                            credit.healthScore >= 0.6 ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-800'}`}>
+                                                        <Badge className={`${credit.healthScore >= 0.8 ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' :
+                                                            credit.healthScore >= 0.6 ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300' : 'bg-muted text-muted-foreground'}`}>
                                                             {getHealthScoreLabel(credit.healthScore)}
                                                         </Badge>
                                                     </div>
                                                 </CardHeader>
-                                                <CardContent className="space-y-4">
+                                                <CardContent className="space-y-4 pt-0">
                                                     <div className="text-center">
-                                                        <div className="text-3xl font-bold text-blue-700">
+                                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                                                             {credit.carbonCredits.toLocaleString()}
                                                         </div>
-                                                        <p className="text-sm text-gray-600">tCO₂e Available</p>
+                                                        <p className="text-sm text-muted-foreground">tCO₂e Available</p>
                                                     </div>
 
                                                     <div className="space-y-2">
@@ -396,14 +416,14 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                                                         <Progress value={credit.healthScore * 100} className="h-2" />
                                                     </div>
 
-                                                    <div className="text-sm text-gray-600">
+                                                    <div className="text-sm text-muted-foreground">
                                                         <div className="flex items-center justify-between">
                                                             <span>Verified:</span>
                                                             <span>{formatDate(credit.verifiedAt)}</span>
                                                         </div>
                                                         <div className="flex items-center justify-between mt-1">
                                                             <span>Evidence:</span>
-                                                            <Button variant="link" size="sm" className="h-auto p-0 text-xs">
+                                                            <Button variant="link" size="sm" className="h-auto p-0 text-xs text-primary">
                                                                 <ExternalLink className="h-3 w-3 mr-1" />
                                                                 IPFS
                                                             </Button>
@@ -436,18 +456,18 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                 <TabsContent value="purchased">
                     <div className="space-y-6">
                         {/* Purchased Credits Balance Section */}
-                        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200">
+                        <Card>
                             <CardContent className="p-6">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h3 className="text-2xl font-bold text-green-900 mb-2">My Carbon Credits</h3>
-                                        <p className="text-green-800">Manage and retire your purchased carbon credits</p>
+                                        <h3 className="text-2xl font-bold mb-2">My Carbon Credits</h3>
+                                        <p className="text-muted-foreground">Manage and retire your purchased carbon credits</p>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-4xl font-bold text-green-700">
+                                        <div className="text-4xl font-bold text-green-600 dark:text-green-400">
                                             {userBalance.toLocaleString()} tCO₂e
                                         </div>
-                                        <p className="text-green-600">Available for retirement</p>
+                                        <p className="text-green-700 dark:text-green-500">Available for retirement</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -462,7 +482,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <div className="text-center py-12 text-gray-500">
+                                <div className="text-center py-12 text-muted-foreground">
                                     <CreditCard className="h-12 w-12 mx-auto mb-4 opacity-50" />
                                     <p>No credits purchased yet</p>
                                     <p className="text-sm mt-2">Visit the marketplace to purchase your first carbon credits</p>
@@ -482,26 +502,26 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                                 <CardContent>
                                     <div className="space-y-4">
                                         {retirements.map((retirement) => (
-                                            <div key={retirement.id} className="border rounded-lg p-4 bg-green-50">
+                                            <div key={retirement.id} className="border rounded-lg p-4 bg-green-100 dark:bg-green-900/30">
                                                 <div className="flex justify-between items-start">
                                                     <div>
-                                                        <h3 className="text-lg font-semibold text-green-900">
+                                                        <h3 className="text-lg font-semibold text-green-800 dark:text-green-300">
                                                             {retirement.amount.toLocaleString()} tCO₂e Retired
                                                         </h3>
-                                                        <p className="text-sm text-gray-700 mt-1 font-medium">Reason: {retirement.reason}</p>
-                                                        <p className="text-xs text-gray-500 mt-2">
+                                                        <p className="text-sm text-muted-foreground mt-1 font-medium">Reason: {retirement.reason}</p>
+                                                        <p className="text-xs text-muted-foreground mt-2">
                                                             Retired on {formatDate(retirement.retiredAt)}
                                                         </p>
                                                     </div>
                                                     <div className="text-right">
-                                                        <Badge className="bg-green-100 text-green-800 mb-2">
+                                                        <Badge className="bg-green-200 text-green-800 dark:bg-green-500/20 dark:text-green-300 mb-2">
                                                             PERMANENTLY RETIRED
                                                         </Badge>
                                                         <br />
                                                         <Button
                                                             variant="link"
                                                             size="sm"
-                                                            className="h-auto p-0 text-green-700"
+                                                            className="h-auto p-0 text-primary"
                                                             onClick={() => {
                                                                 setSelectedRetirement(retirement);
                                                                 setShowCertificate(true);
@@ -522,7 +542,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                 </TabsContent>
 
                 <TabsContent value="advanced">
-                    <EnhancedMarketplace />
+                    <EnhancedMarketplace user={user} />
                 </TabsContent>
             </Tabs>
 
@@ -568,8 +588,8 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                     </DialogHeader>
 
                     <div className="space-y-4">
-                        <div className="bg-green-50 rounded-lg p-4">
-                            <p className="text-sm text-green-800">
+                        <div className="bg-green-100 dark:bg-green-900/50 rounded-lg p-4">
+                            <p className="text-sm text-green-800 dark:text-green-300">
                                 <strong>Available Balance:</strong> {userBalance.toLocaleString()} tCO₂e credits
                             </p>
                         </div>
@@ -584,7 +604,7 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                                 value={purchaseAmount}
                                 onChange={(e) => setPurchaseAmount(parseInt(e.target.value) || 0)}
                             />
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-muted-foreground">
                                 Maximum: {userBalance.toLocaleString()} tCO₂e
                             </p>
                         </div>
@@ -600,9 +620,9 @@ export function BuyerDashboard({ user }: BuyerDashboardProps) {
                             />
                         </div>
 
-                        <div className="bg-red-50 rounded-lg p-4 text-sm">
-                            <p className="font-medium text-red-800">Important Notice</p>
-                            <p className="text-red-700 mt-1">
+                        <div className="bg-red-100 dark:bg-red-900/50 rounded-lg p-4 text-sm">
+                            <p className="font-medium text-red-800 dark:text-red-300">Important Notice</p>
+                            <p className="text-red-700 dark:text-red-400 mt-1">
                                 Retired credits cannot be transferred or sold. This action is permanent and will be recorded on the blockchain.
                             </p>
                         </div>

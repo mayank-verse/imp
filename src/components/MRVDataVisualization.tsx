@@ -1,3 +1,4 @@
+// src/components/MRVDataVisualization.tsx
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -7,16 +8,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { ScrollArea } from './ui/scroll-area';
 import { Progress } from './ui/progress';
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer,
   BarChart, Bar, ScatterChart, Scatter, PieChart, Pie, Cell,
   RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar,
-  ComposedChart, Area, AreaChart
+  ComposedChart, Area, AreaChart, Tooltip
 } from 'recharts';
 import { projectId } from '../utils/supabase/info';
 import { supabase } from '../utils/supabase/client';
 import { 
-  TrendingUp, Satellite, Camera, FileText, MapPin, Calendar, 
+  ChartContainer, 
+  ChartTooltip as ChartTooltipContainer, 
+  ChartTooltipContent,
+  ChartConfig
+} from './ui/chart';
+import {
+  TrendingUp, Satellite, Camera, FileText, MapPin, Calendar,
   BarChart3, Activity, Zap, Target, Brain, Shield, AlertCircle,
   CheckCircle, Clock, TreePine, Waves, Users, Database
 } from 'lucide-react';
@@ -103,7 +110,20 @@ interface MRVDataVisualizationProps {
   onProjectSelect?: (project: Project) => void;
 }
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8'];
+const chartConfig = {
+  carbon: { label: "tCO₂e", color: "var(--chart-1)" },
+  health: { label: "Health Score", color: "var(--chart-2)" },
+  confidence: { label: "Confidence", color: "var(--chart-3)" },
+  submissions: { label: "Submissions", color: "var(--chart-4)" },
+  approvals: { label: "Approvals", color: "var(--chart-2)" },
+} satisfies ChartConfig;
+
+const pieChartConfig = {
+    approved: { label: 'Approved', color: 'var(--chart-2)' },
+    pending_ml_processing: { label: 'Pending ML', color: 'var(--chart-4)' },
+    pending_verification: { label: 'Pending Verification', color: 'var(--chart-3)' },
+    rejected: { label: 'Rejected', color: 'var(--chart-5)' },
+} satisfies ChartConfig
 
 export function MRVDataVisualization({ user, selectedProject, onProjectSelect }: MRVDataVisualizationProps) {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -118,7 +138,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
     satelliteConfidence: 0
   });
   const [trendData, setTrendData] = useState<TrendData[]>([]);
-  
+
   const [currentProject, setCurrentProject] = useState<Project | null>(selectedProject || null);
   const [timeRange, setTimeRange] = useState('6m');
   const [selectedMRV, setSelectedMRV] = useState<MRVData | null>(null);
@@ -226,7 +246,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
   const filterDataByProject = (projectId: string) => {
     const filtered = mrvData.filter(mrv => mrv.projectId === projectId);
     setFilteredMrvData(filtered);
-    
+
     // Calculate quality metrics from filtered data
     if (filtered.length > 0) {
       const avgMetrics = filtered.reduce((acc, mrv) => {
@@ -256,20 +276,21 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending': return <Clock className="h-4 w-4 text-yellow-500" />;
-      case 'approved': return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'rejected': return <AlertCircle className="h-4 w-4 text-red-500" />;
+      case 'completed': return <CheckCircle className="h-4 w-4 text-green-500" />;
+      case 'failed': return <AlertCircle className="h-4 w-4 text-red-500" />;
       default: return <Activity className="h-4 w-4 text-gray-500" />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'approved': return 'bg-green-100 text-green-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
+      case 'completed': return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
+      case 'failed': return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
   };
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-IN', {
@@ -294,20 +315,21 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
   }, {} as Record<string, number>);
 
   const pieData = Object.entries(submissionStatusData).map(([status, count]) => ({
-    name: status.charAt(0).toUpperCase() + status.slice(1),
+    name: status,
     value: count,
-    count
+    count,
+    fill: `var(--color-${status})`
   }));
-
+  
   if (loading) {
     return (
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-6 bg-muted rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
-            <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-64 bg-muted rounded animate-pulse"></div>
           </CardContent>
         </Card>
       </div>
@@ -320,14 +342,14 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold flex items-center space-x-2">
-            <BarChart3 className="h-6 w-6 text-blue-600" />
+            <BarChart3 className="h-6 w-6 text-primary" />
             <span>MRV Data Analytics</span>
           </h2>
-          <p className="text-gray-600">Advanced monitoring, reporting, and verification insights</p>
+          <p className="text-muted-foreground">Advanced monitoring, reporting, and verification insights</p>
         </div>
         <div className="flex items-center space-x-4">
-          <Select 
-            value={currentProject?.id || ''} 
+          <Select
+            value={currentProject?.id || ''}
             onValueChange={(value: string) => {
               const project = projects.find(p => p.id === value);
               if (project) {
@@ -336,7 +358,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
               }
             }}
           >
-            <SelectTrigger className="w-64">
+            <SelectTrigger className="w-64 truncate">
               <SelectValue placeholder="Select Project" />
             </SelectTrigger>
             <SelectContent>
@@ -367,7 +389,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <TreePine className="h-5 w-5 text-green-600" />
+                <TreePine className="h-5 w-5 text-green-600 dark:text-green-400" />
                 <span>{currentProject.name}</span>
                 <Badge className={getStatusColor(currentProject.status)}>
                   {currentProject.status.replace('_', ' ').toUpperCase()}
@@ -388,30 +410,30 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">
+                  <div className="text-2xl font-bold text-primary">
                     {filteredMrvData.length}
                   </div>
-                  <p className="text-sm text-gray-600">MRV Submissions</p>
+                  <p className="text-sm text-muted-foreground">MRV Submissions</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                     {filteredMrvData.filter(mrv => mrv.status === 'approved').length}
                   </div>
-                  <p className="text-sm text-gray-600">Approved Reports</p>
+                  <p className="text-sm text-muted-foreground">Approved Reports</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">
+                  <div className="text-2xl font-bold text-primary">
                     {filteredMrvData.reduce((sum, mrv) => sum + (mrv.mlResults?.carbon_estimate || 0), 0).toLocaleString()}
                   </div>
-                  <p className="text-sm text-gray-600">Total tCO₂e</p>
+                  <p className="text-sm text-muted-foreground">Total tCO₂e</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-600">
-                    {filteredMrvData.length > 0 ? 
-                      (filteredMrvData.reduce((sum, mrv) => sum + (mrv.mlResults?.biomass_health_score || 0), 0) / filteredMrvData.length * 100).toFixed(1) 
+                  <div className="text-2xl font-bold text-primary">
+                    {filteredMrvData.length > 0 ?
+                      (filteredMrvData.reduce((sum, mrv) => sum + (mrv.mlResults?.biomass_health_score || 0), 0) / filteredMrvData.length * 100).toFixed(1)
                       : 0}%
                   </div>
-                  <p className="text-sm text-gray-600">Avg Quality Score</p>
+                  <p className="text-sm text-muted-foreground">Avg Quality Score</p>
                 </div>
               </div>
             </CardContent>
@@ -433,26 +455,23 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
-                      <TrendingUp className="h-5 w-5 text-green-600" />
+                      <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
                       <span>Carbon Sequestration Over Time</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
+                     <ChartContainer config={chartConfig} className="h-64">
                         <AreaChart data={filteredMrvData.map(mrv => ({
                           date: formatDate(mrv.submittedAt),
                           carbon: mrv.mlResults?.carbon_estimate || 0,
-                          health: mrv.mlResults?.biomass_health_score || 0
                         }))}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="date" />
-                          <YAxis />
-                          <Tooltip />
-                          <Area type="monotone" dataKey="carbon" stroke="#10b981" fill="#10b981" fillOpacity={0.3} />
+                          <CartesianGrid vertical={false} />
+                          <XAxis dataKey="date" tickLine={false} axisLine={false} tickMargin={8} />
+                          <YAxis tickLine={false} axisLine={false} tickMargin={8} />
+                          <ChartTooltipContainer cursor={false} content={<ChartTooltipContent />} />
+                          <Area type="monotone" dataKey="carbon" stroke="var(--color-carbon)" fill="var(--color-carbon)" fillOpacity={0.3} />
                         </AreaChart>
-                      </ResponsiveContainer>
-                    </div>
+                      </ChartContainer>
                   </CardContent>
                 </Card>
 
@@ -460,32 +479,30 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
-                      <Shield className="h-5 w-5 text-blue-600" />
+                      <Shield className="h-5 w-5 text-primary" />
                       <span>Submission Status</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
+                    <ChartContainer config={pieChartConfig} className="h-64">
                         <PieChart>
+                          <ChartTooltipContainer content={<ChartTooltipContent nameKey="name" />} />
                           <Pie
                             data={pieData}
+                            dataKey="value"
+                            nameKey="name"
                             cx="50%"
                             cy="50%"
-                            labelLine={false}
-                            label={({ name, count }) => `${name}: ${count}`}
                             outerRadius={80}
-                            fill="#8884d8"
-                            dataKey="value"
+                            labelLine={false}
+                            label={({ name, count }) => `${pieChartConfig[name as keyof typeof pieChartConfig]?.label}: ${count}`}
                           >
-                            {pieData.map((entry, index) => (
-                              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                            {pieData.map((entry) => (
+                              <Cell key={`cell-${entry.name}`} fill={entry.fill} />
                             ))}
                           </Pie>
-                          <Tooltip />
                         </PieChart>
-                      </ResponsiveContainer>
-                    </div>
+                      </ChartContainer>
                   </CardContent>
                 </Card>
               </div>
@@ -494,7 +511,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Brain className="h-5 w-5 text-purple-600" />
+                    <Brain className="h-5 w-5 text-primary" />
                     <span>ML Confidence vs Data Quality</span>
                   </CardTitle>
                   <CardDescription>
@@ -502,21 +519,18 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ScatterChart data={filteredMrvData.map(mrv => ({
+                  <ChartContainer config={chartConfig} className="h-64">
+                    <ScatterChart data={filteredMrvData.map(mrv => ({
                         confidence: (mrv.mlResults?.confidence_score || 0) * 100,
                         health: (mrv.mlResults?.biomass_health_score || 0) * 100,
-                        carbon: mrv.mlResults?.carbon_estimate || 0
                       }))}>
                         <CartesianGrid />
-                        <XAxis type="number" dataKey="confidence" name="ML Confidence" unit="%" />
-                        <YAxis type="number" dataKey="health" name="Health Score" unit="%" />
-                        <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                        <Scatter name="MRV Reports" dataKey="carbon" fill="#8884d8" />
+                        <XAxis type="number" dataKey="confidence" name="ML Confidence" unit="%" tickLine={false} axisLine={false} tickMargin={8} />
+                        <YAxis type="number" dataKey="health" name="Health Score" unit="%" tickLine={false} axisLine={false} tickMargin={8} />
+                        <ChartTooltipContainer cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+                        <Scatter name="MRV Reports" dataKey="health" fill="var(--color-health)" />
                       </ScatterChart>
-                    </ResponsiveContainer>
-                  </div>
+                    </ChartContainer>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -527,28 +541,26 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
-                      <Target className="h-5 w-5 text-blue-600" />
+                      <Target className="h-5 w-5 text-primary" />
                       <span>Data Quality Assessment</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-64">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart data={radarData}>
-                          <PolarGrid />
+                    <ChartContainer config={chartConfig} className="h-64">
+                      <RadarChart data={radarData}>
+                          <CartesianGrid />
                           <PolarAngleAxis dataKey="subject" />
                           <PolarRadiusAxis angle={90} domain={[0, 100]} />
+                          <ChartTooltipContainer content={<ChartTooltipContent />} />
                           <Radar
                             name="Quality Score"
                             dataKey="A"
-                            stroke="#2563eb"
-                            fill="#2563eb"
+                            stroke="var(--color-carbon)"
+                            fill="var(--color-carbon)"
                             fillOpacity={0.3}
                           />
-                          <Tooltip />
                         </RadarChart>
-                      </ResponsiveContainer>
-                    </div>
+                      </ChartContainer>
                   </CardContent>
                 </Card>
 
@@ -602,7 +614,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Activity className="h-5 w-5 text-purple-600" />
+                    <Activity className="h-5 w-5 text-primary" />
                     <span>Platform Trends</span>
                   </CardTitle>
                   <CardDescription>
@@ -610,20 +622,18 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="h-64">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={trendData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis yAxisId="left" />
-                        <YAxis yAxisId="right" orientation="right" />
-                        <Tooltip />
-                        <Bar yAxisId="left" dataKey="submissions" fill="#8884d8" />
-                        <Line yAxisId="right" type="monotone" dataKey="carbon_estimate" stroke="#82ca9d" />
-                        <Line yAxisId="right" type="monotone" dataKey="health_score" stroke="#ffc658" />
+                  <ChartContainer config={chartConfig} className="h-64">
+                    <ComposedChart data={trendData}>
+                        <CartesianGrid vertical={false}/>
+                        <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} />
+                        <YAxis yAxisId="left" tickLine={false} axisLine={false} tickMargin={8} />
+                        <YAxis yAxisId="right" orientation="right" tickLine={false} axisLine={false} tickMargin={8} />
+                        <ChartTooltipContainer content={<ChartTooltipContent />} />
+                        <Bar yAxisId="left" dataKey="submissions" fill="var(--color-submissions)" />
+                        <Line yAxisId="right" type="monotone" dataKey="carbon_estimate" stroke="var(--color-carbon)" />
+                        <Line yAxisId="right" type="monotone" dataKey="health_score" stroke="var(--color-health)" />
                       </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
+                    </ChartContainer>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -632,7 +642,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
-                    <Calendar className="h-5 w-5 text-green-600" />
+                    <Calendar className="h-5 w-5 text-green-600 dark:text-green-400" />
                     <span>Project Timeline</span>
                   </CardTitle>
                 </CardHeader>
@@ -645,7 +655,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                         </div>
                         <div className="flex-1">
                           <p className="font-medium">{event.event}</p>
-                          <p className="text-sm text-gray-600">{formatDate(event.date)}</p>
+                          <p className="text-sm text-muted-foreground">{formatDate(event.date)}</p>
                         </div>
                         <Badge className={getStatusColor(event.status)}>
                           {event.status}
@@ -660,8 +670,8 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
             <TabsContent value="submissions" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredMrvData.map((mrv) => (
-                  <Card key={mrv.id} className="hover:shadow-lg transition-shadow cursor-pointer" 
-                        onClick={() => { setSelectedMRV(mrv); setShowMRVDetail(true); }}>
+                  <Card key={mrv.id} className="hover:shadow-lg transition-shadow cursor-pointer"
+                    onClick={() => { setSelectedMRV(mrv); setShowMRVDetail(true); }}>
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
                         <CardTitle className="text-lg">MRV Report</CardTitle>
@@ -669,16 +679,16 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                           {mrv.status}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-600">Submitted: {formatDate(mrv.submittedAt)}</p>
+                      <p className="text-sm text-muted-foreground">Submitted: {formatDate(mrv.submittedAt)}</p>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-blue-700">
+                        <div className="text-2xl font-bold text-primary">
                           {mrv.mlResults?.carbon_estimate || 0}
                         </div>
-                        <p className="text-sm text-gray-600">tCO₂e</p>
+                        <p className="text-sm text-muted-foreground">tCO₂e</p>
                       </div>
-                      
+
                       <div className="space-y-2">
                         <div className="flex justify-between text-sm">
                           <span>Health Score</span>
@@ -711,7 +721,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                   Comprehensive analysis of monitoring, reporting, and verification data
                 </DialogDescription>
               </DialogHeader>
-              
+
               {selectedMRV && (
                 <ScrollArea className="max-h-[60vh]">
                   <div className="space-y-6 pr-4">
@@ -719,29 +729,29 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                     <div>
                       <h3 className="font-semibold mb-3">ML Analysis Results</h3>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="text-center p-3 bg-blue-50 rounded-lg">
-                          <div className="text-2xl font-bold text-blue-700">
+                        <div className="text-center p-3 bg-muted rounded-lg">
+                          <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                             {selectedMRV.mlResults?.carbon_estimate || 0}
                           </div>
-                          <p className="text-sm text-blue-600">tCO₂e</p>
+                          <p className="text-sm text-blue-700 dark:text-blue-500">tCO₂e</p>
                         </div>
-                        <div className="text-center p-3 bg-green-50 rounded-lg">
-                          <div className="text-2xl font-bold text-green-700">
+                        <div className="text-center p-3 bg-muted rounded-lg">
+                          <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                             {((selectedMRV.mlResults?.biomass_health_score || 0) * 100).toFixed(1)}%
                           </div>
-                          <p className="text-sm text-green-600">Health Score</p>
+                          <p className="text-sm text-green-700 dark:text-green-500">Health Score</p>
                         </div>
-                        <div className="text-center p-3 bg-purple-50 rounded-lg">
-                          <div className="text-2xl font-bold text-purple-700">
+                        <div className="text-center p-3 bg-muted rounded-lg">
+                          <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                             {((selectedMRV.mlResults?.confidence_score || 0) * 100).toFixed(1)}%
                           </div>
-                          <p className="text-sm text-purple-600">Confidence</p>
+                          <p className="text-sm text-purple-700 dark:text-purple-500">Confidence</p>
                         </div>
-                        <div className="text-center p-3 bg-orange-50 rounded-lg">
-                          <div className="text-2xl font-bold text-orange-700">
+                        <div className="text-center p-3 bg-muted rounded-lg">
+                          <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                             {((selectedMRV.mlResults?.data_completeness || 0) * 100).toFixed(1)}%
                           </div>
-                          <p className="text-sm text-orange-600">Completeness</p>
+                          <p className="text-sm text-orange-700 dark:text-orange-500">Completeness</p>
                         </div>
                       </div>
                     </div>
@@ -751,28 +761,28 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                       <h3 className="font-semibold mb-3">Data Sources</h3>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                          <Satellite className="h-8 w-8 text-blue-500" />
+                          <Satellite className="h-8 w-8 text-primary" />
                           <div>
                             <p className="font-medium">Satellite Data</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-muted-foreground">
                               {selectedMRV.rawData.satelliteData ? 'Available' : 'No data'}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                          <Users className="h-8 w-8 text-green-500" />
+                          <Users className="h-8 w-8 text-primary" />
                           <div>
                             <p className="font-medium">Community Reports</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-muted-foreground">
                               {selectedMRV.rawData.communityReports ? 'Available' : 'No data'}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-3 p-3 border rounded-lg">
-                          <Database className="h-8 w-8 text-purple-500" />
+                          <Database className="h-8 w-8 text-primary" />
                           <div>
                             <p className="font-medium">Sensor Readings</p>
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-muted-foreground">
                               {selectedMRV.rawData.sensorReadings ? 'Available' : 'No data'}
                             </p>
                           </div>
@@ -787,7 +797,7 @@ export function MRVDataVisualization({ user, selectedProject, onProjectSelect }:
                         {selectedMRV.files.map((file, index) => (
                           <div key={index} className="flex items-center justify-between p-2 border rounded">
                             <span className="text-sm">{file.name}</span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-muted-foreground">
                               {(file.size / 1024 / 1024).toFixed(2)} MB
                             </span>
                           </div>
