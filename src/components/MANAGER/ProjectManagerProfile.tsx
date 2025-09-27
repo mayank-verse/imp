@@ -240,12 +240,12 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-6 bg-muted rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-4 bg-gray-700 rounded animate-pulse"></div>
+                <div key={i} className="h-4 bg-muted rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -262,9 +262,9 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold">Profile & Settings</h2>
-          <p className="text-gray-300">Manage your account information and preferences</p>
+          <p className="text-muted-foreground">Manage your account information and preferences</p>
         </div>
-        <Button onClick={saveProfileData} disabled={saving} className="bg-blue-600 hover:bg-blue-700">
+        <Button onClick={saveProfileData} disabled={saving}>
           {saving ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>
@@ -277,13 +277,13 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
             <div className="relative">
               <Avatar className="h-24 w-24">
                 <AvatarImage src="" alt={profileData.name} />
-                <AvatarFallback className="text-xl bg-blue-600 text-white">
+                <AvatarFallback className="text-xl bg-primary text-primary-foreground">
                   {getInitials(profileData.name)}
                 </AvatarFallback>
               </Avatar>
               <Button 
                 size="sm" 
-                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full p-0"
                 variant="outline"
               >
                 <Camera className="h-4 w-4" />
@@ -294,9 +294,9 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
             <div className="flex-1">
               <div className="flex items-center space-x-3 mb-2">
                 <h3 className="text-xl font-semibold">{profileData.name}</h3>
-                <Badge variant="secondary" className="bg-white/10 text-white">Project Manager</Badge>
+                <Badge variant="secondary">Project Manager</Badge>
                 {profileData.organizationVerified && (
-                  <Badge className="bg-green-500/20 text-green-300">
+                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
                     <CheckCircle className="h-3 w-3 mr-1" />
                     Verified
                   </Badge>
@@ -305,23 +305,23 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div className="flex items-center space-x-2">
-                  <Mail className="h-4 w-4 text-gray-400" />
+                  <Mail className="h-4 w-4 text-muted-foreground" />
                   <span>{profileData.email}</span>
                 </div>
                 {profileData.phone && (
                   <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4 text-gray-400" />
+                    <Phone className="h-4 w-4 text-muted-foreground" />
                     <span>{profileData.phone}</span>
                   </div>
                 )}
                 {profileData.organizationName && (
                   <div className="flex items-center space-x-2">
-                    <Building2 className="h-4 w-4 text-gray-400" />
+                    <Building2 className="h-4 w-4 text-muted-foreground" />
                     <span>{profileData.organizationName}</span>
                   </div>
                 )}
                 <div className="flex items-center space-x-2">
-                  <Calendar className="h-4 w-4 text-gray-400" />
+                  <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span>Joined {formatDate(stats.joinDate)}</span>
                 </div>
               </div>
@@ -329,25 +329,25 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               {/* Quick Stats */}
               <div className="mt-4 grid grid-cols-3 gap-4">
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-green-400">${stats.totalEarnings.toFixed(0)}</div>
-                  <div className="text-xs text-gray-400">Total Earnings</div>
+                  <div className="text-lg font-semibold text-green-600 dark:text-green-400">${stats.totalEarnings.toFixed(0)}</div>
+                  <div className="text-xs text-muted-foreground">Total Earnings</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-blue-400">{stats.totalCredits}</div>
-                  <div className="text-xs text-gray-400">Credits Sold</div>
+                  <div className="text-lg font-semibold text-blue-600 dark:text-blue-400">{stats.totalCredits}</div>
+                  <div className="text-xs text-muted-foreground">Credits Sold</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-lg font-semibold text-purple-400">{stats.totalProjects}</div>
-                  <div className="text-xs text-gray-400">Projects</div>
+                  <div className="text-lg font-semibold text-purple-600 dark:text-purple-400">{stats.totalProjects}</div>
+                  <div className="text-xs text-muted-foreground">Projects</div>
                 </div>
               </div>
             </div>
 
             {/* Verification Status */}
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-400">{verificationStatus.percentage.toFixed(0)}%</div>
-              <div className="text-sm text-gray-300">Profile Complete</div>
-              <div className="mt-2 w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">{verificationStatus.percentage.toFixed(0)}%</div>
+              <div className="text-sm text-muted-foreground">Profile Complete</div>
+              <div className="mt-2 w-16 h-2 bg-muted rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-blue-500 transition-all duration-300"
                   style={{ width: `${verificationStatus.percentage}%` }}
@@ -360,20 +360,20 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
 
       {/* Profile Sections */}
       <Tabs defaultValue="personal" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 bg-white/10">
-          <TabsTrigger value="personal" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="personal" className="flex items-center space-x-2">
             <User className="h-4 w-4" />
             <span>Personal</span>
           </TabsTrigger>
-          <TabsTrigger value="organization" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+          <TabsTrigger value="organization" className="flex items-center space-x-2">
             <Building2 className="h-4 w-4" />
             <span>Organization</span>
           </TabsTrigger>
-          <TabsTrigger value="payment" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+          <TabsTrigger value="payment" className="flex items-center space-x-2">
             <CreditCard className="h-4 w-4" />
             <span>Payment</span>
           </TabsTrigger>
-          <TabsTrigger value="settings" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+          <TabsTrigger value="settings" className="flex items-center space-x-2">
             <Settings className="h-4 w-4" />
             <span>Settings</span>
           </TabsTrigger>
@@ -396,7 +396,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     id="name"
                     value={profileData.name}
                     onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -409,10 +408,9 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       value={profileData.email}
                       onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
                       disabled
-                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                     {profileData.emailVerified && (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-400" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-500" />
                     )}
                   </div>
                 </div>
@@ -426,12 +424,11 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       value={profileData.phone}
                       onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="+91 12345 67890"
-                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                     {profileData.phoneVerified ? (
-                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-400" />
+                      <CheckCircle className="absolute right-3 top-3 h-4 w-4 text-green-500" />
                     ) : (
-                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full text-blue-400 hover:text-blue-300">
+                      <Button variant="link" size="sm" className="absolute right-0 top-0 h-full text-primary">
                         Verify
                       </Button>
                     )}
@@ -439,7 +436,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 </div>
               </div>
 
-              <Separator className="bg-white/20" />
+              <Separator />
 
               <div className="space-y-4">
                 <h4 className="font-medium">Address Information</h4>
@@ -451,7 +448,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.address}
                     onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value }))}
                     placeholder="Enter your complete address"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -462,7 +458,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       id="city"
                       value={profileData.city}
                       onChange={(e) => setProfileData(prev => ({ ...prev, city: e.target.value }))}
-                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                   
@@ -472,10 +467,10 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       value={profileData.state} 
                       onValueChange={(value : string) => setProfileData(prev => ({ ...prev, state: value }))}
                     >
-                      <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                      <SelectTrigger>
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                      <SelectContent>
                         <SelectItem value="andhra-pradesh">Andhra Pradesh</SelectItem>
                         <SelectItem value="gujarat">Gujarat</SelectItem>
                         <SelectItem value="kerala">Kerala</SelectItem>
@@ -494,7 +489,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       value={profileData.pincode}
                       onChange={(e) => setProfileData(prev => ({ ...prev, pincode: e.target.value }))}
                       placeholder="123456"
-                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                   </div>
                 </div>
@@ -521,7 +515,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.organizationName}
                     onChange={(e) => setProfileData(prev => ({ ...prev, organizationName: e.target.value }))}
                     placeholder="Your organization name"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -531,10 +524,10 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.organizationType} 
                     onValueChange={(value : string) => setProfileData(prev => ({ ...prev, organizationType: value }))}
                   >
-                    <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                    <SelectContent>
                       <SelectItem value="ngo">NGO</SelectItem>
                       <SelectItem value="research">Research Institution</SelectItem>
                       <SelectItem value="government">Government Agency</SelectItem>
@@ -552,7 +545,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.organizationWebsite}
                     onChange={(e) => setProfileData(prev => ({ ...prev, organizationWebsite: e.target.value }))}
                     placeholder="https://yourorganization.org"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -563,7 +555,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.registrationNumber}
                     onChange={(e) => setProfileData(prev => ({ ...prev, registrationNumber: e.target.value }))}
                     placeholder="Org registration number"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
               </div>
@@ -576,7 +567,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   onChange={(e) => setProfileData(prev => ({ ...prev, organizationDescription: e.target.value }))}
                   placeholder="Describe your organization's mission and work"
                   rows={4}
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
               
@@ -587,20 +577,19 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   value={profileData.taxId}
                   onChange={(e) => setProfileData(prev => ({ ...prev, taxId: e.target.value }))}
                   placeholder="ABCDE1234F"
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
               {!profileData.organizationVerified && (
-                <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg p-4">
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-500/50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
+                    <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-yellow-300">Organization Verification Pending</h4>
-                      <p className="text-sm text-yellow-400 mt-1">
+                      <h4 className="font-medium text-yellow-800 dark:text-yellow-300">Organization Verification Pending</h4>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
                         Complete your organization details to verify your account and start receiving payments.
                       </p>
-                      <Button size="sm" className="mt-2 bg-yellow-600 hover:bg-yellow-700" variant="outline">
+                      <Button size="sm" className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white" variant="default">
                         Submit for Verification
                       </Button>
                     </div>
@@ -621,12 +610,12 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="bg-blue-900/30 border border-blue-500/50 rounded-lg p-4">
+              <div className="bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-500/50 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <DollarSign className="h-5 w-5 text-blue-300 mt-0.5" />
+                  <DollarSign className="h-5 w-5 text-blue-700 dark:text-blue-300 mt-0.5" />
                   <div>
-                    <h4 className="font-medium text-blue-200">Secure Payment Processing</h4>
-                    <p className="text-sm text-blue-300 mt-1">
+                    <h4 className="font-medium text-blue-800 dark:text-blue-200">Secure Payment Processing</h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
                       Your payment information is encrypted and secure. We'll transfer earnings from credit sales directly to your account.
                     </p>
                   </div>
@@ -641,7 +630,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.bankName}
                     onChange={(e) => setProfileData(prev => ({ ...prev, bankName: e.target.value }))}
                     placeholder="State Bank of India"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -651,7 +639,6 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     id="accountHolder"
                     value={profileData.accountHolderName}
                     onChange={(e) => setProfileData(prev => ({ ...prev, accountHolderName: e.target.value }))}
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
                 
@@ -664,13 +651,12 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                       value={profileData.accountNumber}
                       onChange={(e) => setProfileData(prev => ({ ...prev, accountNumber: e.target.value }))}
                       placeholder="1234567890"
-                      className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      className="absolute right-0 top-0 h-full px-3 text-gray-400 hover:text-white"
+                      className="absolute right-0 top-0 h-full px-3 text-muted-foreground hover:text-foreground"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -685,12 +671,11 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                     value={profileData.ifscCode}
                     onChange={(e) => setProfileData(prev => ({ ...prev, ifscCode: e.target.value }))}
                     placeholder="SBIN0001234"
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
               </div>
 
-              <Separator className="bg-white/20" />
+              <Separator />
 
               <div className="space-y-2">
                 <Label htmlFor="upi">UPI ID (Optional)</Label>
@@ -699,20 +684,19 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                   value={profileData.upiId}
                   onChange={(e) => setProfileData(prev => ({ ...prev, upiId: e.target.value }))}
                   placeholder="yourname@paytm"
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
               {!profileData.bankVerified && (
-                <div className="bg-yellow-900/30 border border-yellow-500/50 rounded-lg p-4">
+                <div className="bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-500/50 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
+                    <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5" />
                     <div>
-                      <h4 className="font-medium text-yellow-300">Bank Verification Required</h4>
-                      <p className="text-sm text-yellow-400 mt-1">
+                      <h4 className="font-medium text-yellow-800 dark:text-yellow-300">Bank Verification Required</h4>
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400 mt-1">
                         Verify your bank account to receive payments from carbon credit sales.
                       </p>
-                      <Button size="sm" className="mt-2 bg-yellow-600 hover:bg-yellow-700" variant="outline">
+                      <Button size="sm" className="mt-2 bg-yellow-500 hover:bg-yellow-600 text-white" variant="default">
                         Verify Account
                       </Button>
                     </div>
@@ -738,7 +722,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Email Notifications</Label>
-                    <p className="text-sm text-gray-400">Receive email updates about your projects and payments</p>
+                    <p className="text-sm text-muted-foreground">Receive email updates about your projects and payments</p>
                   </div>
                   <Switch
                     checked={profileData.emailNotifications}
@@ -749,7 +733,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>SMS Notifications</Label>
-                    <p className="text-sm text-gray-400">Receive SMS alerts for important updates</p>
+                    <p className="text-sm text-muted-foreground">Receive SMS alerts for important updates</p>
                   </div>
                   <Switch
                     checked={profileData.smsNotifications}
@@ -760,7 +744,7 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Public Profile</Label>
-                    <p className="text-sm text-gray-400">Make your profile visible to other users</p>
+                    <p className="text-sm text-muted-foreground">Make your profile visible to other users</p>
                   </div>
                   <Switch
                     checked={profileData.publicProfile}
@@ -782,19 +766,19 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Password</Label>
-                    <p className="text-sm text-gray-400">Change your account password</p>
+                    <p className="text-sm text-muted-foreground">Change your account password</p>
                   </div>
-                  <Button variant="outline" onClick={changePassword} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+                  <Button variant="outline" onClick={changePassword}>
                     Change Password
                   </Button>
                 </div>
                 
-                <Separator className="bg-white/20" />
+                <Separator />
                 
                 <div className="space-y-3">
                   <Label>Two-Factor Authentication</Label>
-                  <p className="text-sm text-gray-400">Add an extra layer of security to your account</p>
-                  <Button variant="outline" disabled className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+                  <p className="text-sm text-muted-foreground">Add an extra layer of security to your account</p>
+                  <Button variant="outline" disabled>
                     Enable 2FA (Coming Soon)
                   </Button>
                 </div>
@@ -813,19 +797,19 @@ export function ProjectManagerProfile({ user }: ProjectManagerProfileProps) {
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Export Data</Label>
-                    <p className="text-sm text-gray-400">Download a copy of your account data</p>
+                    <p className="text-sm text-muted-foreground">Download a copy of your account data</p>
                   </div>
-                  <Button variant="outline" className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+                  <Button variant="outline">
                     <FileText className="h-4 w-4 mr-2" />
                     Export Data
                   </Button>
                 </div>
                 
-                <Separator className="bg-white/20" />
+                <Separator />
                 
                 <div className="space-y-3">
-                  <Label className="text-red-400">Danger Zone</Label>
-                  <p className="text-sm text-gray-400">These actions cannot be undone</p>
+                  <Label className="text-destructive">Danger Zone</Label>
+                  <p className="text-sm text-muted-foreground">These actions cannot be undone</p>
                   <Button variant="destructive" disabled>
                     Delete Account
                   </Button>

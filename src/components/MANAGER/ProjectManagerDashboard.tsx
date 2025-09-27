@@ -240,15 +240,15 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'registered':
-        return 'bg-blue-900/50 text-blue-300';
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300';
       case 'mrv_submitted':
-        return 'bg-yellow-900/50 text-yellow-300';
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
       case 'approved':
-        return 'bg-green-900/50 text-green-300';
+        return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
       case 'rejected':
-        return 'bg-red-900/50 text-red-300';
+        return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
       default:
-        return 'bg-gray-700 text-gray-300';
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
@@ -268,21 +268,21 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       case 'png':
       case 'gif':
       case 'heic':
-        return <FileImage className="h-3 w-3 text-blue-400" />;
+        return <FileImage className="h-3 w-3 text-blue-500 dark:text-blue-400" />;
       case 'csv':
       case 'json':
       case 'xml':
       case 'txt':
       case 'log':
-        return <Database className="h-3 w-3 text-green-400" />;
+        return <Database className="h-3 w-3 text-green-500 dark:text-green-400" />;
       case 'pdf':
       case 'doc':
       case 'docx':
       case 'xlsx':
       case 'xls':
-        return <FileText className="h-3 w-3 text-purple-400" />;
+        return <FileText className="h-3 w-3 text-purple-500 dark:text-purple-400" />;
       default:
-        return <FileText className="h-3 w-3 text-gray-400" />;
+        return <FileText className="h-3 w-3 text-muted-foreground" />;
     }
   };
 
@@ -291,12 +291,12 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-6 bg-muted rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-16 bg-gray-700 rounded animate-pulse"></div>
+                <div key={i} className="h-16 bg-muted rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -311,14 +311,14 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold">Project Management</h2>
-          <p className="text-gray-300">Register and manage your blue carbon projects with fiat-anchored registry</p>
+          <p className="text-muted-foreground">Register and manage your blue carbon projects with fiat-anchored registry</p>
         </div>
         <div className="flex space-x-2">
-          <Button variant="outline" onClick={() => setShowEarningsDetails(!showEarningsDetails)} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+          <Button variant="outline" onClick={() => setShowEarningsDetails(!showEarningsDetails)}>
             <Receipt className="h-4 w-4 mr-2" />
             Earnings
           </Button>
-          <Button onClick={() => setShowNewProjectDialog(true)} className="bg-blue-600 hover:bg-blue-700">
+          <Button onClick={() => setShowNewProjectDialog(true)}>
             <Plus className="h-4 w-4 mr-2" />
             New Project
           </Button>
@@ -330,7 +330,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <DollarSign className="h-5 w-5 text-green-400" />
+              <DollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
               <span>Payment Dashboard</span>
             </CardTitle>
             <CardDescription>
@@ -340,28 +340,28 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-green-400">
+                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                   ${earnings.totalEarnings.toFixed(2)}
                 </div>
-                <p className="text-sm text-green-500">Total Earnings</p>
+                <p className="text-sm text-green-700 dark:text-green-500">Total Earnings</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-400">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                   {earnings.totalCredits.toLocaleString()}
                 </div>
-                <p className="text-sm text-blue-500">Credits Sold</p>
+                <p className="text-sm text-blue-700 dark:text-blue-500">Credits Sold</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-400">
+                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
                   {earnings.transactionCount}
                 </div>
-                <p className="text-sm text-purple-500">Transactions</p>
+                <p className="text-sm text-purple-700 dark:text-purple-500">Transactions</p>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-400">
+                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                   ${earnings.pendingPayments.toFixed(2)}
                 </div>
-                <p className="text-sm text-orange-500">Pending</p>
+                <p className="text-sm text-orange-700 dark:text-orange-500">Pending</p>
               </div>
             </div>
 
@@ -371,15 +371,15 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 <h4 className="font-semibold mb-3">Earnings by Project</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {Object.entries(earnings.projects).map(([projectId, projectEarnings]) => (
-                    <div key={projectId} className="border-2 border-slate-700 rounded-lg p-3 bg-slate-800/50">
+                    <div key={projectId} className="border rounded-lg p-3 bg-muted/50">
                       <div className="flex justify-between items-start">
                         <div>
                           <h5 className="font-medium">Project {projectId.slice(-8)}</h5>
-                          <p className="text-sm text-gray-400">{projectEarnings.credits} tCO₂e sold</p>
+                          <p className="text-sm text-muted-foreground">{projectEarnings.credits} tCO₂e sold</p>
                         </div>
                         <div className="text-right">
-                          <div className="font-semibold text-green-400">${projectEarnings.earnings.toFixed(2)}</div>
-                          <p className="text-xs text-gray-500">{projectEarnings.transactions} transactions</p>
+                          <div className="font-semibold text-green-600 dark:text-green-400">${projectEarnings.earnings.toFixed(2)}</div>
+                          <p className="text-xs text-muted-foreground">{projectEarnings.transactions} transactions</p>
                         </div>
                       </div>
                     </div>
@@ -394,23 +394,23 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 <h4 className="font-semibold mb-3">Recent Payments</h4>
                 <div className="space-y-3 max-h-64 overflow-y-auto">
                   {paymentTransactions.slice(0, 5).map((transaction) => (
-                    <div key={transaction.id} className="border-2 border-slate-700 rounded-lg p-3 bg-slate-800/50">
+                    <div key={transaction.id} className="border rounded-lg p-3 bg-muted/50">
                       <div className="flex justify-between items-start">
                         <div>
                           <div className="flex items-center space-x-2">
                             <h5 className="font-medium">${transaction.netAmount.toFixed(2)}</h5>
-                            <Badge className={transaction.status === 'completed' ? 'bg-green-900/50 text-green-300' :
-                              transaction.status === 'failed' ? 'bg-red-900/50 text-red-300' :
-                                'bg-yellow-900/50 text-yellow-300'}>
+                            <Badge className={transaction.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' :
+                              transaction.status === 'failed' ? 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300' :
+                                'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300'}>
                               {transaction.status}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-400">{transaction.amount} tCO₂e • {transaction.buyerName}</p>
-                          <p className="text-xs text-gray-500">{formatDate(transaction.processedAt)}</p>
+                          <p className="text-sm text-muted-foreground">{transaction.amount} tCO₂e • {transaction.buyerName}</p>
+                          <p className="text-xs text-muted-foreground">{formatDate(transaction.processedAt)}</p>
                         </div>
-                        <div className="text-right text-sm">
-                          <div className="text-gray-400">Gross: ${transaction.totalAmount.toFixed(2)}</div>
-                          <div className="text-gray-400">Fees: ${transaction.fees.toFixed(2)}</div>
+                        <div className="text-right text-sm text-muted-foreground">
+                          <div>Gross: ${transaction.totalAmount.toFixed(2)}</div>
+                          <div>Fees: ${transaction.fees.toFixed(2)}</div>
                         </div>
                       </div>
                     </div>
@@ -418,7 +418,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 </div>
                 {paymentTransactions.length > 5 && (
                   <div className="text-center mt-3">
-                    <Button variant="link" size="sm" className="text-blue-400 hover:text-blue-300">
+                    <Button variant="link" size="sm">
                       View all {paymentTransactions.length} transactions
                     </Button>
                   </div>
@@ -433,7 +433,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-            <TreePine className="h-4 w-4 text-gray-400" />
+            <TreePine className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{projects.length}</div>
@@ -443,7 +443,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Approved Projects</CardTitle>
-            <Activity className="h-4 w-4 text-gray-400" />
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -455,13 +455,13 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Earnings</CardTitle>
-            <DollarSign className="h-4 w-4 text-green-400" />
+            <DollarSign className="h-4 w-4 text-green-600 dark:text-green-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-400">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
               ${earnings?.totalEarnings.toFixed(0) || '0'}
             </div>
-            <p className="text-xs text-green-500 mt-1">
+            <p className="text-xs text-green-700 dark:text-green-500 mt-1">
               From {earnings?.totalCredits || 0} credits sold
             </p>
           </CardContent>
@@ -470,7 +470,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Area</CardTitle>
-            <MapPin className="h-4 w-4 text-gray-400" />
+            <MapPin className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -482,7 +482,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">On Blockchain</CardTitle>
-            <Activity className="h-4 w-4 text-gray-400" />
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -502,7 +502,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
         </CardHeader>
         <CardContent>
           {projects.length === 0 ? (
-            <div className="text-center py-12 text-gray-400">
+            <div className="text-center py-12 text-muted-foreground">
               <TreePine className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>No projects registered yet</p>
               <p className="text-sm mt-2">Create your first blue carbon project to get started</p>
@@ -510,7 +510,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
           ) : (
             <div className="space-y-4">
               {projects.map((project) => (
-                <div key={project.id} className="border-2 border-slate-700 rounded-lg p-4">
+                <div key={project.id} className="border rounded-lg p-4">
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
@@ -520,32 +520,32 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                         </Badge>
                       </div>
 
-                      <p className="text-gray-300 mb-3">{project.description}</p>
+                      <p className="text-muted-foreground mb-3">{project.description}</p>
 
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-center space-x-2">
-                          <MapPin className="h-4 w-4 text-gray-400" />
+                          <MapPin className="h-4 w-4 text-muted-foreground" />
                           <span>{project.location}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <TreePine className="h-4 w-4 text-gray-400" />
+                          <TreePine className="h-4 w-4 text-muted-foreground" />
                           <span>{project.ecosystemType}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Calendar className="h-4 w-4 text-gray-400" />
+                          <Calendar className="h-4 w-4 text-muted-foreground" />
                           <span>{formatDate(project.createdAt)}</span>
                         </div>
                       </div>
 
-                      <div className="mt-3 text-sm text-gray-300">
+                      <div className="mt-3 text-sm text-muted-foreground">
                         <strong>Area:</strong> {project.area.toLocaleString()} hectares
                         {project.onChainTxHash && (
                           <div className="mt-2 flex items-center space-x-2">
-                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-blue-900/50 text-blue-300">
-                              <span className="w-2 h-2 bg-blue-400 rounded-full mr-1"></span>
+                            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
+                              <span className="w-2 h-2 bg-blue-500 rounded-full mr-1"></span>
                               On Avalanche Blockchain
                             </span>
-                            <code className="text-xs text-gray-500 font-mono">
+                            <code className="text-xs font-mono">
                               {project.onChainTxHash.slice(0, 10)}...
                             </code>
                           </div>
@@ -569,10 +569,9 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                             Submit MRV
                           </Button>
                           <Button
-                            variant="outline"
+                            variant="destructive"
                             size="sm"
                             onClick={() => handleDeleteProject(project.id, project.name)}
-                            className="text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
                           >
                             <Trash2 className="h-4 w-4 mr-2" />
                             Delete
@@ -611,7 +610,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.name}
                   onChange={(e) => setNewProject(prev => ({ ...prev, name: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
@@ -623,7 +621,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.location}
                   onChange={(e) => setNewProject(prev => ({ ...prev, location: e.target.value }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
@@ -636,7 +633,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 value={newProject.description}
                 onChange={(e) => setNewProject(prev => ({ ...prev, description: e.target.value }))}
                 required
-                className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
               />
             </div>
 
@@ -644,10 +640,10 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
               <div className="space-y-2">
                 <Label htmlFor="ecosystem">Ecosystem Type</Label>
                 <Select value={newProject.ecosystemType} onValueChange={(value: string) => setNewProject(prev => ({ ...prev, ecosystemType: value as "mangrove" | "saltmarsh" | "seagrass" | "coastal_wetland" }))}>
-                  <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                  <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700 text-white">
+                  <SelectContent>
                     <SelectItem value="mangrove">Mangrove Forest</SelectItem>
                     <SelectItem value="saltmarsh">Salt Marsh</SelectItem>
                     <SelectItem value="seagrass">Seagrass Bed</SelectItem>
@@ -664,7 +660,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   value={newProject.area}
                   onChange={(e) => setNewProject(prev => ({ ...prev, area: parseFloat(e.target.value) || 0 }))}
                   required
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
@@ -677,7 +672,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   placeholder="e.g., 22.3511, 88.2650"
                   value={newProject.coordinates}
                   onChange={(e) => setNewProject(prev => ({ ...prev, coordinates: e.target.value }))}
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
 
@@ -688,7 +682,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   type="number"
                   value={newProject.expectedCarbonCapture}
                   onChange={(e) => setNewProject(prev => ({ ...prev, expectedCarbonCapture: parseFloat(e.target.value) || 0 }))}
-                  className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                 />
               </div>
             </div>
@@ -700,15 +693,14 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                 placeholder="Local communities and organizations involved"
                 value={newProject.communityPartners}
                 onChange={(e) => setNewProject(prev => ({ ...prev, communityPartners: e.target.value }))}
-                className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
               />
             </div>
 
             <div className="flex justify-end space-x-2 pt-4">
-              <Button type="button" variant="outline" onClick={() => setShowNewProjectDialog(false)} className="bg-white text-red-600 border-slate-600 hover:bg-red-600 hover:text-white">
+              <Button type="button" variant="outline" onClick={() => setShowNewProjectDialog(false)}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              <Button type="submit">
                 Register Project
               </Button>
             </div>
@@ -737,7 +729,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     value={mrvData.satelliteData}
                     onChange={(e) => setMrvData(prev => ({ ...prev, satelliteData: e.target.value }))}
                     required
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
 
@@ -749,7 +740,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     value={mrvData.communityReports}
                     onChange={(e) => setMrvData(prev => ({ ...prev, communityReports: e.target.value }))}
                     required
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
 
@@ -760,7 +750,6 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Water quality, soil carbon, temperature, salinity data..."
                     value={mrvData.sensorReadings}
                     onChange={(e) => setMrvData(prev => ({ ...prev, sensorReadings: e.target.value }))}
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
 
@@ -771,16 +760,15 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Smart sensor networks, automated monitoring data, device logs, connectivity reports..."
                     value={mrvData.iotData}
                     onChange={(e) => setMrvData(prev => ({ ...prev, iotData: e.target.value }))}
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
 
-                <Separator className="my-6 bg-white/20" />
+                <Separator className="my-6" />
 
                 <div className="space-y-6">
                   <div>
                     <h4 className="font-medium mb-4">File Uploads</h4>
-                    <p className="text-sm text-gray-400 mb-4">
+                    <p className="text-sm text-muted-foreground mb-4">
                       Upload supporting files organized by category for better verification
                     </p>
                   </div>
@@ -788,7 +776,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   {/* Photos Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="photos" className="flex items-center space-x-2">
-                      <Camera className="h-4 w-4 text-blue-400" />
+                      <Camera className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                       <span>Project Photos</span>
                     </Label>
                     <Input
@@ -797,20 +785,19 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept="image/*"
                       onChange={(e) => setMrvData(prev => ({ ...prev, photos: Array.from(e.target.files || []) }))}
-                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Site photos, before/after images, ecosystem monitoring photos (JPG, PNG, HEIC)
                     </p>
                     {mrvData.photos.length > 0 && (
-                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-blue-900/30">
-                        <div className="text-sm font-medium text-blue-300 mb-2 flex items-center space-x-1">
+                      <div className="border rounded-lg p-3 bg-blue-100 dark:bg-blue-900/30">
+                        <div className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-2 flex items-center space-x-1">
                           <Camera className="h-4 w-4" />
                           <span>{mrvData.photos.length} photos selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.photos.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-background rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -840,7 +827,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   {/* IoT Files Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="iotFiles" className="flex items-center space-x-2">
-                      <Database className="h-4 w-4 text-green-400" />
+                      <Database className="h-4 w-4 text-green-500 dark:text-green-400" />
                       <span>IoT Device Data Files</span>
                     </Label>
                     <Input
@@ -849,20 +836,19 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept=".csv,.json,.xml,.txt,.log"
                       onChange={(e) => setMrvData(prev => ({ ...prev, iotFiles: Array.from(e.target.files || []) }))}
-                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Sensor data files, device logs, network monitoring files (CSV, JSON, XML, TXT, LOG)
                     </p>
                     {mrvData.iotFiles.length > 0 && (
-                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-green-900/30">
-                        <div className="text-sm font-medium text-green-300 mb-2 flex items-center space-x-1">
+                      <div className="border rounded-lg p-3 bg-green-100 dark:bg-green-900/30">
+                        <div className="text-sm font-medium text-green-800 dark:text-green-300 mb-2 flex items-center space-x-1">
                           <Database className="h-4 w-4" />
                           <span>{mrvData.iotFiles.length} IoT files selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.iotFiles.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-background rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -892,7 +878,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   {/* Documents Upload */}
                   <div className="space-y-2">
                     <Label htmlFor="documents" className="flex items-center space-x-2">
-                      <FileText className="h-4 w-4 text-purple-400" />
+                      <FileText className="h-4 w-4 text-purple-500 dark:text-purple-400" />
                       <span>Supporting Documents</span>
                     </Label>
                     <Input
@@ -901,20 +887,19 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                       multiple
                       accept=".pdf,.doc,.docx,.xlsx,.xls"
                       onChange={(e) => setMrvData(prev => ({ ...prev, documents: Array.from(e.target.files || []) }))}
-                      className="bg-white/10 border-white/20 text-white file:text-white"
                     />
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">
                       Reports, permits, research papers, compliance documents (PDF, DOC, DOCX, XLS, XLSX)
                     </p>
                     {mrvData.documents.length > 0 && (
-                      <div className="border-2 border-slate-700 rounded-lg p-3 bg-purple-900/30">
-                        <div className="text-sm font-medium text-purple-300 mb-2 flex items-center space-x-1">
+                      <div className="border rounded-lg p-3 bg-purple-100 dark:bg-purple-900/30">
+                        <div className="text-sm font-medium text-purple-800 dark:text-purple-300 mb-2 flex items-center space-x-1">
                           <FileText className="h-4 w-4" />
                           <span>{mrvData.documents.length} documents selected</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
                           {mrvData.documents.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between text-xs bg-slate-800/50 rounded p-2">
+                            <div key={index} className="flex items-center justify-between text-xs bg-background rounded p-2">
                               <div className="flex items-center space-x-1 truncate">
                                 {getFileIcon(file.name)}
                                 <span className="truncate">{file.name}</span>
@@ -942,7 +927,7 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                   </div>
                 </div>
 
-                <Separator className="my-6 bg-white/20" />
+                <Separator className="my-6" />
 
                 <div className="space-y-2">
                   <Label htmlFor="notes">Additional Notes</Label>
@@ -951,17 +936,16 @@ export function ProjectManagerDashboard({ user }: ProjectManagerDashboardProps) 
                     placeholder="Any additional context, methodological notes, or observations..."
                     value={mrvData.notes}
                     onChange={(e) => setMrvData(prev => ({ ...prev, notes: e.target.value }))}
-                    className="bg-white/10 border-white/20 placeholder:text-gray-400 text-white"
                   />
                 </div>
               </div>
             </ScrollArea>
 
-            <div className="flex justify-end space-x-2 pt-4 border-t border-slate-700">
-              <Button type="button" variant="outline" onClick={() => setShowMRVDialog(false)} className="bg-white text-red-600 border-slate-600 hover:bg-red-600 hover:text-white">
+            <div className="flex justify-end space-x-2 pt-4 border-t">
+              <Button type="button" variant="outline" onClick={() => setShowMRVDialog(false)}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-green-600 hover:bg-green-700">
+              <Button type="submit">
                 <Upload className="h-4 w-4 mr-2" />
                 Submit MRV Data
               </Button>

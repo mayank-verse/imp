@@ -11,7 +11,14 @@ interface LandingPageProps {
 
 export function LandingPage({ onGetStarted }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative isolate">
+      {/* Animated Blobs for Dark Mode */}
+      <div className="absolute inset-0 -z-10 hidden dark:block" aria-hidden="true">
+        <div className="absolute top-0 -left-10 w-72 h-72 bg-purple-500 rounded-full mix-blend-lighten filter blur-3xl opacity-20 animate-blob"></div>
+        <div className="absolute top-1/4 -right-10 w-72 h-72 bg-blue-500 rounded-full mix-blend-lighten filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute bottom-1/4 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-lighten filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+      </div>
+
       {/* Hero Section */}
       <Navbar />
       <section className="relative w-full h-[90vh] overflow-hidden">
@@ -69,7 +76,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </div>
 
       {/* Stats Section */}
-      <section className="py-16 bg-secondary/40">
+      <section className="py-16 bg-secondary/40 dark:bg-transparent relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">Blue Carbon Impact</h2>
@@ -77,31 +84,31 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Award className="h-8 w-8 text-blue-600" />
+              <div className="bg-blue-100 dark:bg-blue-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Award className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               </div>
-              <div className="text-3xl font-bold text-blue-400 mb-2">10,000+</div>
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">10,000+</div>
               <div className="text-muted-foreground">Carbon Credits Issued</div>
             </div>
             <div className="text-center">
-              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <TreePine className="h-8 w-8 text-green-600" />
+              <div className="bg-green-100 dark:bg-green-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <TreePine className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
-              <div className="text-3xl font-bold text-green-400 mb-2">25</div>
+              <div className="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">25</div>
               <div className="text-muted-foreground">Active Projects</div>
             </div>
             <div className="text-center">
-              <div className="bg-teal-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Waves className="h-8 w-8 text-teal-600" />
+              <div className="bg-teal-100 dark:bg-teal-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Waves className="h-8 w-8 text-teal-600 dark:text-teal-400" />
               </div>
-              <div className="text-3xl font-bold text-teal-400 mb-2">50,000</div>
+              <div className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-2">50,000</div>
               <div className="text-muted-foreground">Hectares Protected</div>
             </div>
             <div className="text-center">
-              <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-purple-600" />
+              <div className="bg-purple-100 dark:bg-purple-900/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Users className="h-8 w-8 text-purple-600 dark:text-purple-400" />
               </div>
-              <div className="text-3xl font-bold text-purple-400 mb-2">500+</div>
+              <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">500+</div>
               <div className="text-muted-foreground">Community Members</div>
             </div>
           </div>
@@ -109,14 +116,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-background">
+      <section className="py-16 bg-background dark:bg-transparent relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">How It Works</h2>
             <p className="text-lg text-muted-foreground">A transparent and verifiable blue carbon ecosystem</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-3xl overflow-hidden dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10">
               <img src="https://images.pexels.com/photos/2847714/pexels-photo-2847714.jpeg" alt="Mangrove forest for project registration" className="w-full h-60 object-cover" />
               <CardHeader>
                 <CardTitle>Project Registration</CardTitle>
@@ -132,7 +139,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </ul>
               </CardContent>
             </Card>
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl overflow-hidden dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10">
               <img src="https://images.pexels.com/photos/106344/pexels-photo-106344.jpeg" alt="Satellite view of a coastline for AI verification" className="w-full h-60 object-cover" />
               <CardHeader>
                 <CardTitle>AI-Powered Verification</CardTitle>
@@ -148,7 +155,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </ul>
               </CardContent>
             </Card>
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl overflow-hidden dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10">
               <img src="https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg" alt="Abstract technology background for marketplace" className="w-full h-60 object-cover" />
               <CardHeader>
                 <CardTitle>Secure Fiat Marketplace</CardTitle>
@@ -169,20 +176,19 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* User Roles Section */}
-      <section className="py-16 bg-secondary/40">
+      <section className="py-16 bg-secondary/40 dark:bg-transparent relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">Join Our Ecosystem</h2>
             <p className="text-lg text-muted-foreground">Multiple pathways to participate in the blue carbon economy</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* CARD 1: Added image and overflow-hidden */}
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-green-200 hover:border-green-300 transition-colors overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 transition-colors overflow-hidden">
               <img src="https://images.pexels.com/photos/27176057/pexels-photo-27176057.jpeg" alt="People planting mangroves" className="w-full h-60 object-cover" />
               <CardHeader>
                 <div className="flex justify-between items-center mb-2">
-                  <CardTitle className="text-green-400">Project Manager</CardTitle>
-                  <Badge className="bg-green-100 text-green-800">Open</Badge>
+                  <CardTitle className="text-green-600 dark:text-green-400">Project Manager</CardTitle>
+                  <Badge className="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">Open</Badge>
                 </div>
                 <CardDescription>
                   Register and manage blue carbon restoration projects
@@ -201,13 +207,12 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            {/* CARD 2: Added image and overflow-hidden */}
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-blue-200 hover:border-blue-300 transition-colors overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 transition-colors overflow-hidden">
               <img src="https://images.pexels.com/photos/6694575/pexels-photo-6694575.jpeg" alt="Buying Carbon Credits" className="w-full h-60 object-cover" />
               <CardHeader>
                 <div className="flex items-center justify-between items-center mb-2">
-                  <CardTitle className="text-blue-400">Buyer</CardTitle>
-                  <Badge className="bg-blue-100 text-blue-800">Open</Badge>
+                  <CardTitle className="text-blue-600 dark:text-blue-400">Buyer</CardTitle>
+                  <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">Open</Badge>
                 </div>
                 <CardDescription>
                   Purchase and retire verified carbon credits easily
@@ -226,13 +231,12 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               </CardContent>
             </Card>
 
-            {/* CARD 3: Added image and overflow-hidden */}
-            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl border-2 border-orange-200 hover:border-orange-300 transition-colors overflow-hidden">
+            <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-xl dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 transition-colors overflow-hidden">
               <img src="https://images.pexels.com/photos/7333508/pexels-photo-7333508.jpeg" alt="Verifier Lookin the scores generated by ML Model" className="w-full h-60 object-cover" />
               <CardHeader>
                 <div className="flex items-center justify-between items-center mb-2">
-                  <CardTitle className="text-orange-400">NCCR Verifier</CardTitle>
-                  <Badge className="bg-orange-100 text-orange-800">Restricted</Badge>
+                  <CardTitle className="text-orange-600 dark:text-orange-400">NCCR Verifier</CardTitle>
+                  <Badge className="bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300">Restricted</Badge>
                 </div>
                 <CardDescription>
                   Verify MRV reports and approve credit issuance
@@ -255,7 +259,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-background">
+      <section className="py-16 bg-background dark:bg-transparent relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="text-foreground">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -270,7 +274,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 Get Started Today
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 text-foreground border-border hover:bg-accent hover:text-accent-foreground  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                 View Public Registry
               </Button>
             </div>
@@ -279,7 +283,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="bg-secondary/20 text-foreground py-12">
+      <footer className="bg-secondary/20 dark:bg-transparent text-foreground py-12 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -327,4 +331,3 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
     </div>
   );
 }
-

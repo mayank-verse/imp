@@ -199,7 +199,10 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
       fetchPendingMRV();
     } catch (error) {
       console.error('Error processing verification:', error);
-      toast.error(`Failed to process verification: ${error}`);
+      const errorMessage = typeof error === 'object' && error !== null && 'message' in error
+        ? (error as { message: string }).message
+        : String(error);
+      toast.error(`Failed to process verification: ${errorMessage}`);
     }
   };
 
@@ -210,9 +213,9 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
   };
 
   const getHealthScoreColor = (score: number) => {
-    if (score >= 0.8) return 'text-green-400';
-    if (score >= 0.6) return 'text-yellow-400';
-    return 'text-red-400';
+    if (score >= 0.8) return 'text-green-500 dark:text-green-400';
+    if (score >= 0.6) return 'text-yellow-500 dark:text-yellow-400';
+    return 'text-red-500 dark:text-red-400';
   };
 
   const getHealthScoreLabel = (score: number) => {
@@ -234,15 +237,15 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'registered':
-        return 'bg-blue-900/50 text-blue-300';
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300';
       case 'mrv_submitted':
-        return 'bg-yellow-900/50 text-yellow-300';
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300';
       case 'approved':
-        return 'bg-green-900/50 text-green-300';
+        return 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300';
       case 'rejected':
-        return 'bg-red-900/50 text-red-300';
+        return 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300';
       default:
-        return 'bg-gray-700 text-gray-300';
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
     }
   };
 
@@ -259,12 +262,12 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <div className="h-6 bg-gray-700 rounded animate-pulse"></div>
+            <div className="h-6 bg-muted rounded animate-pulse"></div>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-24 bg-gray-700 rounded animate-pulse"></div>
+                <div key={i} className="h-24 bg-muted rounded animate-pulse"></div>
               ))}
             </div>
           </CardContent>
@@ -279,21 +282,21 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-2xl font-bold flex items-center space-x-2">
-            <Shield className="h-6 w-6 text-blue-400" />
+            <Shield className="h-6 w-6 text-primary" />
             <span>NCCR Verification</span>
           </h2>
-          <p className="text-gray-300">Review and verify MRV reports for carbon credit issuance</p>
+          <p className="text-muted-foreground">Review and verify MRV reports for carbon credit issuance</p>
         </div>
       </div>
 
       {/* Enhanced Verification Tabs */}
       <Tabs defaultValue="verification" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-2 bg-white/10">
-          <TabsTrigger value="verification" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="verification" className="flex items-center space-x-2">
             <Shield className="h-4 w-4" />
             <span>Verification Queue</span>
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="data-[state=active]:bg-white/20 data-[state=active]:text-white text-gray-300 flex items-center space-x-2">
+          <TabsTrigger value="analytics" className="flex items-center space-x-2">
             <BarChart3 className="h-4 w-4" />
             <span>Data Analytics</span>
           </TabsTrigger>
@@ -305,7 +308,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Award className="h-5 w-5 text-blue-400" />
+                  <Award className="h-5 w-5 text-primary" />
                   <span>Market Overview</span>
                 </CardTitle>
                 <CardDescription>
@@ -315,32 +318,32 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400">
+                    <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                       {marketStats.totalCreditsInMarket.toLocaleString()}
                     </div>
-                    <p className="text-sm text-blue-500 mt-1">Total Credits in Market</p>
-                    <p className="text-xs text-gray-400">tCO₂e available for purchase</p>
+                    <p className="text-sm text-blue-700 dark:text-blue-500 mt-1">Total Credits in Market</p>
+                    <p className="text-xs text-muted-foreground">tCO₂e available for purchase</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-green-400">
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                       {marketStats.totalCreditsRetired.toLocaleString()}
                     </div>
-                    <p className="text-sm text-green-500 mt-1">Total Credits Retired</p>
-                    <p className="text-xs text-gray-400">tCO₂e permanently offset</p>
+                    <p className="text-sm text-green-700 dark:text-green-500 mt-1">Total Credits Retired</p>
+                    <p className="text-xs text-muted-foreground">tCO₂e permanently offset</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-purple-400">
+                    <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                       {marketStats.totalActiveUsers.toLocaleString()}
                     </div>
-                    <p className="text-sm text-purple-500 mt-1">Active Buyers</p>
-                    <p className="text-xs text-gray-400">Users with retirements</p>
+                    <p className="text-sm text-purple-700 dark:text-purple-500 mt-1">Active Buyers</p>
+                    <p className="text-xs text-muted-foreground">Users with retirements</p>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-orange-400">
+                    <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">
                       {marketStats.averageRetirementPerUser.toFixed(1)}
                     </div>
-                    <p className="text-sm text-orange-500 mt-1">Avg. Retirement per User</p>
-                    <p className="text-xs text-gray-400">tCO₂e per active buyer</p>
+                    <p className="text-sm text-orange-700 dark:text-orange-500 mt-1">Avg. Retirement per User</p>
+                    <p className="text-xs text-muted-foreground">tCO₂e per active buyer</p>
                   </div>
                 </div>
               </CardContent>
@@ -351,10 +354,10 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
-                  <TreePine className="h-4 w-4 text-blue-400" />
+                  <TreePine className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-400">
+                  <div className="text-2xl font-bold text-primary">
                     {projects.length}
                   </div>
                 </CardContent>
@@ -363,10 +366,10 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Pending Reviews</CardTitle>
-                  <Clock className="h-4 w-4 text-orange-400" />
+                  <Clock className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-orange-400">
+                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
                     {pendingMrv.length}
                   </div>
                 </CardContent>
@@ -374,11 +377,11 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">High Quality Reports</CardTitle>
-                  <CheckCircle className="h-4 w-4 text-green-400" />
+                  <CardTitle className="text-sm font-medium">High Quality</CardTitle>
+                  <CheckCircle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-green-400">
+                  <div className="text-2xl font-bold text-green-600 dark:text-green-400">
                     {pendingMrv.filter(mrv => mrv.mlResults?.biomass_health_score >= 0.8).length}
                   </div>
                 </CardContent>
@@ -387,10 +390,10 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Needs Review</CardTitle>
-                  <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                  <AlertTriangle className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-yellow-400">
+                  <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
                     {pendingMrv.filter(mrv => mrv.mlResults?.biomass_health_score < 0.6).length}
                   </div>
                 </CardContent>
@@ -399,13 +402,13 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Total Credits</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-blue-400" />
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-blue-400">
+                  <div className="text-2xl font-bold text-primary">
                     {pendingMrv.reduce((sum, mrv) => sum + (mrv.mlResults?.carbon_estimate || 0), 0).toLocaleString()}
                   </div>
-                  <p className="text-xs text-gray-400">tCO₂e pending</p>
+                  <p className="text-xs text-muted-foreground">tCO₂e pending</p>
                 </CardContent>
               </Card>
             </div>
@@ -420,7 +423,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
               </CardHeader>
               <CardContent>
                 {pendingMrv.length === 0 ? (
-                  <div className="text-center py-12 text-gray-400">
+                  <div className="text-center py-12 text-muted-foreground">
                     <Shield className="h-12 w-12 mx-auto mb-4 opacity-50" />
                     <p>No pending MRV reports</p>
                     <p className="text-sm mt-2">All reports have been processed</p>
@@ -428,32 +431,32 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                 ) : (
                   <div className="space-y-6">
                     {pendingMrv.map((mrv) => (
-                      <div key={mrv.id} className="border-2 border-slate-700 rounded-lg p-6 hover:bg-slate-800/50 transition-colors">
+                      <div key={mrv.id} className="border rounded-lg p-6 hover:bg-muted/50 transition-colors">
                         <div className="flex justify-between items-start mb-4">
                           <div>
                             <h3 className="font-semibold text-lg">Project ID: {mrv.projectId}</h3>
-                            <p className="text-sm text-gray-400">Submitted: {formatDate(mrv.submittedAt)}</p>
+                            <p className="text-sm text-muted-foreground">Submitted: {formatDate(mrv.submittedAt)}</p>
                           </div>
-                          <Badge variant="outline" className="bg-yellow-900/50 text-yellow-300 border-yellow-700">
+                          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-900/50 dark:text-yellow-300 dark:border-yellow-700">
                             Pending Review
                           </Badge>
                         </div>
 
                         {/* ML Analysis Results */}
-                        <div className="bg-blue-900/30 rounded-lg p-4 mb-4">
+                        <div className="bg-muted rounded-lg p-4 mb-4">
                           <h4 className="font-medium mb-3 flex items-center">
                             <TrendingUp className="h-4 w-4 mr-2" />
                             ML Model Analysis
                           </h4>
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                              <p className="text-sm text-gray-400">Carbon Estimate</p>
-                              <p className="text-2xl font-bold text-blue-400">
+                              <p className="text-sm text-muted-foreground">Carbon Estimate</p>
+                              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
                                 {mrv.mlResults?.carbon_estimate || 0} tCO₂e
                               </p>
                             </div>
                             <div>
-                              <p className="text-sm text-gray-400">Biomass Health Score</p>
+                              <p className="text-sm text-muted-foreground">Biomass Health Score</p>
                               <p className={`text-2xl font-bold ${getHealthScoreColor(mrv.mlResults?.biomass_health_score || 0)}`}>
                                 {((mrv.mlResults?.biomass_health_score || 0) * 100).toFixed(1)}%
                               </p>
@@ -462,8 +465,8 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                               </p>
                             </div>
                             <div>
-                              <p className="text-sm text-gray-400">Evidence CID</p>
-                              <p className="text-sm font-mono bg-slate-700 px-2 py-1 rounded break-all">
+                              <p className="text-sm text-muted-foreground">Evidence CID</p>
+                              <p className="text-sm font-mono bg-background px-2 py-1 rounded break-all">
                                 {mrv.mlResults?.evidenceCid || 'N/A'}
                               </p>
                             </div>
@@ -471,7 +474,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                           
                           {/* Health Score Progress Bar */}
                           <div className="mt-3">
-                            <div className="flex justify-between text-xs text-gray-400 mb-1">
+                            <div className="flex justify-between text-xs text-muted-foreground mb-1">
                               <span>Data Quality Assessment</span>
                               <span>{((mrv.mlResults?.biomass_health_score || 0) * 100).toFixed(1)}%</span>
                             </div>
@@ -485,43 +488,41 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                         {/* Raw Data Summary */}
                         <div className="space-y-3 mb-4">
                           <div className="flex items-center space-x-2 text-sm">
-                            <Satellite className="h-4 w-4 text-gray-400" />
+                            <Satellite className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">Satellite Data:</span>
-                            <span className="text-gray-300">
+                            <span className="text-muted-foreground">
                               {mrv.rawData.satelliteData ? `${mrv.rawData.satelliteData.substring(0, 100)}...` : 'No data'}
                             </span>
                           </div>
                           <div className="flex items-center space-x-2 text-sm">
-                            <FileText className="h-4 w-4 text-gray-400" />
+                            <FileText className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">Community Reports:</span>
-                            <span className="text-gray-300">
+                            <span className="text-muted-foreground">
                               {mrv.rawData.communityReports ? `${mrv.rawData.communityReports.substring(0, 100)}...` : 'No data'}
                             </span>
                           </div>
                           <div className="flex items-center space-x-2 text-sm">
-                            <Camera className="h-4 w-4 text-gray-400" />
+                            <Camera className="h-4 w-4 text-muted-foreground" />
                             <span className="font-medium">Supporting Files:</span>
-                            <span className="text-gray-300">
+                            <span className="text-muted-foreground">
                               {mrv.files.length} files uploaded
                             </span>
                           </div>
                         </div>
 
-                        <Separator className="my-4 bg-white/20" />
+                        <Separator className="my-4" />
 
                         {/* Action Buttons */}
                         <div className="flex justify-end space-x-2">
                           <Button
                             variant="outline"
                             onClick={() => openVerificationDialog(mrv)}
-                            className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white"
                           >
                             <FileText className="h-4 w-4 mr-2" />
                             Review Details
                           </Button>
                           <Button
-                            variant="outline"
-                            className="text-red-400 border-red-500/50 hover:bg-red-900/50 hover:text-red-300"
+                            variant="destructive"
                             onClick={() => {
                               setSelectedMrv(mrv);
                               setVerificationNotes('');
@@ -532,7 +533,6 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                             Reject
                           </Button>
                           <Button
-                            className="bg-green-600 hover:bg-green-700"
                             onClick={() => {
                               setSelectedMrv(mrv);
                               setVerificationNotes('Approved based on ML analysis and data quality assessment.');
@@ -578,7 +578,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
 
       {/* Verification Dialog */}
       <Dialog open={showVerificationDialog} onOpenChange={setShowVerificationDialog}>
-        <DialogContent className="max-w-4xl max-h-[80vh] bg-gray-900 text-white border-slate-700">
+        <DialogContent className="max-w-4xl max-h-[80vh]">
           <DialogHeader>
             <DialogTitle>Review MRV Report</DialogTitle>
             <DialogDescription>
@@ -592,7 +592,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                 {/* Project Information */}
                 <div>
                   <h3 className="font-semibold mb-2">Project Information</h3>
-                  <div className="bg-gray-800/50 rounded-lg p-4">
+                  <div className="bg-muted rounded-lg p-4">
                     <p><strong>Project ID:</strong> {selectedMrv.projectId}</p>
                     <p><strong>Submitted:</strong> {formatDate(selectedMrv.submittedAt)}</p>
                     <p><strong>Status:</strong> {selectedMrv.status}</p>
@@ -602,24 +602,24 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                 {/* ML Analysis */}
                 <div>
                   <h3 className="font-semibold mb-2">ML Model Analysis</h3>
-                  <div className="bg-blue-900/30 rounded-lg p-4">
+                  <div className="bg-blue-100 dark:bg-blue-900/30 rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm text-gray-400">Carbon Sequestration Estimate</p>
-                        <p className="text-xl font-bold text-blue-400">
+                        <p className="text-sm text-muted-foreground">Carbon Sequestration Estimate</p>
+                        <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
                           {selectedMrv.mlResults?.carbon_estimate || 0} tCO₂e
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-400">Data Quality Score</p>
+                        <p className="text-sm text-muted-foreground">Data Quality Score</p>
                         <p className={`text-xl font-bold ${getHealthScoreColor(selectedMrv.mlResults?.biomass_health_score || 0)}`}>
                           {((selectedMrv.mlResults?.biomass_health_score || 0) * 100).toFixed(1)}%
                         </p>
                       </div>
                     </div>
                     <div className="mt-3">
-                      <p className="text-sm text-gray-400">IPFS Evidence Hash</p>
-                      <p className="font-mono text-sm bg-gray-700 px-2 py-1 rounded">
+                      <p className="text-sm text-muted-foreground">IPFS Evidence Hash</p>
+                      <p className="font-mono text-sm bg-background px-2 py-1 rounded">
                         {selectedMrv.mlResults?.evidenceCid || 'N/A'}
                       </p>
                     </div>
@@ -632,21 +632,21 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                   <div className="space-y-4">
                     <div>
                       <Label className="font-medium">Satellite Data Analysis</Label>
-                      <div className="bg-gray-800/50 rounded p-3 text-sm">
+                      <div className="bg-muted rounded p-3 text-sm">
                         {selectedMrv.rawData.satelliteData || 'No satellite data provided'}
                       </div>
                     </div>
                     
                     <div>
                       <Label className="font-medium">Community Field Reports</Label>
-                      <div className="bg-gray-800/50 rounded p-3 text-sm">
+                      <div className="bg-muted rounded p-3 text-sm">
                         {selectedMrv.rawData.communityReports || 'No community reports provided'}
                       </div>
                     </div>
                     
                     <div>
                       <Label className="font-medium">Sensor Readings</Label>
-                      <div className="bg-gray-800/50 rounded p-3 text-sm">
+                      <div className="bg-muted rounded p-3 text-sm">
                         {selectedMrv.rawData.sensorReadings || 'No sensor readings provided'}
                       </div>
                     </div>
@@ -654,7 +654,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                     {selectedMrv.rawData.notes && (
                       <div>
                         <Label className="font-medium">Additional Notes</Label>
-                        <div className="bg-gray-800/50 rounded p-3 text-sm">
+                        <div className="bg-muted rounded p-3 text-sm">
                           {selectedMrv.rawData.notes}
                         </div>
                       </div>
@@ -665,18 +665,18 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                 {/* Supporting Files */}
                 <div>
                   <h3 className="font-semibold mb-2">Supporting Files</h3>
-                  <div className="bg-gray-800/50 rounded-lg p-4">
+                  <div className="bg-muted rounded-lg p-4">
                     {selectedMrv.files.length > 0 ? (
                       <div className="space-y-2">
                         {selectedMrv.files.map((file, index) => (
                           <div key={index} className="flex items-center justify-between text-sm">
                             <span>{file.name}</span>
-                            <span className="text-gray-400">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
+                            <span className="text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <p className="text-gray-400">No supporting files uploaded</p>
+                      <p className="text-muted-foreground">No supporting files uploaded</p>
                     )}
                   </div>
                 </div>
@@ -689,26 +689,24 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
                     placeholder="Add your verification notes here..."
                     value={verificationNotes}
                     onChange={(e) => setVerificationNotes(e.target.value)}
-                    className="mt-2 bg-gray-800 border-slate-700"
+                    className="mt-2"
                     rows={3}
                   />
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex justify-end space-x-2 pt-4">
-                  <Button variant="outline" onClick={() => setShowVerificationDialog(false)} className="bg-transparent text-white border-slate-600 hover:bg-slate-800 hover:text-white">
+                  <Button variant="outline" onClick={() => setShowVerificationDialog(false)}>
                     Cancel
                   </Button>
                   <Button
-                    variant="outline"
-                    className="text-red-400 border-red-500/50 hover:bg-red-900/50 hover:text-red-300"
+                    variant="destructive"
                     onClick={() => handleVerification(selectedMrv.id, false)}
                   >
                     <XCircle className="h-4 w-4 mr-2" />
                     Reject
                   </Button>
                   <Button
-                    className="bg-green-600 hover:bg-green-700"
                     onClick={() => handleVerification(selectedMrv.id, true)}
                   >
                     <CheckCircle className="h-4 w-4 mr-2" />
@@ -723,7 +721,7 @@ export function NCCRVerifierDashboard({ user }: NCCRVerifierDashboardProps) {
 
       {/* ML Verification Panel Dialog */}
       <Dialog open={showProjectDialog} onOpenChange={setShowProjectDialog}>
-        <DialogContent className="max-w-6xl max-h-[90vh] bg-gray-900 text-white border-slate-700">
+        <DialogContent className="max-w-6xl max-h-[90vh]">
           <DialogHeader>
             <DialogTitle>ML Verification Analysis</DialogTitle>
             <DialogDescription>
