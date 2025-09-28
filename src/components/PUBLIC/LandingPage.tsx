@@ -48,13 +48,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-lg px-8 py-6 cursor-pointer bg-yellow-50 text-black transition-all duration-300 ease-in-out hover:bg-yellow-100 hover:shadow-md hover:border-yellow-200"
-              >
-                View Public Dashboard
-              </Button>
             </div>
           </p>
         </div>
@@ -273,9 +266,6 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <Button size="lg" variant="secondary" onClick={onGetStarted} className="text-lg px-8 py-6  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
                 Get Started Today
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6  transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
-                View Public Registry
               </Button>
             </div>
           </div>
