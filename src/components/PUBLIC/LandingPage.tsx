@@ -24,7 +24,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       <section className="relative w-full h-[90vh] overflow-hidden">
         <video
           className="absolute top-0 left-0 w-full h-[90vh] object-cover rounded-b-[25%]"
-          src="./src/components/PUBLIC/ocean.mp4"
+          src="https://www.pexels.com/download/video/1550080/"
           autoPlay
           loop
           muted

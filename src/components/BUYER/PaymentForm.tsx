@@ -18,6 +18,12 @@ declare global {
   interface Window {
     Razorpay: any;
   }
+  interface ImportMeta {
+    env: {
+      VITE_RAZORPAY_KEY_ID: string;
+      [key: string]: any;
+    };
+  }
 }
 
 export default function PaymentForm({ amount, orderId, onSuccess, onCancel }: PaymentFormProps) {
